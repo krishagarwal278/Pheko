@@ -9,9 +9,21 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
+import { collection, getDocs } from "firebase/firestore";
+import { db, app } from "../Firebase";
 
 const ScrapDealerWelcomePage = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
+  /*getDocs(collection(db, "Users"))
+      .then(querySnapshot => {
+        querySnapshot.forEach((doc) => {
+          console.log(`${doc.id} => ${doc.data()}`);
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching documents:", error);
+      });*/
 
   return (
     <View style={[styles.scrapDealerWelcomePage, styles.frameFlexBox]}>
