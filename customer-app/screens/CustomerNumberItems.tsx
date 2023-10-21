@@ -6,6 +6,7 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from "react-native";
 import ContainerFrame from "../components/ContainerFrame";
 import FormFrame1 from "../components/FormFrame1";
@@ -13,20 +14,22 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
 
+const windowWidth = Dimensions.get('window').width;
+
 const CustomerNumberItems = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.customernumberitems}>
+      <View style={styles.container}>
         <ContainerFrame />
-        <View style={[styles.frame, styles.frameFlexBox]}>
+        <View style={styles.content}>
           <FormFrame1 />
           <Pressable
-            style={[styles.frame1, styles.frameFlexBox]}
+            style={styles.continueButton}
             onPress={() => navigation.navigate("CustomerPickupDateTime")}
           >
-            <Text style={styles.continue}>Continue</Text>
+            <Text style={styles.continueText}>Continue</Text>
           </Pressable>
         </View>
       </View>
@@ -35,39 +38,34 @@ const CustomerNumberItems = () => {
 };
 
 const styles = StyleSheet.create({
-  frameFlexBox: {
+  container: {
+    flex: 1,
+    backgroundColor: Color.colorWhite,
     alignItems: "center",
-    alignSelf: "stretch",
-    overflow: "hidden",
+    paddingHorizontal: windowWidth * 0.05,  // 5% of window width
+    paddingTop: "8%",  // 8% of container height
+    paddingBottom: "7%",  // 7% of container height
   },
-  continue: {
-    fontSize: FontSize.size_5xl,
+  content: {
+    flex: 1,
+    width: "90%",  // 90% of container width
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  continueText: {
+    fontSize: windowWidth < 350 ? FontSize.size_base : FontSize.size_5xl,  // Adjusting font size based on screen width
     fontWeight: "500",
     fontFamily: FontFamily.montserratMedium,
     color: Color.color1,
     textAlign: "center",
-    width: 268,
-    height: 30,
   },
-  frame1: {
+  continueButton: {
     borderRadius: Border.br_6xl,
     backgroundColor: Color.color,
-    height: 86,
-    justifyContent: "center",
-    marginTop: 387,
-  },
-  frame: {
-    marginTop: 51,
-  },
-  customernumberitems: {
-    backgroundColor: Color.colorWhite,
-    flex: 1,
-    width: "100%",
-    justifyContent: "flex-end",
-    paddingHorizontal: Padding.p_11xl,
-    paddingTop: 80,
-    paddingBottom: 68,
-    overflow: "hidden",
+    paddingVertical: "3%",  // 3% of button height
+    paddingHorizontal: "10%",  // 10% of button width
+    marginTop: "5%",  // 5% of container height
+    alignItems: "center",
   },
 });
 
