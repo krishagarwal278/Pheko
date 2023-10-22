@@ -1,15 +1,19 @@
 import * as React from "react";
-import { useState } from "react";
+import {useContext, useState} from "react";
 import { StyleSheet, View, Pressable, Text } from "react-native";
 import { Image } from "expo-image";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
+import { Order } from "../Types";
+import {OrderContext, useOrder} from '../OrderContext';
 
 const CustomerItemSelection = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const { order, setOrder } = useOrder();
 
   const isSelected = (item: string) => selectedItem === item;
 
@@ -43,7 +47,13 @@ const CustomerItemSelection = () => {
             styles.metalLayout,
             isSelected("furniture") ? selectionStyle : {},
           ]}
-          onPress={() => setSelectedItem("furniture")}
+          onPress={() => {
+            setSelectedItem("furniture");
+            setOrder((prevOrder: any) => ({
+              ...prevOrder,
+              items: ["furniture"]
+            }));
+          }}
         >
           <View style={[styles.frame4, styles.framePosition1]}>
             <Text style={[styles.furniture1, styles.plastic1Typo]}>
@@ -62,7 +72,13 @@ const CustomerItemSelection = () => {
             styles.metalLayout,
             isSelected("electronics") ? selectionStyle : {},
           ]}
-          onPress={() => setSelectedItem("electronics")}
+          onPress={() => {
+            setSelectedItem("electronics");
+            setOrder((prevOrder: any) => ({
+              ...prevOrder,
+              items: ["electronics"]
+            }));
+          }}
         >
           <View style={[styles.frame5, styles.framePosition1]}>
             <Text style={[styles.electronics1, styles.paper1Typo]}>
@@ -81,7 +97,13 @@ const CustomerItemSelection = () => {
             styles.metalLayout,
             isSelected("metal") ? selectionStyle : {},
           ]}
-          onPress={() => setSelectedItem("metal")}
+          onPress={() => {
+            setSelectedItem("metal");
+            setOrder((prevOrder: any) => ({
+              ...prevOrder,
+              items: ["metal"]
+            }));
+          }}
         >
           <View style={[styles.frame6, styles.framePosition]}>
             <Text style={[styles.metal1, styles.metal1Typo]}>Metal</Text>
@@ -98,7 +120,13 @@ const CustomerItemSelection = () => {
             styles.metalLayout,
             isSelected("paper") ? selectionStyle : {},
           ]}
-          onPress={() => setSelectedItem("paper")}
+          onPress={() => {
+            setSelectedItem("paper");
+            setOrder((prevOrder: any) => ({
+              ...prevOrder,
+              items: ["paper"]
+            }));
+          }}
         >
           <View style={[styles.frame7, styles.frame7Position]}>
             <Image
@@ -115,7 +143,13 @@ const CustomerItemSelection = () => {
             styles.metalLayout,
             isSelected("plastic") ? selectionStyle : {},
           ]}
-          onPress={() => setSelectedItem("plastic")}
+          onPress={() => {
+            setSelectedItem("plastic");
+            setOrder((prevOrder: any) => ({
+              ...prevOrder,
+              items: ["plastic"]
+            }));
+          }}
         >
           <View style={styles.frame8}>
             <Text style={[styles.plastic1, styles.plastic1Typo]}>Plastic</Text>
@@ -132,7 +166,13 @@ const CustomerItemSelection = () => {
             styles.metalLayout,
             isSelected("glass") ? selectionStyle : {},
           ]}
-          onPress={() => setSelectedItem("glass")}
+          onPress={() => {
+            setSelectedItem("glass");
+            setOrder((prevOrder: any) => ({
+              ...prevOrder,
+              items: ["glass"]
+            }));
+          }}
         >
           <View style={[styles.frame9, styles.framePosition]}>
             <Text style={[styles.glass1, styles.metal1Typo]}>Glass</Text>

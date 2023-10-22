@@ -12,9 +12,13 @@ import FormFrame1 from "../components/FormFrame1";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
+import { Order } from "../Types";
+import {OrderContext, useOrder} from '../OrderContext';
 
 const CustomerNumberItems = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+
+  const { order, setOrder } = useOrder();
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

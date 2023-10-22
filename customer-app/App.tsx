@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -11,6 +13,7 @@ import NumberVerificationPage from "./screens/NumberVerificationPage";
 import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { IconRegistry, ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
+import { OrderProvider } from './OrderContext';
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
@@ -66,41 +69,43 @@ const App = () => {
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
           {hideSplashScreen ? (
-            <Stack.Navigator
-              initialRouteName="ScrapDealerWelcomePage"
-              screenOptions={{ headerShown: false }}
-            >
-              <Stack.Screen
-                name="ScrapDealerWelcomePage"
-                component={ScrapDealerWelcomePage}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CustomerStartingPage"
-                component={CustomerStartingPage}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CustomerNumberItems"
-                component={CustomerNumberItems}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CustomerItemSelection"
-                component={CustomerItemSelection}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="CustomerPickupDateTime"
-                component={CustomerPickupDateTime}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="NumberVerificationPage"
-                component={NumberVerificationPage}
-                options={{ headerShown: false }}
-              />
-            </Stack.Navigator>
+            <OrderProvider>
+              <Stack.Navigator
+                  initialRouteName="ScrapDealerWelcomePage"
+                  screenOptions={{ headerShown: false }}
+              >
+                <Stack.Screen
+                    name="ScrapDealerWelcomePage"
+                    component={ScrapDealerWelcomePage}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="CustomerStartingPage"
+                    component={CustomerStartingPage}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="CustomerNumberItems"
+                    component={CustomerNumberItems}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="CustomerItemSelection"
+                    component={CustomerItemSelection}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="CustomerPickupDateTime"
+                    component={CustomerPickupDateTime}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="NumberVerificationPage"
+                    component={NumberVerificationPage}
+                    options={{ headerShown: false }}
+                />
+              </Stack.Navigator>
+            </OrderProvider>
           ) : null}
         </NavigationContainer>
       </ApplicationProvider>

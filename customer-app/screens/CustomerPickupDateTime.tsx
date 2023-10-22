@@ -5,11 +5,15 @@ import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
 import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
+import { Order } from "../Types";
+import {OrderContext, useOrder} from '../OrderContext';
 
 const CustomerPickupDateTime = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   const [frameDatePicker, setFrameDatePicker] = useState(undefined);
+
+  const { order, setOrder } = useOrder();
 
   return (
     <View style={styles.customerpickupdatetime}>
@@ -60,7 +64,13 @@ const CustomerPickupDateTime = () => {
         <RNKDatepicker
           style={styles.frameChild}
           date={frameDatePicker}
-          onSelect={setFrameDatePicker}
+          onSelect={(date) => {
+            setFrameDatePicker(date);
+            setOrder((prevOrder) => ({
+              ...prevOrder,
+              scheduledDateTime: date,
+            }));
+          }}
           status="basic"
           controlStyle={styles.frameDatePickerValue}
         />
