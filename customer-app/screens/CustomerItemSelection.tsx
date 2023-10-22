@@ -1,185 +1,160 @@
 import * as React from "react";
-import {useContext, useState} from "react";
-import { StyleSheet, View, Pressable, Text } from "react-native";
-import { Image } from "expo-image";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation, ParamListBase } from "@react-navigation/native";
-import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
+import { useState } from "react";
+import {
+  Image,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
+import BackButton from "../components/BackButton";
+import ContinueButton from "../components/ContinueButton";
+import PageHeader from "../components/PageHeader";
 import { Order } from "../Types";
 import {OrderContext, useOrder} from '../OrderContext';
 
 const CustomerItemSelection = () => {
-  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
   const { order, setOrder } = useOrder();
 
-  const isSelected = (item: string) => selectedItem === item;
-
-  const selectionStyle = {
-    backgroundColor: "rgba(0,0,0,0.1)",
-  };
+  const items = [
+    {
+      key: "furniture",
+      label: "Furniture",
+      icon: require("../assets/vector2.png"),
+    },
+    {
+      key: "electronics",
+      label: "Electronics",
+      icon: require("../assets/vector3.png"),
+    },
+    {
+      key: "metal",
+      label: "Metal",
+      icon: require("../assets/vector4.png"),
+    },
+    {
+      key: "paper",
+      label: "Paper",
+      icon: require("../assets/vector5.png"),
+    },
+    {
+      key: "plastic",
+      label: "Plastic",
+      icon: require("../assets/vector6.png"),
+    },
+    {
+      key: "glass",
+      label: "Glass",
+      icon: require("../assets/vector7.png"),
+    },
+  ];
 
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Image style={styles.icon} source={require("../assets/vector1.png")} />
-      </Pressable>
-      <Text style={styles.headerText}>
-        Choose an item
-        {"\n"}
-        Tell us what recyclables you'd like to have picked up, and we'll take care of the rest.
-      </Text>
-      <View style={styles.itemsContainer}>
-        <Pressable
-          style={[styles.item, isSelected("furniture") ? selectionStyle : {}]}
-          onPress={() => {
-            setSelectedItem("furniture");
-            setOrder((prevOrder: any) => ({
-              ...prevOrder,
-              items: ["furniture"]
-            }));
-          }}
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
+      <View style={styles.container}>
+        <BackButton />
+
+        <PageHeader
+          title="Choose an item"
+          subtitle="Tell us what recyclables you'd like to have picked up, and we'll take care of the rest."
+        />
+
+        <ScrollView
+          style={styles.itemsContainer}
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.itemText}>Furniture</Text>
-          <Image style={styles.itemIcon} source={require("../assets/vector2@3x.png")} />
-        </Pressable>
-        <Pressable
-          style={[styles.item, isSelected("electronics") ? selectionStyle : {}]}
-          onPress={() => {
-            setSelectedItem("electronics");
-            setOrder((prevOrder: any) => ({
-              ...prevOrder,
-              items: ["electronics"]
-            }));
-          }}
-        >
-          <Text style={styles.itemText}>Electronics</Text>
-          <Image style={styles.itemIcon} source={require("../assets/vector3@3x.png")} />
-        </Pressable>
-        <Pressable
-          style={[styles.item, isSelected("metal") ? selectionStyle : {}]}
-          onPress={() => {
-            setSelectedItem("metal");
-            setOrder((prevOrder: any) => ({
-              ...prevOrder,
-              items: ["metal"]
-            }));
-          }}
-        >
-          <Text style={styles.itemText}>Metal</Text>
-          <Image style={styles.itemIcon} source={require("../assets/vector4@3x.png")} />
-        </Pressable>
-        <Pressable
-          style={[styles.item, isSelected("paper") ? selectionStyle : {}]}
-          onPress={() => {
-            setSelectedItem("paper");
-            setOrder((prevOrder: any) => ({
-              ...prevOrder,
-              items: ["paper"]
-            }));
-          }}
-        >
-          <Text style={styles.itemText}>Paper</Text>
-          <Image style={styles.itemIcon} source={require("../assets/vector5@3x.png")} />
-        </Pressable>
-        <Pressable
-          style={[styles.item, isSelected("plastic") ? selectionStyle : {}]}
-          onPress={() => {
-            setSelectedItem("plastic");
-            setOrder((prevOrder: any) => ({
-              ...prevOrder,
-              items: ["plastic"]
-            }));
-          }}
-        >
-          <Text style={styles.itemText}>Plastic</Text>
-          <Image style={styles.itemIcon} source={require("../assets/vector6@3x.png")} />
-        </Pressable>
-        <Pressable
-          style={[styles.item, isSelected("glass") ? selectionStyle : {}]}
-          onPress={() => {
-            setSelectedItem("glass");
-            setOrder((prevOrder: any) => ({
-              ...prevOrder,
-              items: ["glass"]
-            }));
-          }}
-        >
-          <Text style={styles.itemText}>Glass</Text>
-          <Image style={styles.itemIcon} source={require("../assets/vector7@3x.png")} />
-        </Pressable>
+          {items.map((item) => (
+            <Pressable
+              key={item.key}
+              style={[
+                styles.itemButton,
+                selectedItem === item.key ? styles.selectedItemStyle : null,
+              ]}
+              onPress={() => {
+                setSelectedItem(item.key);
+                setOrder((prevOrder: any) => ({
+                  ...prevOrder,
+                  items: [item.key]
+                }));
+              }}
+            >
+              <Image style={styles.itemIcon} source={item.icon} />
+              <Text style={styles.itemText}>{item.label}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+        <View style={styles.bottomContainer}>
+          <ContinueButton destination="CustomerItemWeight" />
+        </View>
       </View>
-      <Pressable style={styles.continueButton} onPress={() => navigation.navigate("CustomerNumberItems")}>
-        <Text style={styles.continueText}>Continue</Text>
-      </Pressable>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Color.colorWhite,
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: "10%",
-    paddingTop: 20,
+    padding: Padding.p_11xl,
   },
-  headerText: {
-    fontFamily: FontFamily.montserratMedium,
+  backButton: {
+    marginBottom: 10,
+  },
+  backButtonText: {
     fontSize: FontSize.size_base,
     color: Color.color1,
-    textAlign: "center",
-    marginVertical: 20,
+    fontFamily: FontFamily.montserratRegular,
+  },
+  itemButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingLeft: 15,
+    borderRadius: Border.br_6xl,
+    marginBottom: 10,
+    borderWidth: 2,
+    borderColor: Color.color,
+  },
+  selectedItemStyle: {
+    backgroundColor: "rgba(0,0,0,0.1)",
   },
   itemsContainer: {
-    flex: 1,
-    width: "100%",
-    justifyContent: "space-around",
-  },
-  item: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    padding: 10,
-    borderWidth: 1,
-    borderColor: Color.color1,
-    borderRadius: 10,
-  },
-  itemText: {
-    fontFamily: FontFamily.montserratMedium,
-    fontSize: FontSize.size_base,
-    color: Color.color1,
+    flexGrow: 1,
+    marginBottom: 90,
   },
   itemIcon: {
-    width: 30,
-    height: 30,
+    width: 25,
+    height: 25,
+    marginRight: 15,
+  },
+  itemText: {
+    fontSize: FontSize.size_base,
+    color: Color.color1,
+    fontFamily: FontFamily.montserratMedium,
+  },
+  bottomContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 20,
   },
   continueButton: {
+    height: 86,
+    borderRadius: Border.br_6xl,
     backgroundColor: Color.color,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 20,
   },
   continueText: {
-    fontFamily: FontFamily.montserratBold,
+    color: Color.color1,
     fontSize: FontSize.size_5xl,
-    color: Color.colorWhite,
-  },
-  backButton: {
-    position: "absolute",
-    top: 40,
-    left: 20,
-  },
-  icon: {
-    width: 30,
-    height: 30,
+    fontWeight: "500",
+    fontFamily: FontFamily.montserratMedium,
   },
 });
 
