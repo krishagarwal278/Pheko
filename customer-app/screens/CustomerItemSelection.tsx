@@ -1,16 +1,15 @@
 import * as React from "react";
 import { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Pressable,
-  Text,
-  SafeAreaView,
   Image,
+  Pressable,
+  SafeAreaView,
   ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { FontSize, Color, FontFamily, Border, Padding } from "../GlobalStyles";
+import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
 import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
@@ -29,14 +28,26 @@ const CustomerItemSelection = () => {
       label: "Electronics",
       icon: require("../assets/vector3.png"),
     },
-    { key: "metal", label: "Metal", icon: require("../assets/vector4.png") },
-    { key: "paper", label: "Paper", icon: require("../assets/vector5.png") },
+    {
+      key: "metal",
+      label: "Metal",
+      icon: require("../assets/vector4.png"),
+    },
+    {
+      key: "paper",
+      label: "Paper",
+      icon: require("../assets/vector5.png"),
+    },
     {
       key: "plastic",
       label: "Plastic",
       icon: require("../assets/vector6.png"),
     },
-    { key: "glass", label: "Glass", icon: require("../assets/vector7.png") },
+    {
+      key: "glass",
+      label: "Glass",
+      icon: require("../assets/vector7.png"),
+    },
   ];
 
   return (
@@ -104,7 +115,7 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     flexGrow: 1,
-    marginBottom: 90, 
+    marginBottom: 90,
   },
   itemIcon: {
     width: 25,
