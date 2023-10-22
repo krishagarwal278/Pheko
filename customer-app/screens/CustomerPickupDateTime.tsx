@@ -1,212 +1,95 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View, Pressable } from "react-native";
-import { Image } from "expo-image";
-import { Datepicker as RNKDatepicker } from "@ui-kitten/components";
-import { FontFamily, FontSize, Color, Border } from "../GlobalStyles";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation, ParamListBase } from "@react-navigation/native";
+import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { FontSize, Color, FontFamily, Border, Padding } from "../GlobalStyles";
+import BackButton from "../components/BackButton";
+import ContinueButton from "../components/ContinueButton";
+import PageHeader from "../components/PageHeader";
 
-const CustomerPickupDateTime = () => {
-  const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+const CustomerPickupDateTime: React.FC = () => {
+  const [date, setDate] = useState<Date>(new Date());
 
-  const [frameDatePicker, setFrameDatePicker] = useState(undefined);
+  const onChange = (event: any, selectedDate?: Date) => {
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
+  };
 
   return (
-    <View style={styles.customerpickupdatetime}>
-      <Text style={[styles.pickupDateAndContainer, styles.textPosition]}>
-        <Text style={styles.continueTypo}>{`Pickup Date and Time
-`}</Text>
-        <Text style={styles.whenWouldYou}>
-          When would you like us to pick up your recyclables?
-        </Text>
-      </Text>
-      <Pressable style={styles.vector} onPress={() => navigation.goBack()}>
-        <Image
-          style={[styles.icon, styles.iconLayout]}
-          contentFit="cover"
-          source={require("../assets/vector1.png")}
-        />
-      </Pressable>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
+      <View style={styles.container}>
+        <BackButton />
 
-      <View
-        style={[
-          styles.customerpickupdatetimeChild,
-          styles.customerpickupdatetimeLayout,
-        ]}
-      />
-      <View
-        style={[
-          styles.customerpickupdatetimeItem,
-          styles.customerpickupdatetimeLayout,
-        ]}
-      />
-      <View
-        style={[
-          styles.customerpickupdatetimeInner,
-          styles.customerpickupdatetimeLayout,
-        ]}
-      />
-      <View
-        style={[styles.rectangleView, styles.customerpickupdatetimeLayout]}
-      />
-      <Pressable
-        style={[styles.rectanglePressable, styles.frameParentPosition]}
-        onPress={() => navigation.navigate("CustomerStartingPage")}
-      />
-      <Text style={[styles.schedulePickup, styles.pickupTypo]}>
-        Schedule Pickup!
-      </Text>
-      <View style={[styles.frameView, styles.datePickerPosition]}>
-        <RNKDatepicker
-          style={styles.frameChild}
-          date={frameDatePicker}
-          onSelect={setFrameDatePicker}
-          status="basic"
-          controlStyle={styles.frameDatePickerValue}
+        <PageHeader
+          title="Pickup Date and Time"
+          subtitle="When would you like us to pick up your recyclables?"
         />
+
+        <View style={[styles.dateContainer, styles.pickerContainer]}>
+          <Text style={styles.dateText}>Selected Date:</Text>
+          <DateTimePicker
+            value={date}
+            mode="date"
+            display="default"
+            onChange={onChange}
+            style={styles.dateTimePicker}
+          />
+        </View>
+
+        <View style={[styles.timeContainer, styles.pickerContainer]}>
+          <Text style={styles.dateText}>Selected Time:</Text>
+          <DateTimePicker
+            value={date}
+            mode="time"
+            display="default"
+            onChange={onChange}
+            style={styles.dateTimePicker}
+          />
+        </View>
+
+        <View style={styles.bottomContainer}>
+          <ContinueButton destination="CustomerPickupConfirmed" />
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  frameParentPosition: {
-    width: 370,
-    left: 30,
-    position: "absolute",
-  },
-  rectanglePressable: {
-    top: 778,
-    borderRadius: Border.br_6xl,
-    height: 86,
-    backgroundColor: Color.color,
-  },
-  schedulePickup: {
-    top: 806,
-    left: 81,
-    textAlign: "center",
-    width: 268,
-    height: 30,
-    color: Color.color1,
-    position: "absolute",
-  },
-  pickupTypo: {
-    fontFamily: FontFamily.montserratMedium,
-    fontWeight: "500",
-    fontSize: FontSize.size_5xl,
-  },
-
-  frameDatePickerValue: {
-    position: "absolute",
-    left: "50%",
-    top: 22,
-    width: 286,
-    height: 84,
-  },
-  iconLayout: {
-    width: "100%",
-    overflow: "hidden",
-  },
-  textPosition: {
-    width: 370,
-    left: 30,
-    position: "absolute",
-  },
-  datePickerPosition: {
-    top: 280,
-    left: -100,
-  },
-  customerpickupdatetimeLayout: {
-    height: 5,
-    width: 89,
-    top: 132,
-    position: "absolute",
-  },
-  continueTypo: {
-    fontFamily: FontFamily.montserratMedium,
-    fontWeight: "500",
-    fontSize: FontSize.size_5xl,
-  },
-  whenWouldYou: {
-    fontSize: FontSize.size_base,
-    fontFamily: FontFamily.montserratRegular,
-  },
-  pickupDateAndContainer: {
-    top: 188,
-    textAlign: "left",
-    color: Color.color1,
-  },
-  vectorIcon: {
-    height: "2.58%",
-    width: "3.26%",
-    top: "8.58%",
-    left: "6.98%",
-    position: "absolute",
-    zIndex: 10,
-  },
-  customerpickupdatetimeChild: {
-    backgroundColor: Color.color,
-    left: 30,
-    width: 89,
-    top: 132,
-  },
-  customerpickupdatetimeItem: {
-    left: 124,
-    backgroundColor: Color.color,
-  },
-  customerpickupdatetimeInner: {
-    left: 217,
-    backgroundColor: Color.color1,
-  },
-  rectangleView: {
-    left: 311,
-    backgroundColor: Color.color,
-  },
-  customerpickupdatetimeChild1: {
-    top: 778,
-    borderRadius: Border.br_6xl,
-    height: 86,
-    backgroundColor: Color.color,
-  },
-  continue: {
-    top: 806,
-    left: 81,
-    textAlign: "center",
-    width: 268,
-    height: 30,
-    color: Color.color1,
-    position: "absolute",
-  },
-  frameChild: {
-    width: 286,
-    height: 84,
-  },
-  frameView: {
-    height: 100,
-    overflow: "visible",
-    width: 286,
-  },
-  customerpickupdatetime: {
-    backgroundColor: Color.colorWhite,
+  container: {
     flex: 1,
-    width: "100%",
-    height: 932,
-    overflow: "hidden",
+    padding: Padding.p_11xl,
   },
-  icon: {
-    height: "100%",
-    maxWidth: "100%",
-    maxHeight: "100%",
-    overflow: "hidden",
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 40,
   },
-  vector: {
-    left: "6.98%",
-    top: "8.58%",
-    right: "89.77%",
-    bottom: "88.84%",
-    width: "3.26%",
-    height: "2.58%",
-    position: "absolute",
+  timeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  dateText: {
+    fontSize: FontSize.size_base * 1.5,
+    color: Color.color1,
+    fontFamily: FontFamily.montserratMedium,
+    marginRight: 10,
+  },
+  dateTimePicker: {
+    flex: 1,
+  },
+  pickerContainer: {
+    borderWidth: 2,
+    borderColor: Color.color,
+    borderRadius: Border.br_6xl,
+    padding: 20,
+    marginBottom: 20,
+  },
+  bottomContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    marginBottom: 20,
   },
 });
 
