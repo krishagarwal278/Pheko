@@ -1,5 +1,3 @@
-import {useState} from "react";
-
 const Stack = createNativeStackNavigator();
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
@@ -9,7 +7,7 @@ import CustomerStartingPage from "./screens/CustomerStartingPage";
 import CustomerNumberItems from "./screens/CustomerNumberItems";
 import CustomerItemSelection from "./screens/CustomerItemSelection";
 import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
-import NumberVerificationPage from "./screens/NumberVerificationPage";
+import NoVerification from "./screens/NoVerification";
 import MIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { IconRegistry, ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
@@ -33,15 +31,15 @@ const App = () => {
     "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
   });
 
-  function MaterialIcon({ name, style }) {
+  function MaterialIcon({ name, style }): JSX.Element {
     const { height, tintColor, ...iconStyle } = StyleSheet.flatten(style);
     return (
       <MIcon name={name} size={height} color={tintColor} style={iconStyle} />
     );
   }
 
-  const IconProvider = (name) => ({
-    toReactElement: (props) => MaterialIcon({ name, ...props }),
+  const IconProvider = (name: string | symbol) => ({
+    toReactElement: (props: { name: any; style: any; }) => MaterialIcon({ name, ...props }),
   });
 
   function createIconsMap() {
@@ -69,42 +67,42 @@ const App = () => {
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
           {hideSplashScreen ? (
-            <OrderProvider>
-              <Stack.Navigator
-                  initialRouteName="ScrapDealerWelcomePage"
-                  screenOptions={{ headerShown: false }}
-              >
-                <Stack.Screen
-                    name="ScrapDealerWelcomePage"
-                    component={ScrapDealerWelcomePage}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CustomerStartingPage"
-                    component={CustomerStartingPage}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CustomerNumberItems"
-                    component={CustomerNumberItems}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CustomerItemSelection"
-                    component={CustomerItemSelection}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="CustomerPickupDateTime"
-                    component={CustomerPickupDateTime}
-                    options={{ headerShown: false }}
-                />
-                <Stack.Screen
-                    name="NumberVerificationPage"
-                    component={NumberVerificationPage}
-                    options={{ headerShown: false }}
-                />
-              </Stack.Navigator>
+              <OrderProvider>
+            <Stack.Navigator
+              initialRouteName="ScrapDealerWelcomePage"
+              screenOptions={{ headerShown: false }}
+            >
+              <Stack.Screen
+                name="ScrapDealerWelcomePage"
+                component={ScrapDealerWelcomePage}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CustomerStartingPage"
+                component={CustomerStartingPage}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CustomerNumberItems"
+                component={CustomerNumberItems}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CustomerItemSelection"
+                component={CustomerItemSelection}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="CustomerPickupDateTime"
+                component={CustomerPickupDateTime}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="NumberVerificationPage"
+                component={NoVerification}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
             </OrderProvider>
           ) : null}
         </NavigationContainer>

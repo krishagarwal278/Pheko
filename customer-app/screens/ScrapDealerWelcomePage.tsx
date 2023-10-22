@@ -8,81 +8,56 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
-import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
-import { collection, getDocs } from "firebase/firestore";
-import { db, app } from "../Firebase";
+import { FontSize, FontFamily, Color, Border } from "../GlobalStyles";
 
 const ScrapDealerWelcomePage = () => {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
-  /*getDocs(collection(db, "Users"))
-      .then(querySnapshot => {
-        querySnapshot.forEach((doc) => {
-          console.log(`${doc.id} => ${doc.data()}`);
-        });
-      })
-      .catch(error => {
-        console.error("Error fetching documents:", error);
-      });*/
-
   return (
-    <View style={[styles.scrapDealerWelcomePage, styles.frameFlexBox]}>
-      <View style={styles.iconLayout}>
-        <ImageBackground
-          style={[styles.iconLogo10, styles.iconLayout]}
-          resizeMode="cover"
-          source={require("../assets/iconlogo10.png")}
-        />
-      </View>
+    <View style={styles.container}>
+      <ImageBackground
+        style={styles.icon}
+        resizeMode="contain"
+        source={require("../assets/iconlogo10.png")}
+      />
       <Pressable
-        style={[styles.frame, styles.frameFlexBox]}
-        onPress={() => navigation.navigate("CustomerItemSelection")}
+        style={styles.button}
+        onPress={() => navigation.navigate("NoVerification")}
       >
-        <Text style={styles.getStarted}>Get started</Text>
+        <Text style={styles.buttonText}>Get started</Text>
       </Pressable>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  frameFlexBox: {
+  container: {
+    flex: 1,
+    backgroundColor: Color.colorWhite,
+    justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
+    paddingHorizontal: "10%",
   },
-  iconLayout: {
-    height: 126,
-    width: 126,
+  icon: {
+    width: "50%", // 50% of the container width
+    justifyContent: "center",
+    height: "30%", // 30% of the container height
+    marginBottom: 20,
   },
-  iconLogo10: {
-    position: "absolute",
-    top: 0,
-    left: 0,
+  button: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: Color.color,
+    borderRadius: Border.br_6xl,
+    width: "100%",
+    padding: "5%",
   },
-  getStarted: {
+  buttonText: {
     fontSize: FontSize.size_5xl,
     fontWeight: "700",
     fontFamily: FontFamily.montserratBold,
     color: Color.color1,
     textAlign: "center",
-    width: 268,
-    height: 30,
-  },
-  frame: {
-    borderRadius: Border.br_6xl,
-    backgroundColor: Color.color,
-    width: 370,
-    height: 86,
-    justifyContent: "center",
-    marginTop: 308,
-  },
-  scrapDealerWelcomePage: {
-    backgroundColor: Color.colorWhite,
-    flex: 1,
-    width: "100%",
-    height: 932,
-    justifyContent: "flex-end",
-    paddingHorizontal: Padding.p_11xl,
-    paddingVertical: 61,
   },
 });
 
