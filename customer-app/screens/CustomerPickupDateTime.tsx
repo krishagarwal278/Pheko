@@ -32,10 +32,7 @@ const CustomerPickupDateTime: React.FC = () => {
         id: doc.id,
         ...doc.data()
       } as { id: string, [key: string]: any }));
-      console.log("All documents from rates:", documents);
       const rate = documents.filter(doc => doc.Name === order.items[0]);
-      console.log("Full rate doc:", rate);
-      console.log("Rate Id:", rate[0].id, "Rate:", rate[0].PricePerKg);
       return [{
         Id: rate[0].id,
         rate: rate[0].PricePerKg
@@ -76,30 +73,32 @@ const CustomerPickupDateTime: React.FC = () => {
       const weight = order.weights[0];
       const price = rateObj[0].rate * weight;
       const orderNum = await getOrderNumber();
-      await setOrder((prevOrder) => ({
-        ...prevOrder,
+      const updatedOrder = {
+        ...order,
         item: ["/Rates/" + rateObj[0].Id],
         price: price,
         orderNumber: orderNum,
         dateCreated: new Date(),
         dateLastUpdated: new Date(),
         status: "CREATED",
-        userId: "",   //Get this user Id
-      }));
-      //await new Promise(resolve => setTimeout(resolve, 10));
+        userId: "",   // Get this user Id
+      };
 
-      console.log("Order before sending to DB", order);
+      setOrder(updatedOrder);
+
+      console.log("Order before sending to DB", updatedOrder);
+
       const docRef = await addDoc(collection(db, "Orders"), {
-        DateCreated: order.dateCreated,
-        DateLastUpdates: order.dateLastUpdated,
-        Items: order.items,
-        OrderNumber: order.orderNumber,
-        Price: order.price,
-        ScheduledDateTime: order.scheduledDateTime,
-        ScrapDealerId: order.scrapDealerId,
-        Status: order.status,
-        UserId: order.userId,
-        Weights: order.weights
+        DateCreated: updatedOrder.dateCreated,
+        DateLastUpdates: updatedOrder.dateLastUpdated,
+        Items: updatedOrder.items,
+        OrderNumber: updatedOrder.orderNumber,
+        Price: updatedOrder.price,
+        ScheduledDateTime: updatedOrder.scheduledDateTime,
+        ScrapDealerId: updatedOrder.scrapDealerId,
+        Status: updatedOrder.status,
+        UserId: updatedOrder.userId,
+        Weights: updatedOrder.weights
       });
       console.log("Document written with ID: ", docRef.id);
     }

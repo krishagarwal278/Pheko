@@ -36,11 +36,11 @@ const CustomerItemWeight: React.FC = () => {
               <TextInput
                 style={styles.input}
                 value={weight}
-                onChangeText={() => {
-                  setWeight(weight);
+                onChangeText={(text) => {
+                  setWeight(text);
                   setOrder((prevOrder: any) => ({
                     ...prevOrder,
-                    weights: [weight]
+                    weights: [+text]
                   }));
                 }}
                 keyboardType="numeric"
