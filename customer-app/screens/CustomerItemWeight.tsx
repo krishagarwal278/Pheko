@@ -12,9 +12,13 @@ import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
 import { FontSize, Color, FontFamily, Border, Padding } from "../GlobalStyles";
+import { Order } from "../Types";
+import {OrderContext, useOrder} from '../OrderContext';
 
 const CustomerItemWeight: React.FC = () => {
   const [weight, setWeight] = React.useState("");
+
+  const { order, setOrder } = useOrder();
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -32,7 +36,13 @@ const CustomerItemWeight: React.FC = () => {
               <TextInput
                 style={styles.input}
                 value={weight}
-                onChangeText={setWeight}
+                onChangeText={(text) => {
+                  setWeight(text);
+                  setOrder((prevOrder: any) => ({
+                    ...prevOrder,
+                    weights: [+text]
+                  }));
+                }}
                 keyboardType="numeric"
                 textAlign="right"
                 placeholder="0"

@@ -8,6 +8,8 @@ import CustomerPickupConfirmed from "./screens/CustomerPickupConfirmed";
 import CustomerItemWeight from "./screens/CustomerItemWeight";
 import CustomerItemSelection from "./screens/CustomerItemSelection";
 import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
+import { OrderProvider } from './OrderContext';
+
 
 type RootStackParamList = {
   CustomerWelcome: undefined;
@@ -21,6 +23,7 @@ type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack = () => (
+    <OrderProvider>
   <Stack.Navigator
     initialRouteName="CustomerWelcome"
     screenOptions={{ headerShown: false }}
@@ -40,6 +43,7 @@ const AppStack = () => (
       component={CustomerPickupDateTime}
     />
   </Stack.Navigator>
+    </OrderProvider>
 );
 
 const App = () => {

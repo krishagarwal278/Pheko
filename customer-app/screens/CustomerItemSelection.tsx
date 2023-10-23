@@ -13,9 +13,13 @@ import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
 import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
+import { Order } from "../Types";
+import {OrderContext, useOrder} from '../OrderContext';
 
 const CustomerItemSelection = () => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+
+  const { order, setOrder } = useOrder();
 
   const items = [
     {
@@ -71,7 +75,13 @@ const CustomerItemSelection = () => {
                 styles.itemButton,
                 selectedItem === item.key ? styles.selectedItemStyle : null,
               ]}
-              onPress={() => setSelectedItem(item.key)}
+              onPress={() => {
+                setSelectedItem(item.key);
+                setOrder((prevOrder: any) => ({
+                  ...prevOrder,
+                  items: [item.key]
+                }));
+              }}
             >
               <Image style={styles.itemIcon} source={item.icon} />
               <Text style={styles.itemText}>{item.label}</Text>
