@@ -28,9 +28,18 @@ const CustomerPickupDateTime: React.FC = () => {
     console.log("Order before calculate price", order);
     try{
       const querySnapshot = await getDocs(collection(db, 'Rates'));
-      const documents = querySnapshot.docs.map(doc => doc.data());
+      const documents = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      } as { id: string, [key: string]: any }));
+      console.log("All documents from rates:", documents);
       const rate = documents.filter(doc => doc.Name === order.items[0]);
-      return rate[0].PricePerKg;
+      console.log("Full rate doc:", rate);
+      console.log("Rate Id:", rate[0].id, "Rate:", rate[0].PricePerKg);
+      return [{
+        Id: rate[0].id,
+        rate: rate[0].PricePerKg
+      }];
     }
     catch (e: any){
       console.error("Error with Firestore:", e.message);
@@ -58,12 +67,18 @@ const CustomerPickupDateTime: React.FC = () => {
     try
     {
       console.log("Order at start of submitOrder", order);
-      const rate = await calculatePrice();
+      const rateObj = await calculatePrice();
+      console.log("Rate obj:", rateObj);
+      if (!rateObj) {
+        console.error("Failed to get rate object.");
+        return;
+      }
       const weight = order.weights[0];
-      const price = rate * weight;
+      const price = rateObj[0].rate * weight;
       const orderNum = await getOrderNumber();
-      setOrder((prevOrder) => ({
+      await setOrder((prevOrder) => ({
         ...prevOrder,
+        item: ["/Rates/" + rateObj[0].Id],
         price: price,
         orderNumber: orderNum,
         dateCreated: new Date(),
@@ -71,7 +86,7 @@ const CustomerPickupDateTime: React.FC = () => {
         status: "CREATED",
         userId: "",   //Get this user Id
       }));
-      await new Promise(resolve => setTimeout(resolve, 10));
+      //await new Promise(resolve => setTimeout(resolve, 10));
 
       console.log("Order before sending to DB", order);
       const docRef = await addDoc(collection(db, "Orders"), {
