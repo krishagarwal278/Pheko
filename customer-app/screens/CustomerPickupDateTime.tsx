@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { View, Text, SafeAreaView, StyleSheet } from "react-native";
+import React, {useState} from "react";
+import {SafeAreaView, StyleSheet, Text, View} from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { FontSize, Color, FontFamily, Border, Padding } from "../GlobalStyles";
+import {Border, Color, FontFamily, FontSize, Padding} from "../GlobalStyles";
 import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
-import { Order } from "../Types";
-import {OrderContext, useOrder} from '../OrderContext';
+import {useOrder} from '../OrderContext';
+import {db} from '../Firebase';
+import {addDoc, collection, getDocs} from "firebase/firestore";
 
 const CustomerPickupDateTime: React.FC = () => {
   const [date, setDate] = useState<Date>(new Date());
@@ -20,6 +21,76 @@ const CustomerPickupDateTime: React.FC = () => {
         ...prevOrder,
         scheduledDateTime: date,
       }));
+    }
+  };
+
+  const calculatePrice = async () => {
+    console.log("Order before calculate price", order);
+    try{
+      const querySnapshot = await getDocs(collection(db, 'Rates'));
+      const documents = querySnapshot.docs.map(doc => doc.data());
+      const rate = documents.filter(doc => doc.Name === order.items[0]);
+      return rate[0].PricePerKg;
+    }
+    catch (e: any){
+      console.error("Error with Firestore:", e.message);
+    }
+  };
+
+  const getOrderNumber = async () => {
+    console.log("Order before getOrderNumber", order);
+    try{
+      const querySnapshot = await getDocs(collection(db, 'Orders'));
+      const documents = querySnapshot.docs.map(doc => doc.data());
+      const latestOrder = documents.reduce((latest, current) => {
+        return new Date(current.DateCreated) > new Date(latest.DateCreated) ? current : latest;
+      });
+      return latestOrder.OrderNumber + 1;
+    }
+    catch (e: any)
+    {
+      console.error("Error with Firestore:", e.message);
+    }
+  }
+
+  const submitOrder = async () => {
+    //Change values in items for IDs of Rates table
+    try
+    {
+      console.log("Order at start of submitOrder", order);
+      const rate = await calculatePrice();
+      const weight = order.weights[0];
+      const price = rate * weight;
+      const orderNum = await getOrderNumber();
+      setOrder((prevOrder) => ({
+        ...prevOrder,
+        price: price,
+        orderNumber: orderNum,
+        dateCreated: new Date(),
+        dateLastUpdated: new Date(),
+        status: "CREATED",
+        userId: "",   //Get this user Id
+      }));
+      await new Promise(resolve => setTimeout(resolve, 10));
+
+      console.log("Order before sending to DB", order);
+      const docRef = await addDoc(collection(db, "Orders"), {
+        DateCreated: order.dateCreated,
+        DateLastUpdates: order.dateLastUpdated,
+        Items: order.items,
+        OrderNumber: order.orderNumber,
+        Price: order.price,
+        ScheduledDateTime: order.scheduledDateTime,
+        ScrapDealerId: order.scrapDealerId,
+        Status: order.status,
+        UserId: order.userId,
+        Weights: order.weights
+      });
+      console.log("Document written with ID: ", docRef.id);
+    }
+    catch (e: any)
+    {
+      console.error("Error with Firestore:", e.message);
     }
   };
 
@@ -56,7 +127,12 @@ const CustomerPickupDateTime: React.FC = () => {
         </View>
 
         <View style={styles.bottomContainer}>
-          <ContinueButton destination="CustomerPickupConfirmed" />
+          <ContinueButton
+              destination="CustomerPickupConfirmed"
+              onPressAdditional={async () => {
+                await submitOrder();
+              }}
+          />
         </View>
       </View>
     </SafeAreaView>

@@ -18,6 +18,7 @@ interface ContinueButtonProps {
   buttonText?: string;
   buttonStyle?: Object;
   textStyle?: Object;
+  onPressAdditional?: () => void;
 }
 
 const ContinueButton: React.FC<ContinueButtonProps> = ({
@@ -25,13 +26,17 @@ const ContinueButton: React.FC<ContinueButtonProps> = ({
   buttonText = "Continue",
   buttonStyle,
   textStyle,
+                                                         onPressAdditional
 }) => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   return (
     <Pressable
       style={[styles.continueButton, buttonStyle]}
-      onPress={() => navigation.navigate(destination)}
+      onPress={() => {
+        navigation.navigate(destination);
+        onPressAdditional && onPressAdditional();
+      }}
     >
       <Text style={[styles.continueText, textStyle]}>{buttonText}</Text>
     </Pressable>
