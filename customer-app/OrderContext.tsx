@@ -29,7 +29,9 @@ export const OrderProvider = ({ children }) => {
         scrapDealerId: "",        //Send as null
         status: "",           //Set to CREATED, when scrap dealer takes it it changes to SCHEDULED
         userId: "",     //Get from state which is set after login
-        weights: []
+        weights: [],
+        address: "",
+        notes: ""
     });
 
     return (

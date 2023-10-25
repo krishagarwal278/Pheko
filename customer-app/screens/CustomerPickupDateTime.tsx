@@ -98,7 +98,9 @@ const CustomerPickupDateTime: React.FC = () => {
         ScrapDealerId: updatedOrder.scrapDealerId,
         Status: updatedOrder.status,
         UserId: updatedOrder.userId,
-        Weights: updatedOrder.weights
+        Weights: updatedOrder.weights,
+        Address: updatedOrder.address,
+        Notes: updatedOrder.notes
       });
       console.log("Document written with ID: ", docRef.id);
     }
