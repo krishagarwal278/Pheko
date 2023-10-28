@@ -17,7 +17,7 @@ const CustomerWelcome = () => {
 
         <View style={styles.bottomContainer}>
           <ContinueButton
-            destination="CustomerItemSelection"
+            destination="CustomerNumberVerification"
             buttonText="Get Started"
             textStyle={{
               fontWeight: "700",

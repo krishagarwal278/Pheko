@@ -10,7 +10,9 @@ type RootStackParamList = {
   CustomerItemWeight: undefined;
   CustomerItemSelection: undefined;
   CustomerPickupDateTime: undefined;
-  NumberVerificationPage: undefined;
+  CustomerNumberVerification: undefined;
+  CustomerOTPVerification: undefined;
+  CustomerSignUp: undefined;
 };
 
 interface ContinueButtonProps {
