@@ -8,7 +8,9 @@ type Order = {
     scrapDealerId: string,        //Send as null
     status: string,           //Set to CREATED, when scrap dealer takes it it changes to SCHEDULED
     userId: string,     //Get from state which is set after login
-    weights: number[]
+    weights: number[],
+    address: string,
+    notes: string
 }
 
 export{ Order };

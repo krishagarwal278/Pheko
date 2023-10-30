@@ -1,5 +1,5 @@
 // OrderContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, ReactNode, useContext, useState} from 'react';
 import {Order} from "./Types";
 
 type OrderContextType = {
@@ -18,7 +18,11 @@ export const useOrder = (): OrderContextType => {
     return context;
 }
 
-export const OrderProvider = ({ children }) => {
+type OrderProviderProps = {
+    children: ReactNode;
+};
+
+export const OrderProvider: React.FC<OrderProviderProps> = ({ children }) => {
     const [order, setOrder] = useState<Order>({
         dateCreated: undefined,        //Get date/time when submit is clicked
         dateLastUpdated: undefined,    //Set to same dateCreated
@@ -29,7 +33,9 @@ export const OrderProvider = ({ children }) => {
         scrapDealerId: "",        //Send as null
         status: "",           //Set to CREATED, when scrap dealer takes it it changes to SCHEDULED
         userId: "",     //Get from state which is set after login
-        weights: []
+        weights: [],
+        address: "",
+        notes: ""
     });
 
     return (
