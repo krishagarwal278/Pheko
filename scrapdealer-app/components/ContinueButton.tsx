@@ -5,14 +5,10 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 
 type RootStackParamList = {
-  CustomerWelcome: undefined;
-  CustomerPickupConfirmed: undefined;
-  CustomerItemWeight: undefined;
-  CustomerItemSelection: undefined;
-  CustomerPickupDateTime: undefined;
-  CustomerNumberVerification: undefined;
-  CustomerOTPVerification: undefined;
-  CustomerSignUp: undefined;
+  ScrapDealerWelcome: undefined;
+  ScrapDealerNumberVerification: undefined;
+  ScrapDealerOTPVerification: undefined;
+  ScrapDealerSignUp: undefined;
 };
 
 interface ContinueButtonProps {
