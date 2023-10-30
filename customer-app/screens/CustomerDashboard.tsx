@@ -39,7 +39,7 @@ const CustomerDashboard: React.FC = () => {
                     id: doc.id,
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
-                const filteredDocs = documents.filter(doc => doc.UserId === "");    //Set to user Id from state
+                const filteredDocs = documents.filter(doc => doc.UserId === ("/Users/" + user.id));    //Set to user Id from state
                 const totalWeight = filteredDocs.reduce((sum, doc) => {
                     return sum + doc.Weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
                 }, 0);
@@ -59,7 +59,7 @@ const CustomerDashboard: React.FC = () => {
             <View style={styles.container}>
                 <View style={[styles.mainContent]}>
                     <PageHeader
-                        title={"Hi ${user.firstName}"}
+                        title={"Hi " + user.firstName}
                         subtitle="Welcome to your dashboard!"
                     />
                     <Pressable style={[styles.CreateOrder]} onPress={() => navigation.navigate('CustomerItemSelection')}>
