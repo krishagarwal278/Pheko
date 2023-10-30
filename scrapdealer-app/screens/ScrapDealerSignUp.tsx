@@ -16,6 +16,8 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
 import { auth } from "../Firebase";
 import { FunctionComponent, useState } from "react";
+import { useScrapDealer } from "../ScrapDealerContext";
+import { ScrapDealer } from "../Types";
 
 const { width, height } = Dimensions.get("window");
 
@@ -29,6 +31,8 @@ const ScrapDealerSignUp: FunctionComponent = () => {
   const [email, setEmail] = useState("");
   const [date, setDate] = useState<Date>(new Date());
 
+  const { scrapDealer, setScrapDealer } = useScrapDealer();
+
   const onChange = (event: any, selectedDate?: Date) => {
     if (selectedDate) {
       setDate(selectedDate);
@@ -40,15 +44,19 @@ const ScrapDealerSignUp: FunctionComponent = () => {
 
     // Save user's details to Firestore
     if (currentUser) {
-      const userDoc = doc(db, "ScrapDealers", currentUser.uid); 
-      await setDoc(userDoc, {
-        FirstName: firstName,
-        LastName: lastName,
-        Address: address,
-        DateOfBirth: date,
-        email: email,
+      const userDoc = doc(db, "ScrapDealers", currentUser.uid);
+      const userInfo: ScrapDealer = {
+        id: currentUser.uid,
+        address: address,
+        dateOfBirth: date,
+        firstName: firstName,
+        lastName: lastName,
         phone: currentUser.phoneNumber,
-      });
+        dateCreated: new Date(),
+        dateLastUpdated: new Date
+      }
+      setScrapDealer(userInfo)
+      await setDoc(userDoc, userInfo);
       navigation.navigate("ScrapDealerWelcome");
     }
   };

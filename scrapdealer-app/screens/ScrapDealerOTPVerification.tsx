@@ -17,6 +17,8 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { app, auth } from "../Firebase";
 import { useState } from "react";
+import { useScrapDealer } from "../ScrapDealerContext";
+import { ScrapDealer } from "../Types";
 
 type VerificationRouteParams = {
   ScrapDealerOTPVerification: {
@@ -34,6 +36,8 @@ const ScrapDealerOTPVerification: React.FunctionComponent = () => {
 
   const [code, setCode] = useState("");
 
+  const { scrapDealer, setScrapDealer } = useScrapDealer();
+
   const confirmCode = async () => {
     const credential = PhoneAuthProvider.credential(verificationId, code);
     try {
@@ -47,6 +51,19 @@ const ScrapDealerOTPVerification: React.FunctionComponent = () => {
 
       if (userDoc.exists()) {
         console.log("User already registered. Signed in successfully.");
+        const userData = userDoc.data();
+        const document: ScrapDealer = {
+          id: userDoc.id,
+          address: userData.Address,
+          dateOfBirth: userData.DateOfBirth,
+          firstName: userData.FirstName,
+          lastName: userData.LastName,
+          phone: userData.phone,
+          dateCreated: userData.DateCreated,
+          dateLastUpdated: userData.DateLastUpdated
+        }
+        setScrapDealer(document);
+
       } else {
         console.log("User not registered. Redirecting to sign up form.");
         navigation.navigate("ScrapDealerSignUp");
