@@ -11,6 +11,7 @@ import NavBar from "../components/NavBar";
 import { collection, getDocs } from "firebase/firestore";
 import {db} from "../Firebase";
 import { useUser } from "../UserContext";
+import { useIsFocused } from "@react-navigation/native";
 
 type RootStackParamList = {
     SignUp: undefined;
@@ -31,7 +32,14 @@ const CustomerDashboard: React.FC = () => {
 
     const navigation = useNavigation<NavigationProps>();
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
+
+        if (!isFocused) {
+            // Exit early if the screen is not in focus
+            return;
+        }
         const fetchData = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "Orders"));
@@ -52,7 +60,8 @@ const CustomerDashboard: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+
+    }, [isFocused]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
