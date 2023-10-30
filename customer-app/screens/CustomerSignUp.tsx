@@ -58,7 +58,7 @@ const CustomerSignUp: FunctionComponent = () => {
       }
       setUser(userInfo)
       await setDoc(userDoc, userInfo);
-      navigation.navigate("CustomerItemSelection");
+      navigation.navigate("CustomerDashboard");
     }
   };
 

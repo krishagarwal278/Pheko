@@ -59,7 +59,7 @@ const CustomerDashboard: React.FC = () => {
             <View style={styles.container}>
                 <View style={[styles.mainContent]}>
                     <PageHeader
-                        title={"Hi ${user.firstName}"}
+                        title={"Hi " + user.firstName}
                         subtitle="Welcome to your dashboard!"
                     />
                     <Pressable style={[styles.CreateOrder]} onPress={() => navigation.navigate('CustomerItemSelection')}>
