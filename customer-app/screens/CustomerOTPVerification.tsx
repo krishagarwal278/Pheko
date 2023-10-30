@@ -17,6 +17,8 @@ import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
 import { app, auth } from "../Firebase";
 import { useState } from "react";
+import { useUser } from "../UserContext";
+import {User} from "../Types";
 
 type VerificationRouteParams = {
   CustomerOTPVerification: {
@@ -34,6 +36,8 @@ const CustomerOTPVerification: React.FunctionComponent = () => {
 
   const [code, setCode] = useState("");
 
+  const { user, setUser } = useUser();
+
   const confirmCode = async () => {
     const credential = PhoneAuthProvider.credential(verificationId, code);
     try {
@@ -47,6 +51,19 @@ const CustomerOTPVerification: React.FunctionComponent = () => {
 
       if (userDoc.exists()) {
         console.log("User already registered. Signed in successfully.");
+        const userData = userDoc.data();
+        const document: User = {
+          id: userDoc.id,
+          address: userData.Address,
+          dateOfBirth: userData.DateOfBirth,
+          firstName: userData.FirstName,
+          lastName: userData.LastName,
+          email: userData.email,
+          phone: userData.phone,
+          dateCreated: userData.DateCreated,
+          dateLastUpdated: userData.DateLastUpdated
+        }
+        setUser(document);
         navigation.navigate("CustomerItemSelection");
       } else {
         console.log("User not registered. Redirecting to sign up form.");

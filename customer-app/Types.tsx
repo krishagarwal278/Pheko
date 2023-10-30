@@ -11,6 +11,21 @@ type Order = {
     weights: number[],
     address: string,
     notes: string
+
 }
 
-export{ Order };
+type User = {
+
+    id: string,
+    address: string,
+    dateOfBirth: Date | undefined,
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    dateCreated: Date | undefined,
+    dateLastUpdated: Date | undefined
+
+}
+
+export{ Order, User };

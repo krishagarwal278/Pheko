@@ -13,4 +13,17 @@ type Order = {
     notes: string
 }
 
-export{ Order };
+type ScrapDealer = {
+
+    id: string,
+    address: string,
+    dateOfBirth: Date | undefined,
+    firstName: string,
+    lastName: string,
+    phone: string,
+    dateCreated: Date | undefined,
+    dateLastUpdated: Date | undefined
+
+}
+
+export{ Order, ScrapDealer };

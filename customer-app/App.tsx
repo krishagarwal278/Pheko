@@ -11,6 +11,7 @@ import { OrderProvider } from './OrderContext';
 import CustomerOTPVerification from "./screens/CustomerOTPVerification";
 import CustomerSignUp from "./screens/CustomerSignUp";
 import CustomerNumberVerification from "./screens/CustomerNumberVerification";
+import {UserProvider} from "./UserContext";
 
 
 type RootStackParamList = {
@@ -28,39 +29,40 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack = () => (
     <OrderProvider>
-  <Stack.Navigator
-    initialRouteName="CustomerWelcome"
-    screenOptions={{ headerShown: false }}
-  >
-    <Stack.Screen name="CustomerWelcome" component={CustomerWelcome} />
-    <Stack.Screen
-      name="CustomerPickupConfirmed"
-      component={CustomerPickupConfirmed}
-    />
-    <Stack.Screen name="CustomerItemWeight" component={CustomerItemWeight} />
-    <Stack.Screen
-      name="CustomerItemSelection"
-      component={CustomerItemSelection}
-    />
-    <Stack.Screen
-      name="CustomerPickupDateTime"
-      component={CustomerPickupDateTime}
-    />
-    <Stack.Screen
-      name="CustomerNumberVerification"
-      component={CustomerNumberVerification}
-    />
-    <Stack.Screen
-      name="CustomerOTPVerification"
-      component={CustomerOTPVerification} 
-    />
-    <Stack.Screen
-      name="CustomerSignUp"
-      component={CustomerSignUp} 
-    />
+      <UserProvider>
+        <Stack.Navigator
+            initialRouteName="CustomerWelcome"
+            screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="CustomerWelcome" component={CustomerWelcome} />
+          <Stack.Screen
+              name="CustomerPickupConfirmed"
+              component={CustomerPickupConfirmed}
+          />
+          <Stack.Screen name="CustomerItemWeight" component={CustomerItemWeight} />
+          <Stack.Screen
+              name="CustomerItemSelection"
+              component={CustomerItemSelection}
+          />
+          <Stack.Screen
+              name="CustomerPickupDateTime"
+              component={CustomerPickupDateTime}
+          />
+          <Stack.Screen
+              name="CustomerNumberVerification"
+              component={CustomerNumberVerification}
+          />
+          <Stack.Screen
+              name="CustomerOTPVerification"
+              component={CustomerOTPVerification}
+          />
+          <Stack.Screen
+              name="CustomerSignUp"
+              component={CustomerSignUp}
+          />
 
-  </Stack.Navigator>
-
+        </Stack.Navigator>
+      </UserProvider>
     </OrderProvider>
 );
 
