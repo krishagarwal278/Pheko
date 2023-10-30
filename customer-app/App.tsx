@@ -12,6 +12,7 @@ import CustomerOTPVerification from "./screens/CustomerOTPVerification";
 import CustomerSignUp from "./screens/CustomerSignUp";
 import CustomerNumberVerification from "./screens/CustomerNumberVerification";
 import {UserProvider} from "./UserContext";
+import CustomerDashboard from "./screens/CustomerDashboard";
 
 
 type RootStackParamList = {
@@ -23,6 +24,7 @@ type RootStackParamList = {
   CustomerNumberVerification: undefined;
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
+  CustomerDashboard: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -59,6 +61,10 @@ const AppStack = () => (
           <Stack.Screen
               name="CustomerSignUp"
               component={CustomerSignUp}
+          />
+          <Stack.Screen
+              name="CustomerDashboard"
+              component={CustomerDashboard}
           />
 
         </Stack.Navigator>

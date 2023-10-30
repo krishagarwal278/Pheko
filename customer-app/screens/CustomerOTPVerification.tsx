@@ -64,7 +64,7 @@ const CustomerOTPVerification: React.FunctionComponent = () => {
           dateLastUpdated: userData.DateLastUpdated
         }
         setUser(document);
-        navigation.navigate("CustomerItemSelection");
+        navigation.navigate("CustomerDashboard");
       } else {
         console.log("User not registered. Redirecting to sign up form.");
         navigation.navigate("CustomerSignUp");
