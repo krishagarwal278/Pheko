@@ -10,6 +10,7 @@ import PageHeader from "../components/PageHeader";
 import NavBar from "../components/NavBar";
 import { collection, getDocs } from "firebase/firestore";
 import {db} from "../Firebase";
+import { useUser } from "../UserContext";
 
 type RootStackParamList = {
     SignUp: undefined;
@@ -25,6 +26,8 @@ const CustomerDashboard: React.FC = () => {
 
     const [loading, setLoading] = useState(true);
     const [weightCount, setWeightCount] = useState(0);
+
+    const { user, setUser } = useUser();
 
     const navigation = useNavigation<NavigationProps>();
 
@@ -56,7 +59,7 @@ const CustomerDashboard: React.FC = () => {
             <View style={styles.container}>
                 <View style={[styles.mainContent]}>
                     <PageHeader
-                        title="Hi Patrick"
+                        title={"Hi ${user.firstName}"}
                         subtitle="Welcome to your dashboard!"
                     />
                     <Pressable style={[styles.CreateOrder]} onPress={() => navigation.navigate('CustomerItemSelection')}>

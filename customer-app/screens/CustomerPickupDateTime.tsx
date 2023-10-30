@@ -8,11 +8,14 @@ import PageHeader from "../components/PageHeader";
 import {useOrder} from '../OrderContext';
 import {db} from '../Firebase';
 import {addDoc, collection, getDocs} from "firebase/firestore";
+import { useUser } from "../UserContext";
 
 const CustomerPickupDateTime: React.FC = () => {
   const [date, setDate] = useState<Date>(new Date());
 
   const { order, setOrder } = useOrder();
+
+  const { user, setUser } = useUser();
 
   const onChange = (event: any, selectedDate?: Date) => {
     if (selectedDate) {
@@ -81,7 +84,8 @@ const CustomerPickupDateTime: React.FC = () => {
         dateCreated: new Date(),
         dateLastUpdated: new Date(),
         status: "CREATED",
-        userId: "",   // Get this user Id
+        userId: "/Users/" + user.id,   // Get this user Id
+        address: user.address
       };
 
       setOrder(updatedOrder);

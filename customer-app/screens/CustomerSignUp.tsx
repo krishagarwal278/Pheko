@@ -16,11 +16,13 @@ import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
 import { auth } from "../Firebase";
 import { FunctionComponent, useState } from "react";
+import { useUser } from "../UserContext"
+import {User} from "../Types";
 
 const { width, height } = Dimensions.get("window");
 
 const CustomerSignUp: FunctionComponent = () => {
-  const currentUser = auth.currentUser;
+  const currentUser = auth.currentUser!;
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
   const [firstName, setFirstName] = useState("");
@@ -28,6 +30,8 @@ const CustomerSignUp: FunctionComponent = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState<Date>(new Date());
+
+  const { user, setUser } = useUser();
 
   const onChange = (event: any, selectedDate?: Date) => {
     if (selectedDate) {
@@ -39,16 +43,21 @@ const CustomerSignUp: FunctionComponent = () => {
     const db = getFirestore();
 
     // Save user's details to Firestore
-    if (currentUser) {
-      const userDoc = doc(db, "Users", currentUser.uid); 
-      await setDoc(userDoc, {
-        FirstName: firstName,
-        LastName: lastName,
-        Address: address,
-        DateOfBirth: date,
+    if (currentUser && currentUser.phoneNumber) {
+      const userDoc = doc(db, "Users", currentUser.uid);
+      const userInfo: User = {
+        id: currentUser.uid,
+        address: address,
+        dateOfBirth: date,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         phone: currentUser.phoneNumber,
-      });
+        dateCreated: new Date(),
+        dateLastUpdated: new Date
+      }
+      setUser(userInfo)
+      await setDoc(userDoc, userInfo);
       navigation.navigate("CustomerItemSelection");
     }
   };
