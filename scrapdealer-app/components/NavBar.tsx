@@ -21,19 +21,19 @@ const NavBar: React.FC = () => {
 
             <Pressable onPress={() => navigation.navigate('ScrapDealerDashboard')}>
                 <View style={styles.navbarButton}>
-                    {/*<Image style={[styles.image]} source={require('../assets/home-icon.png')}></Image>*/}
+                    <Image style={[styles.image]} source={require('../assets/home-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Home</Text>
                 </View>
             </Pressable>
             <Pressable onPress={() => navigation.navigate('ScrapDealerDashboard')}>
                 <View style={[styles.navbarButton]}>
-                    {/*<Image style={[styles.image]} source={require('../assets/blog-icon.png')}></Image>*/}
+                    <Image style={[styles.image]} source={require('../assets/community-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Community</Text>
                 </View>
             </Pressable>
             <Pressable onPress={() => navigation.navigate('ScrapDealerDashboard')}>
                 <View style={[styles.navbarButton]}>
-                    {/*<Image style={[styles.image]} source={require('../assets/profile-icon.png')}></Image>*/}
+                    <Image style={[styles.image]} source={require('../assets/profile-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Profile</Text>
                 </View>
             </Pressable>

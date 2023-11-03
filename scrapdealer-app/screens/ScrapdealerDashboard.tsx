@@ -39,7 +39,7 @@ const ScrapDealerDashboard: React.FC = () => {
                     id: doc.id,
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
-                const filteredDocs = documents.filter(doc => doc.UserId === scrapDealer.id);    //Set to user Id from state
+                const filteredDocs = documents.filter(doc => doc.ScrapDealerId === scrapDealer.id);    //Set to user Id from state
                 const totalWeight = filteredDocs.reduce((sum, doc) => {
                     return sum + doc.Weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
                 }, 0);
@@ -63,7 +63,7 @@ const ScrapDealerDashboard: React.FC = () => {
                         subtitle="Welcome to your dashboard!"
                     />
                     <Pressable style={[styles.CreateOrder]} onPress={() => navigation.navigate('ScrapDealerAvailableOrders')}>
-                        {/*<Image source={require('../assets/dashboard-icon.gif')}></Image>*/}
+                        <Image source={require('../assets/dashboard-icon.gif')}></Image>
                         <Text style={[styles.orderText]}>See available orders!</Text>
                     </Pressable>
 
