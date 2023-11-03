@@ -10,28 +10,28 @@ type RootStackParamList = {
     SignUp: undefined;
     NextPage: undefined;  // Name of the next page/screen
     ScrapDealerNumberVerification:undefined;
-    ScrapDealerDashboard: undefined;
+    ScrapdealerDashboard: undefined;
 };
-type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerDashboard'>;
+type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapdealerDashboard'>;
 
 const NavBar: React.FC = () => {
     const navigation = useNavigation<NavigationProps>();
     return (
         <View style={[styles.NavbarContainer]}>
 
-            <Pressable onPress={() => navigation.navigate('ScrapDealerDashboard')}>
+            <Pressable onPress={() => navigation.navigate('ScrapdealerDashboard')}>
                 <View style={styles.navbarButton}>
                     <Image style={[styles.image]} source={require('../assets/home-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Home</Text>
                 </View>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('ScrapDealerDashboard')}>
+            <Pressable onPress={() => navigation.navigate('ScrapdealerDashboard')}>
                 <View style={[styles.navbarButton]}>
                     <Image style={[styles.image]} source={require('../assets/community-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Community</Text>
                 </View>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('ScrapDealerDashboard')}>
+            <Pressable onPress={() => navigation.navigate('ScrapdealerDashboard')}>
                 <View style={[styles.navbarButton]}>
                     <Image style={[styles.image]} source={require('../assets/profile-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Profile</Text>
