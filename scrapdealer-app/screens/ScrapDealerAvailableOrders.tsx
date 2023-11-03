@@ -82,15 +82,18 @@ const ScrapDealerAvailableOrders = () => {
                                 <Pressable style={[styles.orderCard]} onPress={() => orderSelected(order)}>
                                     <View style={[styles.orderAttributesContainer]}>
                                         <View style={[styles.orderUpperContainer]}>
-                                            {/*Name and arrow*/}
+                                            <Text> Name </Text>
+                                            <Image style={[styles.image]} source={require('../assets/vector-forward.png')}></Image>
                                         </View>
                                         {/*Line*/}
                                         <View style={[styles.orderBottomContainer]}>
                                             <View style={[styles.orderInfoContainer]}>
-                                                {/*Date, weight, address*/}
+                                               <Text style={[styles.orderInfo]} > {order.scheduledDateTime.toString()}</Text>
+                                               <Text style={[styles.orderInfo]} > {order.weights[0].toString()}</Text>
+                                               <Text style={[styles.orderInfo]} > {order.address}</Text>
                                             </View>
                                             <View style={[styles.statusContainer]}>
-                                                {/*Status block*/}
+                                                <Text>{order.status}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -122,8 +125,18 @@ const styles = StyleSheet.create({
         marginBottom: 90,
     },
     orderCard: {
+        marginTop: 15,
+        height: 50,
+        borderRadius: Border.br_6xl,
+        backgroundColor: "#f0f0f0",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
 
-
+    },
+    image:{
+        width:24,
+        height: 24,
     },
     orderAttributesContainer: {
         flexDirection: "column",
@@ -131,6 +144,14 @@ const styles = StyleSheet.create({
     },
     orderUpperContainer: {
         flexDirection: "row",
+        justifyContent: "space-between",
+
+    },
+    orderInfo:{
+        fontFamily: FontFamily.montserratRegular,
+        fontSize: FontSize.size_xl,
+        color: Color.color1,
+
 
     },
     orderBottomContainer: {
@@ -139,6 +160,7 @@ const styles = StyleSheet.create({
     },
     orderInfoContainer: {
         flexDirection: "column",
+        
 
     },
     statusContainer: {
