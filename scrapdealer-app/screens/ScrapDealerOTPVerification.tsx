@@ -54,13 +54,13 @@ const ScrapDealerOTPVerification: React.FunctionComponent = () => {
         const userData = userDoc.data();
         const document: ScrapDealer = {
           id: userDoc.id,
-          address: userData.Address,
-          dateOfBirth: userData.DateOfBirth,
-          firstName: userData.FirstName,
-          lastName: userData.LastName,
+          address: userData.address,
+          dateOfBirth: userData.dateOfBirth,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
           phone: userData.phone,
-          dateCreated: userData.DateCreated,
-          dateLastUpdated: userData.DateLastUpdated
+          dateCreated: userData.dateCreated,
+          dateLastUpdated: userData.dateLastUpdated
         }
         setScrapDealer(document);
         navigation.navigate("ScrapdealerDashboard");
