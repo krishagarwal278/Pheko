@@ -63,7 +63,7 @@ const ScrapDealerOTPVerification: React.FunctionComponent = () => {
           dateLastUpdated: userData.DateLastUpdated
         }
         setScrapDealer(document);
-
+        navigation.navigate("ScrapdealerDashboard");
       } else {
         console.log("User not registered. Redirecting to sign up form.");
         navigation.navigate("ScrapDealerSignUp");
