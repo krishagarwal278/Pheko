@@ -81,8 +81,8 @@ const ScrapDealerDashboard: React.FC = () => {
                         )}
                     </View>
                 </View>
-                <NavBar/>
             </View>
+            <NavBar/>
         </SafeAreaView>
     );
 };
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     CreateOrder: {
         marginTop: 25,
-        height: 150,
+        height: "30%",
         borderRadius: Border.br_6xl,
         backgroundColor: "#e3d7fc",
         justifyContent: "center",
@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     orderText:{
-        fontSize: FontSize.size_5xl,
+        fontSize: FontSize.size_xl,
         fontFamily: FontFamily.montserratMedium,
         color: Color.color1,
     },
     dataContainer:{
         marginTop: 15,
-        height: 150,
+        height: "30%",
         borderRadius: Border.br_6xl,
         backgroundColor: "#f0f0f0",
         justifyContent: "center",
@@ -141,9 +141,9 @@ const styles = StyleSheet.create({
         color: Color.color1,
     },
     image:{
-        height: "50%",
-        width: "50%",
-    }
+        height: "60%",
+        width: "80%",
+    },
 });
 
 

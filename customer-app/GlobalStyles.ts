@@ -9,6 +9,7 @@ export const FontSize = {
   size_5xl: 24,
   size_base: 16,
   size_xl: 20,
+  size_small: 12,
 };
 /* Colors */
 export const Color = {
