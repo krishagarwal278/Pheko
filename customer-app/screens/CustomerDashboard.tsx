@@ -72,7 +72,7 @@ const CustomerDashboard: React.FC = () => {
                         subtitle="Welcome to your dashboard!"
                     />
                     <Pressable style={[styles.CreateOrder]} onPress={() => navigation.navigate('CustomerItemSelection')}>
-                        <Image source={require('../assets/dashboard-icon.gif')}></Image>
+                        <Image style={styles.image} source={require('../assets/dashboard-icon.gif')}></Image>
                         <Text style={[styles.orderText]}>Schedule an Order!</Text>
                     </Pressable>
 
@@ -149,6 +149,10 @@ const styles = StyleSheet.create({
         fontFamily: FontFamily.montserratMedium,
         color: Color.color1,
     },
+    image:{
+        height: "50%",
+        width: "50%",
+    }
 });
 
 
