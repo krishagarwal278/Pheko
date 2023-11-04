@@ -39,11 +39,23 @@ const ScrapDealerAvailableOrders = () => {
         const unsubscribe = onSnapshot(
             collection(db, "Orders"),
             (querySnapshot) => {
-                const docs = querySnapshot.docs.map((doc) => ({
+                const mappedDocs = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
-                    ...(doc.data() as Order)  // Casting the data to the Order type here
-                })).filter((doc: Order) => doc.status === "CREATED");  // Now TypeScript knows doc is of type Order
-                setOrders(docs);
+                    dateCreated: doc.data().DateCreated.toDate(),
+                    dateLastUpdated: doc.data().DateLastUpdates.toDate(),
+                    items: doc.data().Items,
+                    orderNumber: doc.data().OrderNumber,
+                    price: doc.data().Price,
+                    scheduledDateTime: doc.data().ScheduledDateTime.toDate(),
+                    scrapDealerId: doc.data().ScrapDealerId,
+                    status: doc.data().Status,
+                    userId: doc.data().UserId,
+                    weights: doc.data().Weights,
+                    address: doc.data().Address,
+                    notes: doc.data().Notes
+                }) as Order);
+                const filteredDocs = mappedDocs.filter((doc) => doc.status === "CREATED");
+                setOrders(filteredDocs);
                 setLoading(false);
             },
             (error) => {
@@ -52,7 +64,7 @@ const ScrapDealerAvailableOrders = () => {
             }
         );
 
-        return () => unsubscribe(); // This unsubscribes from the listener when the component unmounts
+        return () => unsubscribe();
     }, [isFocused]);
 
     const orderSelected = (order: Order) => {
@@ -79,21 +91,21 @@ const ScrapDealerAvailableOrders = () => {
                     ) : (
                         <>
                             {orders.map((order: Order) => (
-                                <Pressable style={[styles.orderCard]} onPress={() => orderSelected(order)}>
+                                <Pressable key={order.id} style={[styles.orderCard]} onPress={() => orderSelected(order)}>
                                     <View style={[styles.orderAttributesContainer]}>
                                         <View style={[styles.orderUpperContainer]}>
                                             <Text> Name </Text>
                                             <Image style={[styles.image]} source={require('../assets/vector-forward.png')}></Image>
                                         </View>
-                                        {/*Line*/}
+                                        <View style={styles.orderDivider} />
                                         <View style={[styles.orderBottomContainer]}>
                                             <View style={[styles.orderInfoContainer]}>
                                                <Text style={[styles.orderInfo]} > {order.scheduledDateTime.toString()}</Text>
-                                               <Text style={[styles.orderInfo]} > {order.weights[0].toString()}</Text>
+                                               <Text style={[styles.orderInfo]} > {order.weights[0].toString()} kg</Text>
                                                <Text style={[styles.orderInfo]} > {order.address}</Text>
                                             </View>
                                             <View style={[styles.statusContainer]}>
-                                                <Text>{order.status}</Text>
+                                                <Text style={styles.status}>{order.status}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -122,11 +134,11 @@ const styles = StyleSheet.create({
     },
     itemsContainer: {
         flexGrow: 1,
-        marginBottom: 90,
+        marginBottom: 30,
     },
     orderCard: {
         marginTop: 15,
-        height: 50,
+        height: 130,
         borderRadius: Border.br_6xl,
         backgroundColor: "#f0f0f0",
         justifyContent: "center",
@@ -135,38 +147,55 @@ const styles = StyleSheet.create({
 
     },
     image:{
-        width:24,
-        height: 24,
+        width:10,
+        height: 10,
     },
     orderAttributesContainer: {
         flexDirection: "column",
-
+        width: "100%",
     },
     orderUpperContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-
+        alignItems: "center",
+        paddingRight: "5%",
+        paddingLeft: "5%",
+        paddingTop: "1%",
     },
     orderInfo:{
         fontFamily: FontFamily.montserratRegular,
-        fontSize: FontSize.size_xl,
+        fontSize: FontSize.size_small,
         color: Color.color1,
 
 
     },
     orderBottomContainer: {
         flexDirection: "row",
-
+        paddingRight: "3%",
+        paddingLeft: "3%",
     },
     orderInfoContainer: {
         flexDirection: "column",
-        
-
+        width: "60%",
+        paddingLeft: "3%",
     },
     statusContainer: {
+        justifyContent: "center",
+        alignItems: "flex-end",
+        width: "40%",
+        paddingRight: "4%",
+    },
+    orderDivider: {
+        height: 2,
+        width: '90%', // You can adjust the width as you like
+        alignSelf: 'center',
+        backgroundColor: Color.color,
+        marginVertical: 10,
+    },
+    status: {
+        color: Color.color1,
 
-
-    }
+    },
 });
 
 export default ScrapDealerAvailableOrders;

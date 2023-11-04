@@ -62,7 +62,6 @@ const ScrapDealerOTPVerification: React.FunctionComponent = () => {
           dateCreated: userData.dateCreated,
           dateLastUpdated: userData.dateLastUpdated
         }
-        console.log(document);
         setScrapDealer(document);
         navigation.navigate("ScrapdealerDashboard");
       } else {

@@ -98,7 +98,7 @@ const CustomerPickupDateTime: React.FC = () => {
         Items: updatedOrder.items,
         OrderNumber: updatedOrder.orderNumber,
         Price: updatedOrder.price,
-        ScheduledDateTime: 'updatedOrder.scheduledDateTime',
+        ScheduledDateTime: updatedOrder.scheduledDateTime,
         ScrapDealerId: updatedOrder.scrapDealerId,
         Status: updatedOrder.status,
         UserId: updatedOrder.userId,
