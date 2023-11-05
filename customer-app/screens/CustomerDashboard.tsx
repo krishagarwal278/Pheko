@@ -72,7 +72,7 @@ const CustomerDashboard: React.FC = () => {
                         subtitle="Welcome to your dashboard!"
                     />
                     <Pressable style={[styles.CreateOrder]} onPress={() => navigation.navigate('CustomerItemSelection')}>
-                        <Image source={require('../assets/dashboard-icon.gif')}></Image>
+                        <Image style={styles.image} source={require('../assets/dashboard-icon.gif')}></Image>
                         <Text style={[styles.orderText]}>Schedule an Order!</Text>
                     </Pressable>
 
@@ -90,8 +90,8 @@ const CustomerDashboard: React.FC = () => {
                         )}
                     </View>
                 </View>
-                <NavBar/>
             </View>
+            <NavBar/>
         </SafeAreaView>
     );
 };
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     },
     CreateOrder: {
         marginTop: 25,
-        height: 150,
+        height: "30%",
         borderRadius: Border.br_6xl,
         backgroundColor: Color.color,
         justifyContent: "center",
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     },
     dataContainer:{
         marginTop: 15,
-        height: 150,
+        height: "30%",
         borderRadius: Border.br_6xl,
         backgroundColor: "#f0f0f0",
         justifyContent: "center",
@@ -149,6 +149,10 @@ const styles = StyleSheet.create({
         fontFamily: FontFamily.montserratMedium,
         color: Color.color1,
     },
+    image:{
+        height: "60%",
+        width: "80%",
+    }
 });
 
 

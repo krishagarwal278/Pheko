@@ -84,7 +84,7 @@ const CustomerPickupDateTime: React.FC = () => {
         dateCreated: new Date(),
         dateLastUpdated: new Date(),
         status: "CREATED",
-        userId: "/Users/" + user.id,   // Get this user Id
+        userId: user.id,   // Get this user Id
         address: user.address
       };
 
@@ -98,7 +98,7 @@ const CustomerPickupDateTime: React.FC = () => {
         Items: updatedOrder.items,
         OrderNumber: updatedOrder.orderNumber,
         Price: updatedOrder.price,
-        ScheduledDateTime: 'updatedOrder.scheduledDateTime',
+        ScheduledDateTime: updatedOrder.scheduledDateTime,
         ScrapDealerId: updatedOrder.scrapDealerId,
         Status: updatedOrder.status,
         UserId: updatedOrder.userId,

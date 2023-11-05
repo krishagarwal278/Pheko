@@ -57,7 +57,7 @@ const ScrapDealerSignUp: FunctionComponent = () => {
       }
       setScrapDealer(userInfo)
       await setDoc(userDoc, userInfo);
-      navigation.navigate("ScrapDealerWelcome");
+      navigation.navigate("ScrapdealerDashboard");
     }
   };
 

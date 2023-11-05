@@ -54,14 +54,14 @@ const CustomerOTPVerification: React.FunctionComponent = () => {
         const userData = userDoc.data();
         const document: User = {
           id: userDoc.id,
-          address: userData.Address,
-          dateOfBirth: userData.DateOfBirth,
-          firstName: userData.FirstName,
-          lastName: userData.LastName,
+          address: userData.address,
+          dateOfBirth: userData.dateOfBirth,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
           email: userData.email,
           phone: userData.phone,
-          dateCreated: userData.DateCreated,
-          dateLastUpdated: userData.DateLastUpdated
+          dateCreated: userData.dateCreated,
+          dateLastUpdated: userData.dateLastUpdated
         }
         setUser(document);
         navigation.navigate("CustomerDashboard");
