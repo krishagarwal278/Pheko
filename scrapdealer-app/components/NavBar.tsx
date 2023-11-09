@@ -11,6 +11,7 @@ type RootStackParamList = {
     NextPage: undefined;  // Name of the next page/screen
     ScrapDealerNumberVerification:undefined;
     ScrapdealerDashboard: undefined;
+    ScrapDealerProfile: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapdealerDashboard'>;
 
@@ -31,7 +32,7 @@ const NavBar: React.FC = () => {
                     <Text style={[styles.navbarText]}>Community</Text>
                 </View>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('ScrapdealerDashboard')}>
+            <Pressable onPress={() => navigation.navigate('ScrapDealerProfile')}>
                 <View style={[styles.navbarButton]}>
                     <Image style={[styles.image]} source={require('../assets/profile-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Profile</Text>

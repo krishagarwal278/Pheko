@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-end",
     marginBottom: 20,
+    color: Color.color_light_purple
   },
 });
 

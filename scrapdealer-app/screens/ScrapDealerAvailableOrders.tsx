@@ -100,7 +100,7 @@ const ScrapDealerAvailableOrders = () => {
     const orderSelected = (order: Order) => {
 
         setOrder(order);
-        navigation.navigate("");
+        navigation.navigate("ScrapDealerOrderType");
 
     };
 

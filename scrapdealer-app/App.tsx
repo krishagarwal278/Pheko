@@ -10,7 +10,7 @@ import ScrapdealerDashboard from "./screens/ScrapdealerDashboard";
 import ScrapDealerAvailableOrders from "./screens/ScrapDealerAvailableOrders";
 import {ScrapDealerProvider} from "./ScrapDealerContext";
 import {OrderProvider} from "./OrderContext";
-
+import ScrapDealerProfile from "./screens/ScrapDealerProfile"
 
 type RootStackParamList = {
   ScrapDealerWelcome: undefined;
@@ -19,6 +19,7 @@ type RootStackParamList = {
   ScrapDealerSignUp: undefined;
   ScrapdealerDashboard: undefined;
   ScrapDealerAvailableOrders: undefined;
+  ScrapDealerProfile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -50,6 +51,10 @@ const AppStack = () => (
       <Stack.Screen
           name="ScrapDealerAvailableOrders"
           component={ScrapDealerAvailableOrders}
+      />
+      <Stack.Screen
+          name="ScrapDealerProfile"
+          component={ScrapDealerProfile}
       />
 
     </Stack.Navigator>

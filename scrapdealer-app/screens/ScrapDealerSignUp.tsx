@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   dateText: {
-    fontSize: FontSize.size_base * 1.5,
+    fontSize: FontSize.size_base * 1.35,
     color: Color.color1,
     fontFamily: FontFamily.montserratMedium,
     marginRight: 10,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     borderWidth: 2,
-    borderColor: Color.color,
+    borderColor: Color.color1,
     borderRadius: Border.br_6xl,
     padding: 20,
     marginBottom: 20,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   frame: {
     borderRadius: Border.br_6xl,
-    backgroundColor: Color.color,
+    backgroundColor: Color.color_light_purple,
     width: 370,
     height: 86,
     justifyContent: "center",
@@ -204,14 +204,14 @@ const styles = StyleSheet.create({
     fontSize: width * 0.04,
   },
   submitButton: {
-    backgroundColor: "#bffa01",
+    backgroundColor: Color.color_light_purple,
     padding: height * 0.02,
     borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
   },
   submitButtonText: {
-    color: "#fff",
+    color: Color.color1,
     fontSize: width * 0.05,
     fontWeight: "bold",
   },

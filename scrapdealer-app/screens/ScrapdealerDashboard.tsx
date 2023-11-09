@@ -66,6 +66,9 @@ const ScrapDealerDashboard: React.FC = () => {
                         <Image style={styles.image} source={require('../assets/dashboard-icon.gif')}></Image>
                         <Text style={[styles.orderText]}>See available orders!</Text>
                     </Pressable>
+                    <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('ScrapDealerAvailableOrders')}>
+                        <Text style={[styles.orderText]}>Ongoing Orders</Text>
+                    </Pressable>
 
                     <View style={[styles.dataContainer]}>
                         {loading ? (
@@ -98,6 +101,15 @@ const styles = StyleSheet.create({
     CreateOrder: {
         marginTop: 25,
         height: "30%",
+        borderRadius: Border.br_6xl,
+        backgroundColor: "#e3d7fc",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+    },
+    OngoingOrder:{
+        marginTop: 10,
+        height: "12.5%",
         borderRadius: Border.br_6xl,
         backgroundColor: "#e3d7fc",
         justifyContent: "center",
