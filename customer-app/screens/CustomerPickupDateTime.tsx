@@ -20,6 +20,7 @@ const CustomerPickupDateTime: React.FC = () => {
   const onChange = (event: any, selectedDate?: Date) => {
     if (selectedDate) {
       setDate(selectedDate);
+      console.log("Selected date:", date);
       setOrder((prevOrder) => ({
         ...prevOrder,
         scheduledDateTime: date,
@@ -28,23 +29,28 @@ const CustomerPickupDateTime: React.FC = () => {
   };
 
   const calculatePrice = async () => {
-    console.log("Order before calculate price", order);
-    try{
-      const querySnapshot = await getDocs(collection(db, 'Rates'));
-      const documents = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      } as { id: string, [key: string]: any }));
-      const rate = documents.filter(doc => doc.Name === order.items[0]);
-      return [{
-        Id: rate[0].id,
-        rate: rate[0].PricePerKg
-      }];
+  console.log("Order before calculate price", order);
+  try {
+    const querySnapshot = await getDocs(collection(db, 'Rates'));
+    const documents = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    } as { id: string, [key: string]: any }));
+
+    let total = 0;
+    for (let i = 0; i < order.items.length; i++) {
+      const rate = documents.find(doc => doc.Name === order.items[i]);
+      if (rate) {
+        total += rate.PricePerKg * order.weights[i];
+      }
     }
-    catch (e: any){
-      console.error("Error with Firestore:", e.message);
-    }
-  };
+
+    return total;
+  }
+  catch (e: any) {
+    console.error("Error with Firestore:", e.message);
+  }
+};
 
   const getOrderNumber = async () => {
     console.log("Order before getOrderNumber", order);
@@ -63,56 +69,50 @@ const CustomerPickupDateTime: React.FC = () => {
   }
 
   const submitOrder = async () => {
-    //Change values in items for IDs of Rates table
-    try
-    {
-      console.log("Order at start of submitOrder", order);
-      const rateObj = await calculatePrice();
-      console.log("Rate obj:", rateObj);
-      if (!rateObj) {
-        console.error("Failed to get rate object.");
-        return;
-      }
-      const weight = order.weights[0];
-      const price = rateObj[0].rate * weight;
-      const orderNum = await getOrderNumber();
-      const updatedOrder = {
-        ...order,
-        item: ["/Rates/" + rateObj[0].Id],
-        price: price,
-        orderNumber: orderNum,
-        dateCreated: new Date(),
-        dateLastUpdated: new Date(),
-        status: "CREATED",
-        userId: user.id,   // Get this user Id
-        address: user.address
-      };
-
-      setOrder(updatedOrder);
-
-      console.log("Order before sending to DB", updatedOrder);
-
-      const docRef = await addDoc(collection(db, "Orders"), {
-        DateCreated: updatedOrder.dateCreated,
-        DateLastUpdates: updatedOrder.dateLastUpdated,
-        Items: updatedOrder.items,
-        OrderNumber: updatedOrder.orderNumber,
-        Price: updatedOrder.price,
-        ScheduledDateTime: updatedOrder.scheduledDateTime,
-        ScrapDealerId: updatedOrder.scrapDealerId,
-        Status: updatedOrder.status,
-        UserId: updatedOrder.userId,
-        Weights: updatedOrder.weights,
-        Address: updatedOrder.address,
-        Notes: updatedOrder.notes
-      });
-      console.log("Document written with ID: ", docRef.id);
+  try {
+    console.log("Order at start of submitOrder", order);
+    const total = await calculatePrice();
+    console.log("Total price:", total);
+    if (total === undefined) {
+      console.error("Failed to calculate total price.");
+      return;
     }
-    catch (e: any)
-    {
-      console.error("Error with Firestore:", e.message);
-    }
-  };
+    const orderNum = await getOrderNumber();
+    const updatedOrder = {
+      ...order,
+      price: total,
+      orderNumber: orderNum,
+      dateCreated: new Date(),
+      dateLastUpdated: new Date(),
+      status: "CREATED",
+      userId: user.id,
+      address: user.address
+    };
+    console.log("Order after submitOrder", updatedOrder)
+    setOrder(updatedOrder);
+
+    console.log("Order before sending to DB", updatedOrder);
+
+    const docRef = await addDoc(collection(db, "Orders"), {
+      DateCreated: updatedOrder.dateCreated,
+      DateLastUpdates: updatedOrder.dateLastUpdated,
+      Items: updatedOrder.items,
+      OrderNumber: updatedOrder.orderNumber,
+      Price: updatedOrder.price,
+      ScheduledDateTime: updatedOrder.scheduledDateTime,
+      ScrapDealerId: updatedOrder.scrapDealerId,
+      Status: updatedOrder.status,
+      UserId: updatedOrder.userId,
+      Weights: updatedOrder.weights,
+      Address: updatedOrder.address,
+      Notes: updatedOrder.notes
+    });
+    console.log("Document written with ID: ", docRef.id);
+  }
+  catch (e: any) {
+    console.error("Error with Firestore:", e.message);
+  }
+};
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>

@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 import CustomerWelcome from "./screens/CustomerWelcome";
 import CustomerPickupConfirmed from "./screens/CustomerPickupConfirmed";
-import CustomerItemWeight from "./screens/CustomerItemWeight";
 import CustomerItemSelection from "./screens/CustomerItemSelection";
 import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
 import { OrderProvider } from './OrderContext';
@@ -41,7 +40,6 @@ const AppStack = () => (
               name="CustomerPickupConfirmed"
               component={CustomerPickupConfirmed}
           />
-          <Stack.Screen name="CustomerItemWeight" component={CustomerItemWeight} />
           <Stack.Screen
               name="CustomerItemSelection"
               component={CustomerItemSelection}

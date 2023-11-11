@@ -7,18 +7,22 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from "react-native";
 import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
 import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
-import { Order } from "../Types";
-import {OrderContext, useOrder} from '../OrderContext';
+import { OrderContext, useOrder } from '../OrderContext';
+
+interface SelectedItem {
+  key: string;
+  weight: string;
+}
 
 const CustomerItemSelection = () => {
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
-
+  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
   const { order, setOrder } = useOrder();
 
   const items = [
@@ -54,14 +58,43 @@ const CustomerItemSelection = () => {
     },
   ];
 
+  const handleSelectItem = (itemKey: string) => {
+    setSelectedItems(prevItems => {
+      const foundItem = prevItems.find(item => item.key === itemKey);
+      if (foundItem) {
+        return prevItems.filter(item => item.key !== itemKey); // Deselect
+      } else {
+        return [...prevItems, { key: itemKey, weight: '0' }]; // Select new item
+      }
+    });
+  };
+
+  const handleWeightChange = (itemKey: string, weight: string) => {
+    setSelectedItems(prevItems =>
+      prevItems.map(item =>
+        item.key === itemKey ? { ...item, weight } : item
+      )
+    );
+  };
+
+
+  const handleSubmit = () => {
+  setOrder(prevOrder => ({
+    ...prevOrder,
+    items: selectedItems.map(item => item.key),
+    weights: selectedItems.map(item => parseFloat(item.weight)),
+  }));
+}; 
+
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
       <View style={styles.container}>
         <BackButton />
 
         <PageHeader
-          title="Choose an item"
-          subtitle="Tell us what recyclables you'd like to have picked up, and we'll take care of the rest."
+          title="Select Items and Specify Weight"
+          subtitle="Choose recyclable items and enter their approximate weight."
         />
 
         <ScrollView
@@ -69,28 +102,32 @@ const CustomerItemSelection = () => {
           showsVerticalScrollIndicator={false}
         >
           {items.map((item) => (
-            <Pressable
-              key={item.key}
-              style={[
-                styles.itemButton,
-                selectedItem === item.key ? styles.selectedItemStyle : null,
-              ]}
-              onPress={() => {
-                setSelectedItem(item.key);
-                setOrder((prevOrder: any) => ({
-                  ...prevOrder,
-                  items: [item.key]
-                }));
-              }}
-            >
-              <Image style={styles.itemIcon} source={item.icon} />
-              <Text style={styles.itemText}>{item.label}</Text>
-            </Pressable>
+            <View key={item.key} style={styles.itemRow}>
+              <Pressable
+                style={[
+                  styles.itemButton,
+                  selectedItems.find(i => i.key === item.key) ? styles.selectedItemStyle : null,
+                ]}
+                onPress={() => handleSelectItem(item.key)}
+              >
+                <Image style={styles.itemIcon} source={item.icon} />
+                <Text style={styles.itemText}>{item.label}</Text>
+              </Pressable>
+              {selectedItems.find(i => i.key === item.key) && (
+                <TextInput
+                  style={styles.weightInput}
+                  value={selectedItems.find(i => i.key === item.key)?.weight.toString()}
+                  onChangeText={(text) => handleWeightChange(item.key, text)}
+                  keyboardType="numeric"
+                  placeholder="Weight (kg)"
+                />
+              )}
+            </View>
           ))}
         </ScrollView>
 
         <View style={styles.bottomContainer}>
-          <ContinueButton destination="CustomerItemWeight" />
+          <ContinueButton destination="CustomerPickupDateTime" onPressAdditional={handleSubmit} />
         </View>
       </View>
     </SafeAreaView>
@@ -156,6 +193,22 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontFamily: FontFamily.montserratMedium,
   },
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  weightInput: {
+    borderWidth: 2,
+    borderColor: Color.color,
+    borderRadius: Border.br_6xl,
+    padding: 10,
+    width: 100,
+    marginRight: 15,
+    textAlign: 'center'
+  },
+  // Add or modify styles as needed
 });
 
 export default CustomerItemSelection;
