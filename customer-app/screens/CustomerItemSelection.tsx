@@ -81,10 +81,14 @@ const CustomerItemSelection = () => {
   const handleSubmit = () => {
   setOrder(prevOrder => ({
     ...prevOrder,
-    items: selectedItems.map(item => item.key),
-    weights: selectedItems.map(item => parseFloat(item.weight)),
+    items: selectedItems
+      .filter(item => parseFloat(item.weight) > 0)
+      .map(item => item.key),
+    weights: selectedItems
+      .filter(item => parseFloat(item.weight) > 0)
+      .map(item => parseFloat(item.weight)),
   }));
-}; 
+};
 
 
   return (
@@ -127,7 +131,7 @@ const CustomerItemSelection = () => {
         </ScrollView>
 
         <View style={styles.bottomContainer}>
-          <ContinueButton destination="CustomerPickupDateTime" onPressAdditional={handleSubmit} />
+          <ContinueButton destination="CustomerAddressScreen" onPressAdditional={handleSubmit} />
         </View>
       </View>
     </SafeAreaView>

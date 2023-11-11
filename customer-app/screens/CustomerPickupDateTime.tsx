@@ -9,8 +9,23 @@ import {useOrder} from '../OrderContext';
 import {db} from '../Firebase';
 import {addDoc, collection, getDocs} from "firebase/firestore";
 import { useUser } from "../UserContext";
+import { useNavigation, ParamListBase, RouteProp } from "@react-navigation/native";
 
-const CustomerPickupDateTime: React.FC = () => {
+type RouteParams = {
+  address: string;
+};
+
+type CustomerPickupDateTimeRouteProp = RouteProp<ParamListBase, 'CustomerPickupDateTime'> & {
+  params: RouteParams;
+};
+
+type Props = {
+  route: CustomerPickupDateTimeRouteProp;
+};
+
+const CustomerPickupDateTime: React.FC<Props> = ({ route }) => {
+  const address = route.params.address;
+
   const [date, setDate] = useState<Date>(new Date());
 
   const { order, setOrder } = useOrder();
@@ -86,7 +101,7 @@ const CustomerPickupDateTime: React.FC = () => {
       dateLastUpdated: new Date(),
       status: "CREATED",
       userId: user.id,
-      address: user.address
+      address: address,
     };
     console.log("Order after submitOrder", updatedOrder)
     setOrder(updatedOrder);

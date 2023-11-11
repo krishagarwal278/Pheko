@@ -1,5 +1,5 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 import CustomerWelcome from "./screens/CustomerWelcome";
@@ -12,19 +12,21 @@ import CustomerSignUp from "./screens/CustomerSignUp";
 import CustomerNumberVerification from "./screens/CustomerNumberVerification";
 import {UserProvider} from "./UserContext";
 import CustomerDashboard from "./screens/CustomerDashboard";
+import CustomerAddressScreen from "./screens/CustomerAddressScreen";
 
 
 type RootStackParamList = {
   CustomerWelcome: undefined;
   CustomerPickupConfirmed: undefined;
-  CustomerItemWeight: undefined;
   CustomerItemSelection: undefined;
-  CustomerPickupDateTime: undefined;
+  CustomerPickupDateTime: { address: string };
   CustomerNumberVerification: undefined;
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
   CustomerDashboard: undefined;
+  CustomerAddressScreen: undefined;
 };
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -64,7 +66,10 @@ const AppStack = () => (
               name="CustomerDashboard"
               component={CustomerDashboard}
           />
-
+          <Stack.Screen
+              name="CustomerAddressScreen"
+              component={CustomerAddressScreen} 
+          />
         </Stack.Navigator>
       </UserProvider>
     </OrderProvider>

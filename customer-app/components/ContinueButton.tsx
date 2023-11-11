@@ -12,6 +12,8 @@ type RootStackParamList = {
   CustomerNumberVerification: undefined;
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
+  CustomerDashboard: undefined;
+  CustomerAddressScreen: undefined;
 };
 
 interface ContinueButtonProps {
