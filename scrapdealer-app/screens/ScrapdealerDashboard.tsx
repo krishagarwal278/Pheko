@@ -2,7 +2,7 @@ import React, {FunctionComponent, CSSProperties, useState, useEffect} from "reac
 import { Text, Dimensions, StyleSheet, Pressable, View, ActivityIndicator } from "react-native";
 import { Image } from "expo-image";
 import { Padding, Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {  } from '@react-navigation/native';
@@ -18,6 +18,7 @@ type RootStackParamList = {
     ScrapDealerAvailableOrders: undefined;
     ScrapDealerNumberVerification:undefined;
     ScrapDealerDashboard: undefined;
+    ScrapDealerOngoingOrders: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerDashboard'>;
 
@@ -31,7 +32,11 @@ const ScrapDealerDashboard: React.FC = () => {
 
     const navigation = useNavigation<NavigationProps>();
 
+    const isFocused = useIsFocused();
+
     useEffect(() => {
+
+        if(!isFocused) return;
         const fetchData = async () => {
             try {
                 const querySnapshot = await getDocs(collection(db, "Orders"));
@@ -52,7 +57,8 @@ const ScrapDealerDashboard: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+
+    }, [isFocused]);
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
@@ -66,7 +72,7 @@ const ScrapDealerDashboard: React.FC = () => {
                         <Image style={styles.image} source={require('../assets/dashboard-icon.gif')}></Image>
                         <Text style={[styles.orderText]}>See available orders!</Text>
                     </Pressable>
-                    <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('ScrapDealerAvailableOrders')}>
+                    <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('ScrapDealerOngoingOrders')}>
                         <Text style={[styles.orderText]}>Ongoing Orders</Text>
                     </Pressable>
 

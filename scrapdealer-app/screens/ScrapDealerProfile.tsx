@@ -19,6 +19,8 @@ type RootStackParamList = {
     ScrapDealerNumberVerification:undefined;
     ScrapDealerDashboard: undefined;
     ScrapDealerProfile: undefined;
+    ScrapDealerOngoingOrders: undefined;
+    ScrapDealerPastOrders: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerProfile'>;
 
@@ -45,10 +47,13 @@ const ScrapDealerProfile: React.FC = () => {
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
                 const filteredDocs = documents.filter(doc => doc.ScrapDealerId === scrapDealer.id);    //Set to user Id from state
+                console.log(filteredDocs);
                 //Set past orders and ongoing orders
-                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED");
+                const ongoing_orders = filteredDocs.filter((doc) => doc.Status === "SCHEDULED");
+                console.log(ongoing_orders);
                 setOngoingOrders(ongoing_orders.length);
-                const past_orders = filteredDocs.filter((doc) => doc.status === "COMPLETED");
+                const past_orders = filteredDocs.filter((doc) => doc.Status === "COMPLETED");
+                console.log(past_orders);
                 setPastOrders(past_orders.length);
             } catch (error) {
                 console.log('Error fetching Firestore data:', error);
@@ -71,24 +76,24 @@ const ScrapDealerProfile: React.FC = () => {
                     <Image style={styles.image} source={require('../assets/profile-pic.png')}></Image>
                 </View>
                 <View style={[styles.OrderStatsContainer]}>
-                        <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('ScrapDealerAvailableOrders')}>
+                        <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('ScrapDealerOngoingOrders')}>
                             {loading ? (
                                 <ActivityIndicator size="large" color={Color.color1} />
                             ) : (
                                 <>
-                                    <View style={styles.numOrdersContainer}>
+                                    <View style={styles.ongoingOrdersContainer}>
                                         <Text style={[styles.NumOrders]} >{ongoingOrders}</Text>
                                         <Text style={[styles.OrderStatsText]} >Ongoing Orders</Text>
                                     </View>
                                 </>
                             )}
                         </Pressable>
-                        <Pressable style={[styles.PastOrder]} onPress={() => navigation.navigate('ScrapDealerAvailableOrders')}>
+                        <Pressable style={[styles.PastOrder]} onPress={() => navigation.navigate('ScrapDealerPastOrders')}>
                             {loading ? (
                                 <ActivityIndicator size="large" color={Color.color1} />
                             ) : (
                                 <>
-                                    <View style={styles.numOrdersContainer}>
+                                    <View style={styles.pastOrdersContainer}>
                                         <Text style={[styles.NumOrders]} >{pastOrders}</Text>
                                         <Text style={[styles.OrderStatsText]} > Past Orders</Text>
                                     </View>
@@ -151,46 +156,45 @@ const styles = StyleSheet.create({
     },
     OrderStatsContainer:{
         flexDirection: "row",
-        alignItems:"center",
+        padding: Padding.p_11xl,
+        alignItems: "center",
         justifyContent: "center",
-        height: "30%",
-        width: "100%",
     },
-    numOrdersContainer: {
-        width: "100%",
-        height: "100%",
+    ongoingOrdersContainer: {
         justifyContent: "center",
         alignItems: "center",
-        flexDirection: "column",
+    },
+    pastOrdersContainer: {
+        justifyContent: "center",
+        alignItems: "center",
     },
     OngoingOrder:{
-        marginTop: 10,
-        height: "60%",
-        borderRadius: Border.br_6xl,
-        backgroundColor: "#e3d7fc",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: Color.color_light_purple,
+        padding: 20,
+        borderRadius: 15,
         marginRight: "5%",
-        width: "50%",
     },
     PastOrder:{
-        marginTop: 10,
-        height: "60%",
-        borderRadius: Border.br_6xl,
+        justifyContent: "center",
+        alignItems: "center",
         backgroundColor: Color.color_light_gray,
-        width: "50%",
+        padding: 20,
+        borderRadius: 15,
     },
     Separator:{
         height: 2,
         backgroundColor: Color.color_light_purple,
     },
     OrderStatsText: {
-        fontSize: FontSize.size_xl,
         color: Color.color1,
+        fontSize: FontSize.size_small,
         fontFamily: FontFamily.montserratRegular,
-        textAlign: "center",
     },
     NumOrders: {
-        fontSize: FontSize.size_5xl,
         color: Color.color1,
+        fontSize: FontSize.size_5xl,
         fontFamily: FontFamily.montserratMedium,
     },
     image: {

@@ -100,7 +100,7 @@ const ScrapDealerAvailableOrders = () => {
     const orderSelected = (order: Order) => {
 
         setOrder(order);
-        navigation.navigate("ScrapDealerOrderType");
+        navigation.navigate("ScrapDealerAcceptOrder");
 
     };
 
@@ -157,7 +157,11 @@ const ScrapDealerAvailableOrders = () => {
             default:
                 return {backgroundColor: Color.color_dark_gray}
         }
-    }
+    };
+
+    const sumWeights = (order: Order) => {
+        return order.weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
+    };
 
 
     return (
@@ -186,7 +190,7 @@ const ScrapDealerAvailableOrders = () => {
                                         <View style={[styles.orderBottomContainer]}>
                                             <View style={[styles.orderInfoContainer]}>
                                                <Text style={[styles.orderInfo]} > {formatDate(order.scheduledDateTime)}</Text>
-                                               <Text style={[styles.orderInfo]} > {order.weights[0].toString()} kg</Text>
+                                               <Text style={[styles.orderInfo]} > {sumWeights(order)} kg</Text>
                                                <Text style={[styles.orderInfo]} > {order.address}</Text>
                                             </View>
                                             <View style={[styles.statusContainer, getStatusStyle(order.status)]}>
