@@ -21,6 +21,7 @@ import { Order } from "../Types";
 import { useOrder } from "../OrderContext";
 import {StackNavigationProp} from "@react-navigation/stack";
 import NavBar from "../components/NavBar";
+import {useScrapDealer} from "../ScrapDealerContext";
 
 type orderName = {
     id: string,
@@ -32,7 +33,7 @@ type orderStatus = {
     display: string,
 }
 
-const ScrapDealerAvailableOrders = () => {
+const ScrapDealerOngoingOrders = () => {
 
     const isFocused = useIsFocused();
 
@@ -43,6 +44,8 @@ const ScrapDealerAvailableOrders = () => {
     const [orderNames, setOrderNames] = useState<orderName[]>([]);
 
     const { order, setOrder } = useOrder();
+
+    const { scrapDealer, setScrapDealer } = useScrapDealer();
 
     const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
@@ -67,9 +70,10 @@ const ScrapDealerAvailableOrders = () => {
                     address: doc.data().Address,
                     notes: doc.data().Notes
                 }) as Order);
-                const filteredDocs = mappedDocs.filter((doc) => doc.status === "CREATED");
-                setOrders(filteredDocs);
-                fetchNames(filteredDocs);
+                const filteredDocs = mappedDocs.filter(doc => doc.scrapDealerId === scrapDealer.id);
+                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED");
+                setOrders(ongoing_orders);
+                fetchNames(ongoing_orders);
                 setLoading(false);
             },
             (error) => {
@@ -100,33 +104,9 @@ const ScrapDealerAvailableOrders = () => {
     const orderSelected = (order: Order) => {
 
         setOrder(order);
-        navigation.navigate("ScrapDealerAcceptOrder");
+        navigation.navigate("ScrapDealerOrderType");
 
     };
-
-    const statusDisplay: orderStatus[] = [
-        {
-            original: "CREATED",
-            display: "Created"
-        },
-        {
-            original: "COMPLETED",
-            display: "Completed"
-        },
-        {
-            original: "CANCELED",
-            display: "Canceled"
-        },
-        {
-            original: "SCHEDULED",
-            display: "Scheduled"
-        },
-        {
-            original: "IN PROGRESS",
-            display: "In progress"
-        },
-    ]
-
 
     const formatDate = (date: Date) => {
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -142,27 +122,6 @@ const ScrapDealerAvailableOrders = () => {
         return `${dayName} ${monthName} ${day < 10 ? `0${day}` : day} ${year} ${hours}:${minutes}`;
     }
 
-    const getStatusStyle = (status: string) => {
-        switch(status){
-            case 'CREATED':
-                return {backgroundColor: Color.color_dark_gray}
-            case 'IN PROGRESS':
-                return {backgroundColor: Color.color_light_purple}
-            case 'SCHEDULED':
-                return {backgroundColor: Color.color}
-            case 'CANCELED':
-                return {backgroundColor: Color.color_dark_purple}
-            case 'COMPLETED':
-                return {backgroundColor: Color.color_dark_gray}
-            default:
-                return {backgroundColor: Color.color_dark_gray}
-        }
-    };
-
-    const sumWeights = (order: Order) => {
-        return order.weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
-    };
-
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
@@ -170,7 +129,7 @@ const ScrapDealerAvailableOrders = () => {
                 <BackButton/>
 
                 <PageHeader
-                    title="Available Orders"
+                    title="Ongoing Orders"
                     subtitle=""
                 />
                 <ScrollView style={styles.itemsContainer}
@@ -189,12 +148,9 @@ const ScrapDealerAvailableOrders = () => {
                                         <View style={styles.orderDivider} />
                                         <View style={[styles.orderBottomContainer]}>
                                             <View style={[styles.orderInfoContainer]}>
-                                               <Text style={[styles.orderInfo]} > {formatDate(order.scheduledDateTime)}</Text>
-                                               <Text style={[styles.orderInfo]} > {sumWeights(order)} kg</Text>
-                                               <Text style={[styles.orderInfo]} > {order.address}</Text>
-                                            </View>
-                                            <View style={[styles.statusContainer, getStatusStyle(order.status)]}>
-                                                <Text style={styles.status}>{statusDisplay.find(status => status.original === order.status)?.display || 'No Status'}</Text>
+                                                <Text style={[styles.orderInfo]} > {formatDate(order.scheduledDateTime)}</Text>
+                                                <Text style={[styles.orderInfo]} > {order.weights[0].toString()} kg</Text>
+                                                <Text style={[styles.orderInfo]} > {order.address}</Text>
                                             </View>
                                         </View>
                                     </View>
@@ -269,15 +225,6 @@ const styles = StyleSheet.create({
         width: "60%",
         paddingLeft: "3%",
     },
-    statusContainer: {
-        justifyContent: "center",
-        alignItems: "flex-end",
-        width: "35%",
-        marginLeft: "4%",
-        marginTop: "2%",
-        borderRadius: 10,
-        height: "70%",
-    },
     orderDivider: {
         height: 2,
         width: '90%', // You can adjust the width as you like
@@ -285,15 +232,10 @@ const styles = StyleSheet.create({
         backgroundColor: Color.color,
         marginVertical: 10,
     },
-    status: {
-        color: Color.color1,
-        fontFamily: FontFamily.montserratRegular,
-        alignSelf: "center",
-    },
     name: {
         color: Color.color1,
         fontFamily: FontFamily.montserratBold,
     },
 });
 
-export default ScrapDealerAvailableOrders;
+export default ScrapDealerOngoingOrders;
