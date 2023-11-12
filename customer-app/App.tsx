@@ -13,6 +13,9 @@ import CustomerSignUp from "./screens/CustomerSignUp";
 import CustomerNumberVerification from "./screens/CustomerNumberVerification";
 import {UserProvider} from "./UserContext";
 import CustomerDashboard from "./screens/CustomerDashboard";
+import CustomerProfile from "./screens/CustomerProfile";
+import CustomerOngoingOrders from "./screens/CustomerOngoingOrders";
+import CustomerPastOrders from "./screens/CustomerPastOrders";
 
 
 type RootStackParamList = {
@@ -25,6 +28,9 @@ type RootStackParamList = {
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
   CustomerDashboard: undefined;
+  CustomerProfile: undefined;
+  CustomerPastOrders: undefined;
+  CustomerOngoingOrders: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -65,6 +71,18 @@ const AppStack = () => (
           <Stack.Screen
               name="CustomerDashboard"
               component={CustomerDashboard}
+          />
+          <Stack.Screen
+              name="CustomerOngoingOrders"
+              component={CustomerOngoingOrders}
+          />
+          <Stack.Screen
+              name="CustomerPastOrders"
+              component={CustomerPastOrders}
+          />
+          <Stack.Screen
+              name="CustomerProfile"
+              component={CustomerProfile}
           />
 
         </Stack.Navigator>

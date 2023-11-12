@@ -16,6 +16,7 @@ export const Color = {
   colorWhite: "#fff",
   color1: "#0f5b28",
   color: "#bffa01",
+  color_light_gray: "#f0f0f0",
 };
 /* Paddings */
 export const Padding = {

@@ -1,4 +1,5 @@
 type Order = {
+
     id?: string,
     dateCreated: Date | undefined,        //Get date/time when submit is clicked
     dateLastUpdated: Date | undefined,    //Set to same dateCreated
@@ -12,7 +13,6 @@ type Order = {
     weights: number[],
     address: string,
     notes: string
-
 }
 
 type User = {
