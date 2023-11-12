@@ -12,6 +12,7 @@ type RootStackParamList = {
     CustomerItemSelection: undefined;
     CustomerNumberVerification:undefined;
     CustomerDashboard: undefined;
+    CustomerProfile: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerDashboard'>;
 
@@ -32,7 +33,7 @@ const NavBar: React.FC = () => {
                     <Text style={[styles.navbarText]}>Blog</Text>
                 </View>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('CustomerDashboard')}>
+            <Pressable onPress={() => navigation.navigate('CustomerProfile')}>
                 <View style={[styles.navbarButton]}>
                     <Image style={[styles.image]} source={require('../assets/profile-icon.png')}></Image>
                     <Text style={[styles.navbarText]}>Profile</Text>
