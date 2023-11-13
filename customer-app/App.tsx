@@ -1,10 +1,9 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, RouteProp } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
 import CustomerWelcome from "./screens/CustomerWelcome";
 import CustomerPickupConfirmed from "./screens/CustomerPickupConfirmed";
-import CustomerItemWeight from "./screens/CustomerItemWeight";
 import CustomerItemSelection from "./screens/CustomerItemSelection";
 import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
 import { OrderProvider } from './OrderContext';
@@ -13,6 +12,7 @@ import CustomerSignUp from "./screens/CustomerSignUp";
 import CustomerNumberVerification from "./screens/CustomerNumberVerification";
 import {UserProvider} from "./UserContext";
 import CustomerDashboard from "./screens/CustomerDashboard";
+import CustomerAddressScreen from "./screens/CustomerAddressScreen";
 import CustomerProfile from "./screens/CustomerProfile";
 import CustomerOngoingOrders from "./screens/CustomerOngoingOrders";
 import CustomerPastOrders from "./screens/CustomerPastOrders";
@@ -21,17 +21,18 @@ import CustomerPastOrders from "./screens/CustomerPastOrders";
 type RootStackParamList = {
   CustomerWelcome: undefined;
   CustomerPickupConfirmed: undefined;
-  CustomerItemWeight: undefined;
   CustomerItemSelection: undefined;
-  CustomerPickupDateTime: undefined;
+  CustomerPickupDateTime: { address: string };
   CustomerNumberVerification: undefined;
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
   CustomerDashboard: undefined;
+  CustomerAddressScreen: undefined;
   CustomerProfile: undefined;
   CustomerPastOrders: undefined;
   CustomerOngoingOrders: undefined;
 };
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -47,7 +48,6 @@ const AppStack = () => (
               name="CustomerPickupConfirmed"
               component={CustomerPickupConfirmed}
           />
-          <Stack.Screen name="CustomerItemWeight" component={CustomerItemWeight} />
           <Stack.Screen
               name="CustomerItemSelection"
               component={CustomerItemSelection}
@@ -73,6 +73,9 @@ const AppStack = () => (
               component={CustomerDashboard}
           />
           <Stack.Screen
+              name="CustomerAddressScreen"
+              component={CustomerAddressScreen} 
+          />
               name="CustomerOngoingOrders"
               component={CustomerOngoingOrders}
           />
