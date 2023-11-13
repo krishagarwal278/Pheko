@@ -7,12 +7,13 @@ import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
 type RootStackParamList = {
   CustomerWelcome: undefined;
   CustomerPickupConfirmed: undefined;
-  CustomerItemWeight: undefined;
   CustomerItemSelection: undefined;
   CustomerPickupDateTime: undefined;
   CustomerNumberVerification: undefined;
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
+  CustomerDashboard: undefined;
+  CustomerAddressScreen: undefined;
 };
 
 interface ContinueButtonProps {

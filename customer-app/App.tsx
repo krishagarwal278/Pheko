@@ -1,37 +1,38 @@
-import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useFonts } from "expo-font";
-import CustomerWelcome from "./screens/CustomerWelcome";
-import CustomerPickupConfirmed from "./screens/CustomerPickupConfirmed";
-import CustomerItemWeight from "./screens/CustomerItemWeight";
-import CustomerItemSelection from "./screens/CustomerItemSelection";
-import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
+import React from "react";
 import { OrderProvider } from './OrderContext';
-import CustomerOTPVerification from "./screens/CustomerOTPVerification";
-import CustomerSignUp from "./screens/CustomerSignUp";
-import CustomerNumberVerification from "./screens/CustomerNumberVerification";
-import {UserProvider} from "./UserContext";
+import { UserProvider } from "./UserContext";
+import CustomerAddressScreen from "./screens/CustomerAddressScreen";
 import CustomerDashboard from "./screens/CustomerDashboard";
-import CustomerProfile from "./screens/CustomerProfile";
+import CustomerItemSelection from "./screens/CustomerItemSelection";
+import CustomerNumberVerification from "./screens/CustomerNumberVerification";
+import CustomerOTPVerification from "./screens/CustomerOTPVerification";
 import CustomerOngoingOrders from "./screens/CustomerOngoingOrders";
 import CustomerPastOrders from "./screens/CustomerPastOrders";
+import CustomerPickupConfirmed from "./screens/CustomerPickupConfirmed";
+import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
+import CustomerProfile from "./screens/CustomerProfile";
+import CustomerSignUp from "./screens/CustomerSignUp";
+import CustomerWelcome from "./screens/CustomerWelcome";
 
 
 type RootStackParamList = {
   CustomerWelcome: undefined;
   CustomerPickupConfirmed: undefined;
-  CustomerItemWeight: undefined;
   CustomerItemSelection: undefined;
-  CustomerPickupDateTime: undefined;
+  CustomerPickupDateTime: { address: string };
   CustomerNumberVerification: undefined;
   CustomerOTPVerification: undefined;
   CustomerSignUp: undefined;
   CustomerDashboard: undefined;
+  CustomerAddressScreen: undefined;
   CustomerProfile: undefined;
   CustomerPastOrders: undefined;
   CustomerOngoingOrders: undefined;
 };
+
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -47,7 +48,6 @@ const AppStack = () => (
               name="CustomerPickupConfirmed"
               component={CustomerPickupConfirmed}
           />
-          <Stack.Screen name="CustomerItemWeight" component={CustomerItemWeight} />
           <Stack.Screen
               name="CustomerItemSelection"
               component={CustomerItemSelection}
@@ -71,6 +71,10 @@ const AppStack = () => (
           <Stack.Screen
               name="CustomerDashboard"
               component={CustomerDashboard}
+          />
+          <Stack.Screen
+              name="CustomerAddressScreen"
+              component={CustomerAddressScreen} 
           />
           <Stack.Screen
               name="CustomerOngoingOrders"
