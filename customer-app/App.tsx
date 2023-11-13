@@ -13,6 +13,9 @@ import CustomerNumberVerification from "./screens/CustomerNumberVerification";
 import {UserProvider} from "./UserContext";
 import CustomerDashboard from "./screens/CustomerDashboard";
 import CustomerAddressScreen from "./screens/CustomerAddressScreen";
+import CustomerProfile from "./screens/CustomerProfile";
+import CustomerOngoingOrders from "./screens/CustomerOngoingOrders";
+import CustomerPastOrders from "./screens/CustomerPastOrders";
 
 
 type RootStackParamList = {
@@ -25,6 +28,9 @@ type RootStackParamList = {
   CustomerSignUp: undefined;
   CustomerDashboard: undefined;
   CustomerAddressScreen: undefined;
+  CustomerProfile: undefined;
+  CustomerPastOrders: undefined;
+  CustomerOngoingOrders: undefined;
 };
 
 
@@ -70,6 +76,18 @@ const AppStack = () => (
               name="CustomerAddressScreen"
               component={CustomerAddressScreen} 
           />
+              name="CustomerOngoingOrders"
+              component={CustomerOngoingOrders}
+          />
+          <Stack.Screen
+              name="CustomerPastOrders"
+              component={CustomerPastOrders}
+          />
+          <Stack.Screen
+              name="CustomerProfile"
+              component={CustomerProfile}
+          />
+
         </Stack.Navigator>
       </UserProvider>
     </OrderProvider>

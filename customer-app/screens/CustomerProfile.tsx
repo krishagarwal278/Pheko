@@ -10,29 +10,28 @@ import PageHeader from "../components/PageHeader";
 import NavBar from "../components/NavBar";
 import { collection, getDocs } from "firebase/firestore";
 import {db} from "../Firebase";
-import { useScrapDealer } from "../ScrapDealerContext";
+import {useUser} from "../UserContext";
 
 type RootStackParamList = {
     SignUp: undefined;
     NextPage: undefined;  // Name of the next page/screen
-    ScrapDealerAvailableOrders: undefined;
-    ScrapDealerNumberVerification:undefined;
-    ScrapDealerDashboard: undefined;
-    ScrapDealerProfile: undefined;
-    ScrapDealerOngoingOrders: undefined;
-    ScrapDealerPastOrders: undefined;
+    CustomerItemSelection: undefined;
+    CustomerNumberVerification:undefined;
+    CustomerDashboard: undefined;
+    CustomerProfile: undefined;
+    CustomerOngoingOrders: undefined;
+    CustomerPastOrders: undefined;
 };
-type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerProfile'>;
+type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerProfile'>;
 
 const ScrapDealerProfile: React.FC = () => {
 
     const [loading, setLoading] = useState(true);
     const [ongoingOrders, setOngoingOrders] = useState(0);
     const [pastOrders, setPastOrders] = useState(0);
+    const { user, setUser } = useUser();
 
     const isFocused = useIsFocused();
-
-    const { scrapDealer, setScrapDealer } = useScrapDealer();
 
     const navigation = useNavigation<NavigationProps>();
 
@@ -46,7 +45,7 @@ const ScrapDealerProfile: React.FC = () => {
                     id: doc.id,
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
-                const filteredDocs = documents.filter(doc => doc.ScrapDealerId === scrapDealer.id);    //Set to user Id from state
+                const filteredDocs = documents.filter(doc => doc.UserId === user.id);    //Set to user Id from state
                 console.log(filteredDocs);
                 //Set past orders and ongoing orders
                 const ongoing_orders = filteredDocs.filter((doc) => doc.Status === "SCHEDULED");
@@ -71,35 +70,35 @@ const ScrapDealerProfile: React.FC = () => {
             <View style={styles.container}>
                 <View style={[styles.topContainer]}>
                     <PageHeader
-                        title={scrapDealer.firstName + " "+ scrapDealer.lastName.substring(0,1).toUpperCase() + "."}
+                        title={user.firstName + " "+ user.lastName.substring(0,1).toUpperCase() + "."}
                         subtitle=""/>
                     <Image style={styles.image} source={require('../assets/profile-pic.png')}></Image>
                 </View>
                 <View style={[styles.OrderStatsContainer]}>
-                        <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('ScrapDealerOngoingOrders')}>
-                            {loading ? (
-                                <ActivityIndicator size="large" color={Color.color1} />
-                            ) : (
-                                <>
-                                    <View style={styles.ongoingOrdersContainer}>
-                                        <Text style={[styles.NumOrders]} >{ongoingOrders}</Text>
-                                        <Text style={[styles.OrderStatsText]} >Ongoing Orders</Text>
-                                    </View>
-                                </>
-                            )}
-                        </Pressable>
-                        <Pressable style={[styles.PastOrder]} onPress={() => navigation.navigate('ScrapDealerPastOrders')}>
-                            {loading ? (
-                                <ActivityIndicator size="large" color={Color.color1} />
-                            ) : (
-                                <>
-                                    <View style={styles.pastOrdersContainer}>
-                                        <Text style={[styles.NumOrders]} >{pastOrders}</Text>
-                                        <Text style={[styles.OrderStatsText]} > Past Orders</Text>
-                                    </View>
-                                </>
-                            )}
-                        </Pressable>
+                    <Pressable style={[styles.OngoingOrder]} onPress={() => navigation.navigate('CustomerOngoingOrders')}>
+                        {loading ? (
+                            <ActivityIndicator size="large" color={Color.color1} />
+                        ) : (
+                            <>
+                                <View style={styles.ongoingOrdersContainer}>
+                                    <Text style={[styles.NumOrders]} >{ongoingOrders}</Text>
+                                    <Text style={[styles.OrderStatsText]} >Ongoing Orders</Text>
+                                </View>
+                            </>
+                        )}
+                    </Pressable>
+                    <Pressable style={[styles.PastOrder]} onPress={() => navigation.navigate('CustomerPastOrders')}>
+                        {loading ? (
+                            <ActivityIndicator size="large" color={Color.color1} />
+                        ) : (
+                            <>
+                                <View style={styles.pastOrdersContainer}>
+                                    <Text style={[styles.NumOrders]} >{pastOrders}</Text>
+                                    <Text style={[styles.OrderStatsText]} > Past Orders</Text>
+                                </View>
+                            </>
+                        )}
+                    </Pressable>
                 </View>
                 <View style={[styles.menuItems]}>
                     <Pressable style={[styles.menuItem]} >
@@ -171,7 +170,7 @@ const styles = StyleSheet.create({
     OngoingOrder:{
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Color.color_light_purple,
+        backgroundColor: Color.color,
         padding: 20,
         borderRadius: 15,
         marginRight: "5%",
@@ -179,13 +178,13 @@ const styles = StyleSheet.create({
     PastOrder:{
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: Color.color_light_gray,
+        backgroundColor: Color.color,
         padding: 20,
         borderRadius: 15,
     },
     Separator:{
         height: 2,
-        backgroundColor: Color.color_light_purple,
+        backgroundColor: Color.color,
     },
     OrderStatsText: {
         color: Color.color1,
