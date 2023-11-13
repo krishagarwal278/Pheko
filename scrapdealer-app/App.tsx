@@ -11,6 +11,9 @@ import ScrapDealerAvailableOrders from "./screens/ScrapDealerAvailableOrders";
 import {ScrapDealerProvider} from "./ScrapDealerContext";
 import {OrderProvider} from "./OrderContext";
 import ScrapDealerProfile from "./screens/ScrapDealerProfile"
+import ScrapDealerAcceptOrder from "./screens/ScrapDealerAcceptOrder";
+import ScrapDealerOngoingOrders from "./screens/ScrapDealerOngoingOrders";
+import ScrapDealerPastOrders from "./screens/ScrapDealerPastOrders";
 
 type RootStackParamList = {
   ScrapDealerWelcome: undefined;
@@ -20,6 +23,10 @@ type RootStackParamList = {
   ScrapdealerDashboard: undefined;
   ScrapDealerAvailableOrders: undefined;
   ScrapDealerProfile: undefined;
+  ScrapDealerAcceptOrder: undefined;
+  ScrapDealerOngoingOrders: undefined;
+  ScrapDealerPastOrders: undefined;
+
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -56,7 +63,18 @@ const AppStack = () => (
           name="ScrapDealerProfile"
           component={ScrapDealerProfile}
       />
-
+      <Stack.Screen
+          name="ScrapDealerAcceptOrder"
+          component={ScrapDealerAcceptOrder}
+      />
+      <Stack.Screen
+          name="ScrapDealerPastOrders"
+          component={ScrapDealerPastOrders}
+      />
+      <Stack.Screen
+          name="ScrapDealerOngoingOrders"
+          component={ScrapDealerOngoingOrders}
+      />
     </Stack.Navigator>
   </OrderProvider>
 </ScrapDealerProvider>
