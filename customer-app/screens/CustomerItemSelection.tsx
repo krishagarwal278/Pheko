@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   Pressable,
@@ -11,10 +10,10 @@ import {
   View,
 } from "react-native";
 import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
+import { useOrder } from "../OrderContext";
 import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
-import { OrderContext, useOrder } from '../OrderContext';
 
 interface SelectedItem {
   key: string;
@@ -23,7 +22,7 @@ interface SelectedItem {
 
 const CustomerItemSelection = () => {
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]);
-  const { order, setOrder } = useOrder();
+  const { setOrder } = useOrder();
 
   const items = [
     {
@@ -59,37 +58,35 @@ const CustomerItemSelection = () => {
   ];
 
   const handleSelectItem = (itemKey: string) => {
-    setSelectedItems(prevItems => {
-      const foundItem = prevItems.find(item => item.key === itemKey);
+    setSelectedItems((prevItems) => {
+      const foundItem = prevItems.find((item) => item.key === itemKey);
       if (foundItem) {
-        return prevItems.filter(item => item.key !== itemKey); // Deselect
+        return prevItems.filter((item) => item.key !== itemKey); // Deselect
       } else {
-        return [...prevItems, { key: itemKey, weight: '0' }]; // Select new item
+        return [...prevItems, { key: itemKey, weight: "0" }]; // Select new item
       }
     });
   };
 
   const handleWeightChange = (itemKey: string, weight: string) => {
-    setSelectedItems(prevItems =>
-      prevItems.map(item =>
+    setSelectedItems((prevItems) =>
+      prevItems.map((item) =>
         item.key === itemKey ? { ...item, weight } : item
       )
     );
   };
 
-
   const handleSubmit = () => {
-  setOrder(prevOrder => ({
-    ...prevOrder,
-    items: selectedItems
-      .filter(item => parseFloat(item.weight) > 0)
-      .map(item => item.key),
-    weights: selectedItems
-      .filter(item => parseFloat(item.weight) > 0)
-      .map(item => parseFloat(item.weight)),
-  }));
-};
-
+    setOrder((prevOrder) => ({
+      ...prevOrder,
+      items: selectedItems
+        .filter((item) => parseFloat(item.weight) > 0)
+        .map((item) => item.key),
+      weights: selectedItems
+        .filter((item) => parseFloat(item.weight) > 0)
+        .map((item) => parseFloat(item.weight)),
+    }));
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
@@ -110,17 +107,21 @@ const CustomerItemSelection = () => {
               <Pressable
                 style={[
                   styles.itemButton,
-                  selectedItems.find(i => i.key === item.key) ? styles.selectedItemStyle : null,
+                  selectedItems.find((i) => i.key === item.key)
+                    ? styles.selectedItemStyle
+                    : null,
                 ]}
                 onPress={() => handleSelectItem(item.key)}
               >
                 <Image style={styles.itemIcon} source={item.icon} />
                 <Text style={styles.itemText}>{item.label}</Text>
               </Pressable>
-              {selectedItems.find(i => i.key === item.key) && (
+              {selectedItems.find((i) => i.key === item.key) && (
                 <TextInput
                   style={styles.weightInput}
-                  value={selectedItems.find(i => i.key === item.key)?.weight.toString()}
+                  value={selectedItems
+                    .find((i) => i.key === item.key)
+                    ?.weight.toString()}
                   onChangeText={(text) => handleWeightChange(item.key, text)}
                   keyboardType="numeric"
                   placeholder="Weight (kg)"
@@ -131,7 +132,10 @@ const CustomerItemSelection = () => {
         </ScrollView>
 
         <View style={styles.bottomContainer}>
-          <ContinueButton destination="CustomerAddressScreen" onPressAdditional={handleSubmit} />
+          <ContinueButton
+            destination="CustomerAddressScreen"
+            onPressAdditional={handleSubmit}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -143,13 +147,15 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: Padding.p_11xl,
   },
-  backButton: {
-    marginBottom: 10,
+  itemsContainer: {
+    flexGrow: 1,
+    marginBottom: 90,
   },
-  backButtonText: {
-    fontSize: FontSize.size_base,
-    color: Color.color1,
-    fontFamily: FontFamily.montserratRegular,
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
   },
   itemButton: {
     flexDirection: "row",
@@ -157,16 +163,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingLeft: 15,
     borderRadius: Border.br_6xl,
-    marginBottom: 10,
     borderWidth: 2,
     borderColor: Color.color,
+    flex: 1, // Make buttons stretch to fill row
+    marginRight: 15, // Spacing between button and input
   },
   selectedItemStyle: {
     backgroundColor: "rgba(0,0,0,0.1)",
-  },
-  itemsContainer: {
-    flexGrow: 1,
-    marginBottom: 90,
   },
   itemIcon: {
     width: 25,
@@ -178,11 +181,20 @@ const styles = StyleSheet.create({
     color: Color.color1,
     fontFamily: FontFamily.montserratMedium,
   },
+  weightInput: {
+    borderWidth: 2,
+    borderColor: Color.color,
+    borderRadius: Border.br_6xl,
+    padding: 10,
+    width: 100, // Fixed width for consistency
+    textAlign: "center",
+  },
   bottomContainer: {
     flex: 1,
     justifyContent: "flex-end",
     marginBottom: 20,
   },
+
   continueButton: {
     height: 86,
     borderRadius: Border.br_6xl,
@@ -210,7 +222,7 @@ const styles = StyleSheet.create({
     padding: 10,
     width: 100,
     marginRight: 15,
-    textAlign: 'center'
+    textAlign: "center",
   },
   // Add or modify styles as needed
 });
