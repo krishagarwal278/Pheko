@@ -71,7 +71,7 @@ const ScrapDealerOngoingOrders = () => {
                     notes: doc.data().Notes
                 }) as Order);
                 const filteredDocs = mappedDocs.filter(doc => doc.userId === user.id);
-                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED");
+                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED" || doc.status === "CREATED");
                 setOrders(ongoing_orders);
                 fetchNames(ongoing_orders);
                 setLoading(false);
