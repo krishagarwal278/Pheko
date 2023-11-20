@@ -12,10 +12,10 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { auth, firebaseConfig } from "../Firebase";
-import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
-import BackButton from "../components/BackButton";
-import PageHeader from "../components/PageHeader";
+import { auth, firebaseConfig } from "../../Firebase";
+import { Border, Color, FontFamily, FontSize, Padding } from "../../GlobalStyles";
+import BackButton from "../../components/BackButton";
+import PageHeader from "../../components/PageHeader";
 
 const CustomerNumberVerification: React.FunctionComponent = () => {
   const navigation = useNavigation<any>();

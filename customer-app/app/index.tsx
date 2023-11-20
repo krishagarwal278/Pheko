@@ -2,6 +2,8 @@ import * as React from "react";
 import { Image, StyleSheet, View, SafeAreaView } from "react-native";
 import { Color, Padding, FontFamily } from "../GlobalStyles";
 import ContinueButton from "../components/ContinueButton";
+import { Link } from "expo-router";
+import { Pressable, Text } from "react-native";
 
 const CustomerWelcome = () => {
   return (
@@ -17,7 +19,7 @@ const CustomerWelcome = () => {
 
         <View style={styles.bottomContainer}>
           <ContinueButton
-            destination="CustomerNumberVerification"
+            destination="/(auth)/CustomerNumberVerification"
             buttonText="Get Started"
             textStyle={{
               fontWeight: "700",
@@ -26,6 +28,11 @@ const CustomerWelcome = () => {
           />
         </View>
       </View>
+      <Link href="/(auth)/CustomerNumberVerification" asChild>
+        <Pressable>
+          <Text>Navigate to Customer Number Verification</Text>
+        </Pressable>
+      </Link>
     </SafeAreaView>
   );
 };

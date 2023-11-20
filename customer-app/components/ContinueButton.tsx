@@ -1,49 +1,23 @@
 import React from "react";
-import { Pressable, Text, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { FontSize, Color, FontFamily, Border } from "../GlobalStyles";
-
-type RootStackParamList = {
-  CustomerWelcome: undefined;
-  CustomerPickupConfirmed: undefined;
-  CustomerItemSelection: undefined;
-  CustomerPickupDateTime: undefined;
-  CustomerNumberVerification: undefined;
-  CustomerOTPVerification: undefined;
-  CustomerSignUp: undefined;
-  CustomerDashboard: undefined;
-  CustomerAddressScreen: undefined;
-  CustomerOngoingOrders: undefined;
-};
+import { Text, StyleSheet } from "react-native";
+import { Link } from "expo-router";
+import { FontSize, Color, FontFamily, Border } from "./../GlobalStyles";
 
 interface ContinueButtonProps {
-  destination: keyof RootStackParamList;
+  destination: string;
   buttonText?: string;
-  buttonStyle?: Object;
   textStyle?: Object;
-  onPressAdditional?: () => void;
 }
 
 const ContinueButton: React.FC<ContinueButtonProps> = ({
   destination,
   buttonText = "Continue",
-  buttonStyle,
   textStyle,
-                                                         onPressAdditional
 }) => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
   return (
-    <Pressable
-      style={[styles.continueButton, buttonStyle]}
-      onPress={() => {
-        navigation.navigate(destination);
-        onPressAdditional && onPressAdditional();
-      }}
-    >
+    <Link href={destination} style={styles.continueButton} asChild>
       <Text style={[styles.continueText, textStyle]}>{buttonText}</Text>
-    </Pressable>
+    </Link>
   );
 };
 
