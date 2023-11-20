@@ -71,7 +71,7 @@ const ScrapDealerOngoingOrders = () => {
                     notes: doc.data().Notes
                 }) as Order);
                 const filteredDocs = mappedDocs.filter(doc => doc.userId === user.id);
-                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED");
+                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED" || doc.status === "CREATED");
                 setOrders(ongoing_orders);
                 fetchNames(ongoing_orders);
                 setLoading(false);
@@ -109,7 +109,7 @@ const ScrapDealerOngoingOrders = () => {
     const orderSelected = (order: Order) => {
 
         setOrder(order);
-        navigation.navigate("CustomerOrderType");
+        navigation.navigate("CustomerOngoingOrderDetails");
 
     };
 
@@ -130,6 +130,9 @@ const ScrapDealerOngoingOrders = () => {
         return '';
     }
 
+    const sumWeights = (order: Order) => {
+        return order.weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
+    };
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
@@ -157,7 +160,7 @@ const ScrapDealerOngoingOrders = () => {
                                         <View style={[styles.orderBottomContainer]}>
                                             <View style={[styles.orderInfoContainer]}>
                                                 <Text style={[styles.orderInfo]} > {formatDate(order.scheduledDateTime)}</Text>
-                                                <Text style={[styles.orderInfo]} > {order.weights[0].toString()} kg</Text>
+                                                <Text style={[styles.orderInfo]} > {sumWeights(order)} kg</Text>
                                                 <Text style={[styles.orderInfo]} > {order.address}</Text>
                                             </View>
                                         </View>

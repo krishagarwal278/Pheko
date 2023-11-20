@@ -9,6 +9,7 @@ type RootStackParamList = {
   ScrapDealerNumberVerification: undefined;
   ScrapDealerOTPVerification: undefined;
   ScrapDealerSignUp: undefined;
+  ScrapDealerOngoingOrders: undefined;
 };
 
 interface ContinueButtonProps {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   continueButton: {
     height: 86,
     borderRadius: Border.br_6xl,
-    backgroundColor: Color.color,
+    backgroundColor: Color.color_light_purple,
     justifyContent: "center",
     alignItems: "center",
     width: "100%",

@@ -16,6 +16,8 @@ import CustomerPickupDateTime from "./screens/CustomerPickupDateTime";
 import CustomerProfile from "./screens/CustomerProfile";
 import CustomerSignUp from "./screens/CustomerSignUp";
 import CustomerWelcome from "./screens/CustomerWelcome";
+import CustomerOngoingOrderDetails from "./screens/CustomerOngoingOrderDetails";
+import CustomerOrderReschedule from "./screens/CustomerOrderReschedule";
 
 
 type RootStackParamList = {
@@ -31,6 +33,8 @@ type RootStackParamList = {
   CustomerProfile: undefined;
   CustomerPastOrders: undefined;
   CustomerOngoingOrders: undefined;
+  CustomerOngoingOrderDetails: undefined;
+  CustomerOrderReschedule: undefined;
 };
 
 
@@ -88,7 +92,14 @@ const AppStack = () => (
               name="CustomerProfile"
               component={CustomerProfile}
           />
-
+          <Stack.Screen
+              name="CustomerOngoingOrderDetails"
+              component={CustomerOngoingOrderDetails}
+          />
+          <Stack.Screen
+              name="CustomerOrderReschedule"
+              component={CustomerOrderReschedule}
+          />
         </Stack.Navigator>
       </UserProvider>
     </OrderProvider>
