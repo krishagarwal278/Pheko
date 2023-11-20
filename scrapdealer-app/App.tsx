@@ -14,6 +14,9 @@ import ScrapDealerProfile from "./screens/ScrapDealerProfile"
 import ScrapDealerAcceptOrder from "./screens/ScrapDealerAcceptOrder";
 import ScrapDealerOngoingOrders from "./screens/ScrapDealerOngoingOrders";
 import ScrapDealerPastOrders from "./screens/ScrapDealerPastOrders";
+import ScrapDealerCommunity from "./screens/ScrapDealerCommunity";
+import ScrapDealerGetSupport from "./screens/ScrapDealerGetSupport";
+
 
 type RootStackParamList = {
   ScrapDealerWelcome: undefined;
@@ -26,6 +29,8 @@ type RootStackParamList = {
   ScrapDealerAcceptOrder: undefined;
   ScrapDealerOngoingOrders: undefined;
   ScrapDealerPastOrders: undefined;
+  ScrapDealerCommunity: undefined;
+  ScrapDealerGetSupport: undefined;
 
 };
 
@@ -64,6 +69,10 @@ const AppStack = () => (
           component={ScrapDealerProfile}
       />
       <Stack.Screen
+          name="ScrapDealerCommunity"
+          component={ScrapDealerCommunity}
+      />
+      <Stack.Screen
           name="ScrapDealerAcceptOrder"
           component={ScrapDealerAcceptOrder}
       />
@@ -74,6 +83,10 @@ const AppStack = () => (
       <Stack.Screen
           name="ScrapDealerOngoingOrders"
           component={ScrapDealerOngoingOrders}
+      />
+      <Stack.Screen
+          name="ScrapDealerGetSupport"
+          component={ScrapDealerGetSupport}
       />
     </Stack.Navigator>
   </OrderProvider>
