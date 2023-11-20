@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         justifyContent: "space-between",
         flexDirection: "row",
+        alignItems: "center",
     },
     orderDetailsContainer: {
         width: "100%",
@@ -229,10 +230,19 @@ const styles = StyleSheet.create({
         color: Color.color1,
     },
     rescheduleButton: {
-        
+        justifyContent: "center",
+        height: "30%",
+        paddingRight: 15,
+        paddingLeft: 15,
+        paddingTop: 5,
+        paddingBottom: 5,
+        backgroundColor: Color.color_light_gray,
+        borderRadius: 20,
     },
     rescheduleButtonText: {
-
+        fontFamily: FontFamily.montserratRegular,
+        color: Color.color_dark_purple,
+        fontSize: FontSize.size_small,
     }
 });
 

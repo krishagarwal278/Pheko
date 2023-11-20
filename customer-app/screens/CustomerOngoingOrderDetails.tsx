@@ -120,7 +120,7 @@ const CustomerOngoingOrderDetails = () => {
                 </View>
                 <View style={styles.buttonContainer}>
                     <Pressable style={styles.rescheduleOrder} onPress={() => handleRescheduleOrder()}>
-                        <Text style={styles.rescheduleOrderText}>Complete</Text>
+                        <Text style={styles.rescheduleOrderText}>Reschedule</Text>
                     </Pressable>
                     <Pressable style={styles.cancelOrder} onPress={() => handleCancelOrder()}>
                         <Text style={styles.cancelOrderText}>Cancel</Text>

@@ -71,7 +71,7 @@ const ScrapDealerPastOrders = () => {
                     notes: doc.data().Notes
                 }) as Order);
                 const filteredDocs = mappedDocs.filter(doc => doc.userId === user.id);
-                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "COMPLETED");
+                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "COMPLETED" || doc.status === "CANCELLED");
                 setOrders(ongoing_orders);
                 fetchNames(ongoing_orders);
                 setLoading(false);
