@@ -85,14 +85,17 @@ const ScrapDealerOngoingOrders = () => {
         const fetchNames = async (docs: Order[]) => {
             try {
                 const orderNamesPromises = docs.map(async (doc_i) => {
+                    if(doc_i.status === 'CREATED'){
+                        return { id: doc_i.id, name: ''} as orderName;
+                    }
                     const docRef = doc(db, "ScrapDealers", doc_i.scrapDealerId);
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
                         // Use optional chaining to handle undefined `firstName`
                         const name = docSnap.data()?.firstName;
-                        return { id: doc_i.id, name: name || 'No Name' } as orderName; // Default to 'No Name' if `firstName` is undefined
+                        return { id: doc_i.id, name: name || '' } as orderName; // Default to '' if `firstName` is undefined
                     } else {
-                        return { id: doc_i.id, name: 'No Name' } as orderName;
+                        return { id: doc_i.id, name: '' } as orderName;
                     }
                 });
                 const orderNames = await Promise.all(orderNamesPromises);
