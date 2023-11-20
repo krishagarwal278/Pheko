@@ -21,6 +21,7 @@ type RootStackParamList = {
     ScrapDealerProfile: undefined;
     ScrapDealerOngoingOrders: undefined;
     ScrapDealerPastOrders: undefined;
+    ScrapDealerGetSupport: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerProfile'>;
 
@@ -130,7 +131,7 @@ const ScrapDealerProfile: React.FC = () => {
                         </View>
                     </Pressable>
                     <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
+                    <Pressable style={[styles.menuItem]}  onPress={() => navigation.navigate('ScrapDealerGetSupport')} >
                         <View style={[styles.menuItemContainer]} >
                             <Text style={[styles.menuItemText]} >Support</Text>
                             <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
