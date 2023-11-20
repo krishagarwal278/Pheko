@@ -12,6 +12,7 @@ import {Order} from "../Types";
 import NavBar from "../components/NavBar";
 import {ParamListBase, useIsFocused, useNavigation} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
+import BackButton from "../components/BackButton";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -73,11 +74,7 @@ const ScrapDealerOngoingOrderDetails = () => {
     const handleCancelOrder = async () => {
         await cancelOrder();
         navigation.navigate("ScrapDealerOngoingOrders");
-    }
-
-    const handleRescheduleOrder = () => {
-        navigation.navigate("ScrapDealerOrderReschedule");
-    }
+    };
 
     const formatDate = (date: Date) => {
         const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -103,11 +100,9 @@ const ScrapDealerOngoingOrderDetails = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
             <View style={styles.container}>
+                <BackButton/>
                 <View style={styles.headerContainer}>
                     <PageHeader title={orderName.toString()} subtitle={formatDate(order.scheduledDateTime)}/>
-                    <Pressable style={styles.rescheduleButton} onPress={() => handleRescheduleOrder()}>
-                        <Text style={styles.rescheduleButtonText}>Reschedule</Text>
-                    </Pressable>
                 </View>
                 <View style={styles.separator}></View>
                 <View style={styles.orderDetailsContainer}>
