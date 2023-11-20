@@ -209,12 +209,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontFamily: FontFamily.montserratMedium,
   },
-  itemRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
+
   weightInput: {
     borderWidth: 2,
     borderColor: Color.color,
@@ -224,7 +219,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
     textAlign: "center",
   },
-  // Add or modify styles as needed
 });
 
 export default CustomerItemSelection;
