@@ -1,22 +1,23 @@
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import React, { useState } from 'react';
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { PhoneAuthProvider, signInWithCredential } from "firebase/auth";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
   StyleSheet,
   TextInput,
-  View
-} from 'react-native';
-import { app, auth } from '../Firebase';
-import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles';
-import { useUser } from '../UserContext';
-import BackButton from '../components/BackButton';
-import ContinueButton from '../components/ContinueButton';
-import PageHeader from '../components/PageHeader'; // Added for UI consistency
+  View,
+} from "react-native";
+import { app, auth } from "../Firebase";
+import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
+import { useUser } from "../UserContext";
+import BackButton from "../components/BackButton";
+import AsyncContinueButton from "../components/AsyncContinueButton";
+import PageHeader from "../components/PageHeader"; // Added for UI consistency
+import LoadingPage from "../components/LoadingPage";
 
 type VerificationRouteParams = {
   CustomerOTPVerification: {
@@ -26,34 +27,43 @@ type VerificationRouteParams = {
 
 const CustomerOTPVerification: React.FunctionComponent = () => {
   const navigation = useNavigation<StackNavigationProp<any>>();
-  const route = useRoute<RouteProp<VerificationRouteParams, 'CustomerOTPVerification'>>();
+  const route =
+    useRoute<RouteProp<VerificationRouteParams, "CustomerOTPVerification">>();
   const { verificationId } = route.params;
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState("");
   const { setUser } = useUser();
+  const [loading, setLoading] = useState(false);
 
   const confirmCode = async () => {
+    setLoading(true); // Start loading
     try {
       const credential = PhoneAuthProvider.credential(verificationId, code);
       const result = await signInWithCredential(auth, credential);
       const db = getFirestore(app);
-      const userDocRef = doc(db, 'Users', result.user.uid);
+      const userDocRef = doc(db, "Users", result.user.uid);
       const userDoc = await getDoc(userDocRef);
 
       if (userDoc.exists()) {
         const userData = userDoc.data();
         setUser({ ...userData, id: userDoc.id });
-        navigation.navigate('CustomerDashboard');
+        navigation.navigate("CustomerDashboard");
       } else {
-        navigation.navigate('CustomerSignUp');
+        navigation.navigate("CustomerSignUp");
       }
     } catch (error) {
-      console.error('Error during OTP verification:', error);
+      console.error("Error during OTP verification:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
+  if (loading) {
+    return <LoadingPage />; // Replace with your loading component
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
@@ -72,11 +82,7 @@ const CustomerOTPVerification: React.FunctionComponent = () => {
         />
 
         <View style={styles.bottomContainer}>
-          <ContinueButton
-            destination="CustomerDashboard" // Modify as needed
-            buttonText="Confirm OTP"
-            onPressAdditional={confirmCode}
-          />
+          <AsyncContinueButton buttonText="Confirm OTP" onPress={confirmCode} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
