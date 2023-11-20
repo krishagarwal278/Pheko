@@ -12,6 +12,7 @@ import {Order} from "../Types";
 import NavBar from "../components/NavBar";
 import {ParamListBase, useIsFocused, useNavigation} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
+import BackButton from "../components/BackButton";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -103,6 +104,7 @@ const CustomerOngoingOrderDetails = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
             <View style={styles.container}>
+                <BackButton />
                 <View style={styles.headerContainer}>
                     <PageHeader title={orderName.toString()} subtitle={formatDate(order.scheduledDateTime)}/>
                 </View>
