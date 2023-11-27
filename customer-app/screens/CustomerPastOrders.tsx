@@ -85,6 +85,9 @@ const ScrapDealerPastOrders = () => {
         const fetchNames = async (docs: Order[]) => {
             try {
                 const orderNamesPromises = docs.map(async (doc_i) => {
+                    if(doc_i.status === 'CREATED'){
+                        return { id: doc_i.id, name: ''} as orderName;
+                    }
                     const docRef = doc(db, "ScrapDealers", doc_i.scrapDealerId);
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
