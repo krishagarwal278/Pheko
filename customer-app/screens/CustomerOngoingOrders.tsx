@@ -27,7 +27,7 @@ type orderName = {
     id: string,
     name: string
 }
-
+ 
 type orderStatus = {
     original: string,
     display: string,
@@ -198,7 +198,7 @@ const ScrapDealerOngoingOrders = () => {
                                 <Pressable key={order.id} style={[styles.orderCard]} onPress={() => orderSelected(order)}>
                                     <View style={[styles.orderAttributesContainer]}>
                                         <View style={[styles.orderUpperContainer]}>
-                                            <Text style={styles.name}>{createdOrderNames.find(name => name.id === order.id)?.name || 'No Name'}</Text>
+                                            <Text style={styles.name}>{createdOrderNames.find(name => name.id === order.id)?.name || 'Order Not Yet Accepted'}</Text>
                                             <Image style={[styles.image]} source={require('../assets/vector-forward.png')}></Image>
                                         </View>
                                         <View style={styles.orderDivider} />
