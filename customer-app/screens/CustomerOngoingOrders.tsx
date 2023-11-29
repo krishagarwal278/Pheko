@@ -37,11 +37,15 @@ const ScrapDealerOngoingOrders = () => {
 
     const isFocused = useIsFocused();
 
-    const [orders, setOrders] = useState<Order[]>([]);
+    const [scheduledOrders, setScheduledOrders] = useState<Order[]>([]);
+
+    const [createdOrders, setCreatedOrders] = useState<Order[]>([]);
 
     const [loading, setLoading] = useState(true);
 
-    const [orderNames, setOrderNames] = useState<orderName[]>([]);
+    const [scheduledOrderNames, setScheduledOrderNames] = useState<orderName[]>([]);
+
+    const [createdOrderNames, setCreatedOrderNames] = useState<orderName[]>([]);
 
     const { order, setOrder } = useOrder();
 
@@ -71,9 +75,11 @@ const ScrapDealerOngoingOrders = () => {
                     notes: doc.data().Notes
                 }) as Order);
                 const filteredDocs = mappedDocs.filter(doc => doc.userId === user.id);
-                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED" || doc.status === "CREATED");
-                setOrders(ongoing_orders);
-                fetchNames(ongoing_orders);
+                const scheduled_orders = filteredDocs.filter((doc) => doc.status === "SCHEDULED");
+                const created_orders = filteredDocs.filter((doc) => doc.status === "CREATED");
+                setScheduledOrders(scheduled_orders);
+                setCreatedOrders(created_orders);
+                fetchNames(scheduled_orders, created_orders);
                 setLoading(false);
             },
             (error) => {
@@ -82,9 +88,9 @@ const ScrapDealerOngoingOrders = () => {
             }
         );
 
-        const fetchNames = async (docs: Order[]) => {
+        const fetchNames = async (scheduledOrders: Order[], createdOrders: Order[]) => {
             try {
-                const orderNamesPromises = docs.map(async (doc_i) => {
+                const orderNamesPromises = scheduledOrders.map(async (doc_i) => {
                     if(doc_i.status === 'CREATED'){
                         return { id: doc_i.id, name: ''} as orderName;
                     }
@@ -99,7 +105,23 @@ const ScrapDealerOngoingOrders = () => {
                     }
                 });
                 const orderNames = await Promise.all(orderNamesPromises);
-                setOrderNames(orderNames);
+                setScheduledOrderNames(orderNames);
+                const orderNamesPromises2 = createdOrders.map(async (doc_i) => {
+                    if(doc_i.status === 'CREATED'){
+                        return { id: doc_i.id, name: ''} as orderName;
+                    }
+                    const docRef = doc(db, "ScrapDealers", doc_i.scrapDealerId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        // Use optional chaining to handle undefined `firstName`
+                        const name = docSnap.data()?.firstName;
+                        return { id: doc_i.id, name: name || '' } as orderName; // Default to '' if `firstName` is undefined
+                    } else {
+                        return { id: doc_i.id, name: '' } as orderName;
+                    }
+                });
+                const orderNames2 = await Promise.all(orderNamesPromises2);
+                setCreatedOrderNames(orderNames2);
             } catch (error) {
                 console.error("Failed to fetch names", error);
                 // Handle the error appropriately
@@ -152,11 +174,31 @@ const ScrapDealerOngoingOrders = () => {
                         <ActivityIndicator size="large" color={Color.color1} />
                     ) : (
                         <>
-                            {orders.map((order: Order) => (
+                            <Text style={styles.scheduledHeader}>Scheduled</Text>
+                            {scheduledOrders.map((order: Order) => (
                                 <Pressable key={order.id} style={[styles.orderCard]} onPress={() => orderSelected(order)}>
                                     <View style={[styles.orderAttributesContainer]}>
                                         <View style={[styles.orderUpperContainer]}>
-                                            <Text style={styles.name}>{orderNames.find(name => name.id === order.id)?.name || 'Order Not Yet Accepted'}</Text>
+                                            <Text style={styles.name}>{scheduledOrderNames.find(name => name.id === order.id)?.name || 'No Name'}</Text>
+                                            <Image style={[styles.image]} source={require('../assets/vector-forward.png')}></Image>
+                                        </View>
+                                        <View style={styles.orderDivider} />
+                                        <View style={[styles.orderBottomContainer]}>
+                                            <View style={[styles.orderInfoContainer]}>
+                                                <Text style={[styles.orderInfo]} > {formatDate(order.scheduledDateTime)}</Text>
+                                                <Text style={[styles.orderInfo]} > {sumWeights(order)} kg</Text>
+                                                <Text style={[styles.orderInfo]} > {order.address}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </Pressable>
+                            ))}
+                            <Text style={styles.createdHeader}>Created</Text>
+                            {createdOrders.map((order: Order) => (
+                                <Pressable key={order.id} style={[styles.orderCard]} onPress={() => orderSelected(order)}>
+                                    <View style={[styles.orderAttributesContainer]}>
+                                        <View style={[styles.orderUpperContainer]}>
+                                            <Text style={styles.name}>{createdOrderNames.find(name => name.id === order.id)?.name || 'Order Not Yet Accepted'}</Text>
                                             <Image style={[styles.image]} source={require('../assets/vector-forward.png')}></Image>
                                         </View>
                                         <View style={styles.orderDivider} />
@@ -203,7 +245,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
-
     },
     image:{
         width:10,
@@ -225,8 +266,6 @@ const styles = StyleSheet.create({
         fontFamily: FontFamily.montserratMedium,
         fontSize: FontSize.size_small,
         color: Color.color1,
-
-
     },
     orderBottomContainer: {
         flexDirection: "row",
@@ -249,6 +288,17 @@ const styles = StyleSheet.create({
     name: {
         color: Color.color1,
         fontFamily: FontFamily.montserratBold,
+    },
+    scheduledHeader: {
+        fontSize: FontSize.size_base,
+        fontFamily: FontFamily.montserratBold,
+        color: Color.color1,
+    },
+    createdHeader: {
+        marginTop: "10%",
+        fontSize: FontSize.size_base,
+        fontFamily: FontFamily.montserratBold,
+        color: Color.color1,
     },
 });
 
