@@ -1,7 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
-import { PhoneAuthProvider } from "firebase/auth";
-import React, { useRef, useState } from 'react';
+import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
@@ -11,8 +8,10 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import { auth, firebaseConfig } from "../Firebase";
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+
 import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
 import BackButton from "../components/BackButton";
 import PageHeader from "../components/PageHeader";
@@ -20,55 +19,69 @@ import PageHeader from "../components/PageHeader";
 const CustomerNumberVerification: React.FunctionComponent = () => {
   const navigation = useNavigation<any>();
   const [phoneNumber, setPhoneNumber] = useState("");
-  const recaptchaVerifier = useRef(null);
 
   const sendVerification = async () => {
-    const phoneProvider = new PhoneAuthProvider(auth);
-    const applicationVerifier = recaptchaVerifier.current;
-    if (applicationVerifier && phoneNumber) {
+    if (phoneNumber) {
       try {
-        const verificationId = await phoneProvider.verifyPhoneNumber(phoneNumber, applicationVerifier);
-        navigation.navigate("CustomerOTPVerification", { verificationId });
+        const confirmation = await auth().signInWithPhoneNumber(phoneNumber);
+        // Pass the confirmation object to the next screen
+        navigation.navigate("CustomerOTPVerification", { confirmation });
       } catch (error) {
         console.error("Failed to send verification code", error);
       }
     }
   };
 
+  const confirmCode = async (code) => {
+    if (confirm && code) {
+      try {
+        await confirm.confirm(code);
+        // Handle successful confirmation here
+        // navigation.navigate("SomeOtherScreen");
+      } catch (error) {
+        console.error("Invalid code.", error);
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
-      <KeyboardAvoidingView 
+      <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
         <BackButton />
-
         <PageHeader
           title="Number Verification"
           subtitle="We'll text you a code to verify your mobile number"
         />
 
-        <FirebaseRecaptchaVerifierModal
-          ref={recaptchaVerifier}
-          firebaseConfig={firebaseConfig}
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Phone Number with Country Code"
-          onChangeText={setPhoneNumber}
-          keyboardType="phone-pad"
-          autoComplete="tel"
-        />
-
-        <View style={styles.bottomContainer}>
-          <Pressable
-            style={styles.continueButton}
-            onPress={sendVerification}
-          >
-            <Text style={styles.continueText}>Send Verification Code</Text>
-          </Pressable>
-        </View>
+        {!confirm ? (
+          <>
+            <TextInput
+              style={styles.input}
+              placeholder="Phone Number with Country Code"
+              value={phoneNumber}
+              onChangeText={setPhoneNumber}
+              keyboardType="phone-pad"
+              autoComplete="tel"
+            />
+            <Pressable style={styles.continueButton} onPress={sendVerification}>
+              <Text style={styles.continueText}>Send Verification Code</Text>
+            </Pressable>
+          </>
+        ) : (
+          <>
+            {/* Optionally, this part can be in a separate screen */}
+            <TextInput
+              style={styles.input}
+              placeholder="Enter Verification Code"
+              keyboardType="number-pad"
+              // You can maintain a separate state for the OTP code or pass directly to confirmCode
+              onChangeText={(code) => confirmCode(code)}
+            />
+          </>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
