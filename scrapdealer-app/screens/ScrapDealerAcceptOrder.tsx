@@ -70,7 +70,7 @@ const ScrapDealerAcceptOrder = () => {
         body: JSON.stringify({
             to: token, 
             title: "Order Accepted",
-            body: "Your order has been scheduled. Your scrap dealer is: " + scrapDealer.firstName + " " + scrapDealer.lastName,
+            body: "Your order of " + order.items + " has been accepted. Your scrap dealer is: " + scrapDealer.firstName + " " + scrapDealer.lastName,
         }),
     })
     .then(response => response.json())
