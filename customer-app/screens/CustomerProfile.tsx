@@ -46,13 +46,13 @@ const ScrapDealerProfile: React.FC = () => {
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
                 const filteredDocs = documents.filter(doc => doc.UserId === user.id);    //Set to user Id from state
-                console.log(filteredDocs);
+             //   console.log(filteredDocs);
                 //Set past orders and ongoing orders
                 const ongoing_orders = filteredDocs.filter((doc) => doc.Status === "SCHEDULED" || doc.Status === "CREATED");
-                console.log(ongoing_orders);
+               // console.log(ongoing_orders);
                 setOngoingOrders(ongoing_orders.length);
                 const past_orders = filteredDocs.filter((doc) => doc.Status === "COMPLETED" || doc.Status === "CANCELLED");
-                console.log(past_orders);
+              //  console.log(past_orders);
                 setPastOrders(past_orders.length);
             } catch (error) {
                 console.log('Error fetching Firestore data:', error);

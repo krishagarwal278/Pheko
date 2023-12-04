@@ -34,7 +34,6 @@ const CustomerOngoingOrderDetails = () => {
     const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
     useEffect(() => {
-
         setItems(order.items);
         setWeights(order.weights);
         fetchName(order);

@@ -25,8 +25,8 @@ type User = {
     email: string,
     phone: string,
     dateCreated: Date | undefined,
-    dateLastUpdated: Date | undefined
-
+    dateLastUpdated: Date | undefined,
+    pushToken: string
 }
 
 export{ Order, User };

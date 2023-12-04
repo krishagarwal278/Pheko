@@ -32,7 +32,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
         email: "",
         phone: "",
         dateCreated: undefined,
-        dateLastUpdated: undefined
+        dateLastUpdated: undefined,
+        pushToken: "",
     });
 
     return (
