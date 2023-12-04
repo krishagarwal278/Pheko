@@ -75,7 +75,7 @@ const CustomerDashboard: React.FC = () => {
                 console.log(currentDate.toString());
                 const scheduled_orders = filteredDocs.filter((doc) => {
                     if(doc.scheduledDateTime){
-                        return doc.status === "SCHEDULED" && doc.scheduledDateTime.getFullYear() == currentDate.getFullYear() && doc.scheduledDateTime.getMonth() == currentDate.getMonth() && doc.scheduledDateTime.getDate() == currentDate.getDate();
+                        return doc.status === "SCHEDULED" /*&& doc.scheduledDateTime.getFullYear() == currentDate.getFullYear() && doc.scheduledDateTime.getMonth() == currentDate.getMonth() && doc.scheduledDateTime.getDate() == currentDate.getDate()*/;
                     }
                     return doc.status === "SCHEDULED";
                 });
