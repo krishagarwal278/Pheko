@@ -96,7 +96,7 @@ const CustomerPickupDateTime: React.FC<Props> = ({ route }) => {
     const updatedOrder = {
       ...order,
       price: total,
-      orderNumber: orderNum,
+      orderNumber: 0,
       dateCreated: new Date(),
       dateLastUpdated: new Date(),
       status: "CREATED",

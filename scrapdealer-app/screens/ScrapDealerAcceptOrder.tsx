@@ -56,7 +56,34 @@ const ScrapDealerAcceptOrder = () => {
             DateLastUpdates: new Date(),
             Status: "SCHEDULED"
         });
-    };
+        const userDocRef = doc(db, 'Users', order.userId);
+        const docSnap = await getDoc(userDocRef);
+        const token = docSnap.data().pushToken;
+        fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            'host': 'exp.host',
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            to: token, 
+            title: "Order Accepted",
+            body: "Your order has been scheduled. Your scrap dealer is: " + scrapDealer.firstName + " " + scrapDealer.lastName,
+        }),
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        // Handle the response here
+        console.log(responseData);
+    })
+    .catch(error => {
+        // Handle the error
+        console.error(error);
+    });
+};
+
 
     const handleAcceptOrder = async () => {
         await acceptOrder();
