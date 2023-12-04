@@ -16,33 +16,34 @@ import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
 import { useUser } from "../UserContext";
 import BackButton from "../components/BackButton";
 import AsyncContinueButton from "../components/AsyncContinueButton";
-import PageHeader from "../components/PageHeader"; 
+import PageHeader from "../components/PageHeader"; // Added for UI consistency
 import LoadingPage from "../components/LoadingPage";
-import firestore from '@react-native-firebase/firestore';
-import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 
 type VerificationRouteParams = {
   CustomerOTPVerification: {
-    confirmation: FirebaseAuthTypes.ConfirmationResult;
+    verificationId: string;
   };
 };
 
 const CustomerOTPVerification: React.FunctionComponent = () => {
-  const navigation = useNavigation<any>();
-  const route = useRoute<RouteProp<VerificationRouteParams, "CustomerOTPVerification">>();
-  const { confirmation } = route.params;
+  const navigation = useNavigation<StackNavigationProp<any>>();
+  const route =
+    useRoute<RouteProp<VerificationRouteParams, "CustomerOTPVerification">>();
+  const { verificationId } = route.params;
   const [code, setCode] = useState("");
-  const { setUser } = useUser(); 
+  const { setUser } = useUser();
   const [loading, setLoading] = useState(false);
 
   const confirmCode = async () => {
-    setLoading(true);
+    setLoading(true); // Start loading
     try {
-      const result = await confirmation.confirm(code);
-      const userDocRef = firestore().collection('Users').doc(result.user.uid);
-      const userDoc = await userDocRef.get();
+      const credential = PhoneAuthProvider.credential(verificationId, code);
+      const result = await signInWithCredential(auth, credential);
+      const db = getFirestore(app);
+      const userDocRef = doc(db, "Users", result.user.uid);
+      const userDoc = await getDoc(userDocRef);
 
-      if (userDoc.exists) {
+      if (userDoc.exists()) {
         const userData = userDoc.data();
         setUser({ ...userData, id: userDoc.id });
         navigation.navigate("CustomerDashboard");
@@ -57,7 +58,7 @@ const CustomerOTPVerification: React.FunctionComponent = () => {
   };
 
   if (loading) {
-    return <LoadingPage />; 
+    return <LoadingPage />; // Replace with your loading component
   }
 
   return (
