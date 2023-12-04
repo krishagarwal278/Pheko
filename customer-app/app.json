@@ -4,10 +4,10 @@
     "slug": "pheko",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/iconlogo10@3x.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/iconlogo10@3x.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
