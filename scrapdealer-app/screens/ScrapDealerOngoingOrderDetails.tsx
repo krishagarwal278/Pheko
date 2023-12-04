@@ -64,11 +64,63 @@ const ScrapDealerOngoingOrderDetails = () => {
             Status: "CREATED",
             ScrapDealerId: "",
         });
+        const userDocRef = doc(db, 'Users', order.userId);
+        const docSnap = await getDoc(userDocRef);
+        const token = docSnap.data().pushToken;
+        fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            'host': 'exp.host',
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            to: token, 
+            title: "Scrap Dealer Cancelled Order",
+            body: "Your order of" + order.items + " has been cancelled by the scrap dealer. A new scrap dealer will be assigned to your order shortly.",
+        }),
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        // Handle the response here
+        console.log(responseData);
+    })
+    .catch(error => {
+        // Handle the error
+        console.error(error);
+    });
     }
 
     const handleCompleteOrder = async () => {
         await completeOrder();
         navigation.navigate("ScrapDealerOngoingOrders");
+        const userDocRef = doc(db, 'Users', order.userId);
+        const docSnap = await getDoc(userDocRef);
+        const token = docSnap.data().pushToken;
+        fetch('https://exp.host/--/api/v2/push/send', {
+        method: 'POST',
+        headers: {
+            'host': 'exp.host',
+            'accept': 'application/json',
+            'accept-encoding': 'gzip, deflate',
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            to: token, 
+            title: "Order Completed",
+            body: "Your pickup of" + order.items + "has been completed",
+        }),
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        // Handle the response here
+        console.log(responseData);
+    })
+    .catch(error => {
+        // Handle the error
+        console.error(error);
+    });
     };
 
     const handleCancelOrder = async () => {

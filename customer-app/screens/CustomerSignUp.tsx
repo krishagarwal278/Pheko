@@ -20,6 +20,10 @@ import BackButton from "../components/BackButton";
 import ContinueButton from "../components/ContinueButton";
 import PageHeader from "../components/PageHeader";
 import { User } from "../Types";
+import { useEffect } from "react";
+import * as Notifications from "expo-notifications";
+import { Alert } from "react-native";
+import * as Device from 'expo-device';
 
 const CustomerSignUp = () => {
   const currentUser = auth.currentUser!;
@@ -29,7 +33,31 @@ const CustomerSignUp = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState<Date>(new Date());
-  const { setUser } = useUser();
+  const [pushToken, setPushToken] = useState("");
+  const { user, setUser } = useUser();
+
+  useEffect(() => {
+        registerForPushNotificationsAsync();
+    }, []);
+
+    async function registerForPushNotificationsAsync() {
+        if (Device.isDevice) {
+            const { status: existingStatus } = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                Alert.alert('Failed to get push token for push notification!');
+                return;
+            }
+            const token = (await Notifications.getExpoPushTokenAsync()).data;
+            setPushToken(token);
+        } else {
+            Alert.alert('Must use a physical device for Push Notifications');
+        }
+    }
 
   const onChange = (event: any, selectedDate?: Date) => {
     selectedDate && setDate(selectedDate);
@@ -51,6 +79,7 @@ const CustomerSignUp = () => {
         phone: currentUser.phoneNumber,
         dateCreated: new Date(),
         dateLastUpdated: new Date(),
+        pushToken: pushToken,
       };
       setUser(userInfo);
       await setDoc(userDoc, userInfo);
