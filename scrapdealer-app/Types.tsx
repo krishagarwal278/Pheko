@@ -22,9 +22,11 @@ type ScrapDealer = {
     dateOfBirth: Date | undefined,
     firstName: string,
     lastName: string,
+    email: string,
     phone: string,
     dateCreated: Date | undefined,
     dateLastUpdated: Date | undefined
+    pushToken: string
 
 }
 
