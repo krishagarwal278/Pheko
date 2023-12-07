@@ -52,21 +52,27 @@ const CustomerOngoingOrderDetails = () => {
 
   const fetchName = async (ord: Order) => {
     try {
-      const docRef = doc(db, "Users", ord.userId);
+      const docRef = doc(db, "ScrapDealers", ord.scrapDealerId);
       const docSnap = await getDoc(docRef);
       const userData = docSnap.data();
       if (userData) {
         setOrderName(userData.firstName);
       }
-    } catch (error) {
-      console.error("Failed to fetch name", error);
+    } catch {
+      setOrderName("Order Not Yet Accepted");
       // Handle the error appropriately
     }
   };
 
   const cancelOrder = async () => {
     if (order.id) {
-      // Check that `order.id` is not undefined
+    if (order.status === "CREATED") {
+      const orderDocRef = doc(db, "Orders", order.id);
+      await updateDoc(orderDocRef, {
+        DateLastUpdates: new Date(),
+        Status: "CANCELLED",
+      });
+    } else if (order.status === "SCHEDULED") {
       const orderDocRef = doc(db, "Orders", order.id);
       await updateDoc(orderDocRef, {
         DateLastUpdates: new Date(),
@@ -106,7 +112,7 @@ const CustomerOngoingOrderDetails = () => {
       // Handle the case where `order.id` is undefined
       console.error("Order ID is undefined");
     }
-  };
+  }};
 
   const handleCancelOrder = async () => {
     await cancelOrder();
