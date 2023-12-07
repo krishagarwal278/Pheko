@@ -61,6 +61,7 @@ const CustomerOngoingOrderDetails = () => {
                 DateLastUpdates: new Date(),
                 Status: "CANCELLED",
             });
+            console.log(order.status);
         } else {
             // Handle the case where `order.id` is undefined
             console.error("Order ID is undefined");

@@ -115,7 +115,6 @@ const CustomerPickupDateTime: React.FC<Props> = ({ route }) => {
       OrderNumber: updatedOrder.orderNumber,
       Price: updatedOrder.price,
       ScheduledDateTime: updatedOrder.scheduledDateTime,
-      ScrapDealerId: updatedOrder.scrapDealerId,
       Status: updatedOrder.status,
       UserId: updatedOrder.userId,
       Weights: updatedOrder.weights,
