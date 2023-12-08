@@ -1,81 +1,93 @@
 import * as React from "react";
-import {Text, StyleSheet, View, Image, SafeAreaView, Dimensions, Pressable} from "react-native";
-import {Color, Padding, FontFamily, FontSize, Border} from "../GlobalStyles";
+import {
+    Text,
+    StyleSheet,
+    View,
+    Image,
+    SafeAreaView,
+    Dimensions,
+    Pressable,
+} from "react-native";
+import { Color, Padding, FontFamily, FontSize, Border } from "../GlobalStyles";
 import ContinueButton from "../components/ContinueButton";
-import {useOrder} from '../OrderContext';
-import {collection, doc, getDoc, updateDoc} from "firebase/firestore";
-import {db} from "../Firebase";
-import {useUser} from "../UserContext";
+import { useOrder } from "../OrderContext";
+import { collection, doc, getDoc, updateDoc } from "firebase/firestore";
+import { db } from "../Firebase";
+import { useScrapDealer } from "../ScrapDealerContext";
 import PageHeader from "../components/PageHeader";
-import {useEffect, useState} from "react";
-import {Order} from "../Types";
+import { useEffect, useState } from "react";
+import { Order } from "../Types";
 import NavBar from "../components/NavBar";
-import {ParamListBase, useIsFocused, useNavigation} from "@react-navigation/native";
-import {StackNavigationProp} from "@react-navigation/stack";
+import {
+    ParamListBase,
+    useIsFocused,
+    useNavigation,
+} from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import BackButton from "../components/BackButton";
 
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get("window").height;
 
-type ItemDetailProps = {
-    itemName: string;
-    itemWeight: number;
-};
+const ScrapDealerPastOrderDetails = () => {
+    const { order, setOrder } = useOrder(); //Use order attributes to display where appropriate
 
-const CustomerOngoingOrderDetails = () => {
-
-    const { order, setOrder } = useOrder();     //Use order attributes to display where appropriate
+    const { scrapDealer, setScrapDealer } = useScrapDealer();
 
     const [orderName, setOrderName] = useState<String>("");
 
-    const [items, setItems] = useState<string[]>([]);
+    const [items, setItems] = useState<String[]>([]);
 
     const [weights, setWeights] = useState<number[]>([]);
 
     const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
 
     useEffect(() => {
-
         setItems(order.items);
         setWeights(order.weights);
         fetchName(order);
-
     });
 
     const fetchName = async (ord: Order) => {
         try {
             const docRef = doc(db, "Users", ord.userId);
             const docSnap = await getDoc(docRef);
-            const userData = docSnap.data();
-            if (userData) {
-                setOrderName(userData.firstName);
-            }
+            setOrderName(docSnap.data().firstName);
         } catch (error) {
             console.error("Failed to fetch name", error);
             // Handle the error appropriately
         }
     };
 
-    const handleRescheduleOrder = () => {
-        navigation.navigate("CustomerOrderReschedule");
-    }
+    const formatDate = (date: Date) => {
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const months = [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+        ];
 
-    const formatDate = (date: Date | undefined) => {
-        if (date){
-            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const dayName = days[date.getDay()];
+        const monthName = months[date.getMonth()];
+        const day = date.getDate();
+        const year = date.getFullYear();
+        const hours = date.getHours().toString().padStart(2, "0");
+        const minutes = date.getMinutes().toString().padStart(2, "0");
 
-            const dayName = days[date.getDay()];
-            const monthName = months[date.getMonth()];
-            const day = date.getDate();
-            const year = date.getFullYear();
-            const hours = date.getHours().toString().padStart(2, '0');
-            const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${dayName} ${monthName} ${
+            day < 10 ? `0${day}` : day
+        } ${year} ${hours}:${minutes}`;
+    };
 
-            return `${dayName} ${monthName} ${day < 10 ? `0${day}` : day} ${year} ${hours}:${minutes}`;
-        }
-        return '';
-    }
-
-    const ItemDetail = ({ itemName, itemWeight }: ItemDetailProps) => (
+    const ItemDetail = ({ itemName, itemWeight }) => (
         <View style={styles.itemDetailContainer}>
             <Text style={styles.itemName}>{itemName}</Text>
             <Text style={styles.itemWeight}>{itemWeight} kg</Text>
@@ -85,14 +97,22 @@ const CustomerOngoingOrderDetails = () => {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
             <View style={styles.container}>
+                <BackButton />
                 <View style={styles.headerContainer}>
-                    <PageHeader title={"Your Pickup Order is Placed!"} subtitle={formatDate(order.scheduledDateTime)}/>
+                    <PageHeader
+                        title={orderName.toString()}
+                        subtitle={formatDate(order.scheduledDateTime)}
+                    />
                 </View>
                 <View style={styles.separator}></View>
                 <View style={styles.orderDetailsContainer}>
                     <Text style={styles.orderDetailsHeader}>Order Details</Text>
                     {items.map((item, index) => (
-                        <ItemDetail key={index} itemName={item} itemWeight={weights[index]}/>
+                        <ItemDetail
+                            key={index}
+                            itemName={item}
+                            itemWeight={weights[index]}
+                        />
                     ))}
                 </View>
                 <View style={styles.separator}></View>
@@ -100,16 +120,8 @@ const CustomerOngoingOrderDetails = () => {
                     <Text style={styles.addressHeader}>Address</Text>
                     <Text style={styles.addressText}>{order.address}</Text>
                 </View>
-                <View style={styles.buttonContainer}>
-                    <Pressable style={styles.rescheduleOrder} onPress={() => handleRescheduleOrder()}>
-                        <Text style={styles.rescheduleOrderText}>Reschedule</Text>
-                    </Pressable>
-                    <Pressable style={styles.returnHome} onPress={() => navigation.navigate("CustomerDashboard")}>
-                        <Text style={styles.returnHomeText}>Return Home</Text>
-                    </Pressable>
-                </View>
             </View>
-            <NavBar/>
+            <NavBar />
         </SafeAreaView>
     );
 };
@@ -122,11 +134,12 @@ const styles = StyleSheet.create({
     },
     separator: {
         height: 2,
-        backgroundColor: Color.color,
+        backgroundColor: Color.color_light_purple,
     },
     headerContainer: {
         justifyContent: "space-between",
         flexDirection: "row",
+        alignItems: "center",
     },
     orderDetailsContainer: {
         width: "100%",
@@ -177,18 +190,18 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1, // Add this line
-        justifyContent: 'flex-end', // Add this line
+        justifyContent: "flex-end", // Add this line
         paddingBottom: "20%", // Add padding to avoid buttons being too close to the edge
     },
-    rescheduleOrder: {
+    completeOrder: {
         borderRadius: Border.br_6xl,
-        backgroundColor: Color.color,
+        backgroundColor: Color.color_light_purple,
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
         padding: 15,
     },
-    returnHome: {
+    cancelOrder: {
         borderRadius: Border.br_6xl,
         backgroundColor: Color.color_light_gray,
         width: "100%",
@@ -197,16 +210,31 @@ const styles = StyleSheet.create({
         padding: 15,
         marginTop: "5%",
     },
-    rescheduleOrderText: {
+    completeOrderText: {
         fontFamily: FontFamily.montserratMedium,
         fontSize: FontSize.size_base,
         color: Color.color1,
     },
-    returnHomeText: {
+    cancelOrderText: {
         fontFamily: FontFamily.montserratMedium,
         fontSize: FontSize.size_base,
         color: Color.color1,
+    },
+    rescheduleButton: {
+        justifyContent: "center",
+        height: "30%",
+        paddingRight: 15,
+        paddingLeft: 15,
+        paddingTop: 5,
+        paddingBottom: 5,
+        backgroundColor: Color.color_light_gray,
+        borderRadius: 20,
+    },
+    rescheduleButtonText: {
+        fontFamily: FontFamily.montserratRegular,
+        color: Color.color_dark_purple,
+        fontSize: FontSize.size_small,
     },
 });
 
-export default CustomerOngoingOrderDetails;
+export default ScrapDealerPastOrderDetails;
