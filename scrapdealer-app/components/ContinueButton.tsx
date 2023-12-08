@@ -10,6 +10,7 @@ type RootStackParamList = {
   ScrapDealerOTPVerification: undefined;
   ScrapDealerSignUp: undefined;
   ScrapDealerOngoingOrders: undefined;
+  ScrapDealerDashboard: undefined;
 };
 
 interface ContinueButtonProps {
