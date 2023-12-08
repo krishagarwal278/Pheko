@@ -54,25 +54,6 @@ const CustomerOngoingOrderDetails = () => {
         }
     };
 
-    const cancelOrder = async () => {
-        if (order.id) { // Check that `order.id` is not undefined
-            const orderDocRef = doc(db, 'Orders', order.id);
-            await updateDoc(orderDocRef, {
-                DateLastUpdates: new Date(),
-                Status: "CANCELLED",
-            });
-            console.log(order.status);
-        } else {
-            // Handle the case where `order.id` is undefined
-            console.error("Order ID is undefined");
-        }
-    }
-
-    const handleCancelOrder = async () => {
-        await cancelOrder();
-        navigation.navigate("CustomerOngoingOrders");
-    }
-
     const handleRescheduleOrder = () => {
         navigation.navigate("CustomerOrderReschedule");
     }
@@ -123,8 +104,8 @@ const CustomerOngoingOrderDetails = () => {
                     <Pressable style={styles.rescheduleOrder} onPress={() => handleRescheduleOrder()}>
                         <Text style={styles.rescheduleOrderText}>Reschedule</Text>
                     </Pressable>
-                    <Pressable style={styles.cancelOrder} onPress={() => handleCancelOrder()}>
-                        <Text style={styles.cancelOrderText}>Cancel</Text>
+                    <Pressable style={styles.returnHome} onPress={() => navigation.navigate("CustomerDashboard")}>
+                        <Text style={styles.returnHomeText}>Return Home</Text>
                     </Pressable>
                 </View>
             </View>
@@ -207,7 +188,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         padding: 15,
     },
-    cancelOrder: {
+    returnHome: {
         borderRadius: Border.br_6xl,
         backgroundColor: Color.color_light_gray,
         width: "100%",
@@ -221,7 +202,7 @@ const styles = StyleSheet.create({
         fontSize: FontSize.size_base,
         color: Color.color1,
     },
-    cancelOrderText: {
+    returnHomeText: {
         fontFamily: FontFamily.montserratMedium,
         fontSize: FontSize.size_base,
         color: Color.color1,
