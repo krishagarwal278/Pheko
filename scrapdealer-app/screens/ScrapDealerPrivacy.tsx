@@ -48,7 +48,6 @@ const CustomerWelcome = () =>{
             <PageHeader
                 title={"Privacy Policy"}
                 subtitle={"Our Privacy Policy and Terms of Service are going to be mentioned on this page soon"} />
-               
         </View>
         <NavBar/>
       </SafeAreaView>
