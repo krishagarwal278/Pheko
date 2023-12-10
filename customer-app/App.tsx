@@ -20,7 +20,8 @@ import CustomerOngoingOrderDetails from "./screens/CustomerOngoingOrderDetails";
 import CustomerOrderReschedule from "./screens/CustomerOrderReschedule";
 import CustomerPastOrderDetails from "./screens/CustomerPastOrderDetails";
 import CustomerManageAccount from "./screens/CustomerManageAccount";
-
+import CustomerCommunity from "./screens/CustomerCommunity";
+import CustomerGetSupport from "./screens/CustomerGetSupport";
 
 type RootStackParamList = {
   CustomerWelcome: undefined;
@@ -39,6 +40,8 @@ type RootStackParamList = {
   CustomerOrderReschedule: undefined;
   CustomerPastOrderDetails: undefined;
   CustomerManageAccount: undefined;
+  CustomerCommunity: undefined;
+  CustomerSupport: undefined;
 };
 
 
@@ -111,6 +114,14 @@ const AppStack = () => (
           <Stack.Screen
               name="CustomerManageAccount"
               component={CustomerManageAccount}
+          />
+          <Stack.Screen
+              name="CustomerCommunity"
+              component={CustomerCommunity}
+          />
+          <Stack.Screen
+              name="CustomerSupport"
+              component={CustomerGetSupport}
           />
         </Stack.Navigator>
       </UserProvider>

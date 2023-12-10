@@ -13,6 +13,7 @@ type RootStackParamList = {
     CustomerNumberVerification:undefined;
     CustomerDashboard: undefined;
     CustomerProfile: undefined;
+    CustomerCommunity: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerDashboard'>;
 
@@ -27,10 +28,10 @@ const NavBar: React.FC = () => {
                     <Text style={[styles.navbarText]}>Home</Text>
                 </View>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('CustomerDashboard')}>
+            <Pressable onPress={() => navigation.navigate('CustomerCommunity')}>
                 <View style={[styles.navbarButton]}>
                     <Image style={[styles.image]} source={require('../assets/blog-icon.png')}></Image>
-                    <Text style={[styles.navbarText]}>Blog</Text>
+                    <Text style={[styles.navbarText]}>Community</Text>
                 </View>
             </Pressable>
             <Pressable onPress={() => navigation.navigate('CustomerProfile')}>

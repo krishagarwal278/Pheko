@@ -45,6 +45,7 @@ const NewsComponent = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [rates, setRates] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -66,31 +67,92 @@ const NewsComponent = () => {
       setLoading(false);
     };
 
+      const fetchRates = async () => {
+          setLoading(true);
+          setError(null);
+          try {
+              const querySnapshot = await getDocs(collection(db, 'Rates'));
+              const documents = querySnapshot.docs.map(doc => ({
+                  id: doc.id,
+                  ...doc.data()
+              } as { id: string, [key: string]: any }));
+              setRates(documents);
+          } catch (error) {
+              console.error(error);
+          }
+          setLoading(false);
+      }
+
+      fetchRates();
     fetchNews();
   }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      {loading ? <Text>Loading...</Text> : (
-        <FlatList
-          data={articles}
-          keyExtractor={item => item.url}
-          renderItem={({ item }) => (
-            <TouchableOpacity onPress={() => {Linking.openURL(item.url).catch(err => console.log(err));}}>
-              <View style={{ margin: 10 }}>
-                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.title}</Text>
-                <Image source={{ uri: item.urlToImage }} style={{ height: 200, borderRadius: 10 }} />
-                <Text>{item.description}</Text>
-              </View>
-            </TouchableOpacity>
+        <View style={styles.RatesContainer}>
+            <Text style={styles.RateHeader}>Scrap Rates</Text>
+            {rates.map((item) => (
+                <View style={styles.RateContainer}>
+                    <Text style={styles.RateName}>{item.Name}</Text>
+                    <Text style={styles.RatePrice}>$ {item.PricePerKg}/kg</Text>
+                </View>
+            ))}
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 15, }}>
+          {loading ? <Text>Loading...</Text> : (
+            <FlatList
+              data={articles}
+              keyExtractor={item => item.url}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => {Linking.openURL(item.url).catch(err => console.log(err));}}>
+                  <View style={{ margin: 10 }}>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.title}</Text>
+                    <Image source={{ uri: item.urlToImage }} style={{ height: 200, borderRadius: 10 }} />
+                    <Text>{item.description}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
           )}
-        />
-      )}
-    </View>
+        </View>
     <NavBar/>
     </SafeAreaView>
   );
 };
 
 export default NewsComponent;
+
+const styles = StyleSheet.create({
+    RatesContainer: {
+        padding: 15,
+
+    },
+    RateHeader: {
+        marginTop: "5%",
+        fontFamily: FontFamily.montserratBold,
+        fontSize: FontSize.size_xl,
+        color: Color.color1,
+        marginBottom: "5%",
+    },
+    RateContainer: {
+        flexDirection: "row",
+        borderRadius: Border.br_6xl,
+        backgroundColor: Color.color_light_gray,
+        padding: 10,
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 5,
+    },
+    RateName: {
+        fontFamily: FontFamily.montserratMedium,
+        color: Color.color1,
+        fontSize: FontSize.size_base,
+        marginLeft: 10,
+    },
+    RatePrice: {
+        fontFamily: FontFamily.montserratMedium,
+        fontSize: FontSize.size_base,
+        color: Color.color1,
+        paddingRight: 10,
+    },
+});

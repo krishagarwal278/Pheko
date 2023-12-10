@@ -22,6 +22,7 @@ type RootStackParamList = {
     CustomerOngoingOrders: undefined;
     CustomerPastOrders: undefined;
     CustomerManageAccount: undefined;
+    CustomerSupport: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerProfile'>;
 
@@ -109,7 +110,7 @@ const CustomerProfile: React.FC = () => {
                         </View>
                     </Pressable>
                     <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
+                    <Pressable style={[styles.menuItem]} onPress={() => navigation.navigate("CustomerSupport")}>
                         <View style={[styles.menuItemContainer]} >
                             <Text style={[styles.menuItemText]} >Support</Text>
                             <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>

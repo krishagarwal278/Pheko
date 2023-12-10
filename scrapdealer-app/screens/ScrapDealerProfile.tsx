@@ -21,8 +21,9 @@ type RootStackParamList = {
     ScrapDealerProfile: undefined;
     ScrapDealerOngoingOrders: undefined;
     ScrapDealerPastOrders: undefined;
-    ScrapDealerGetSupport: undefined;
+    ScrapDealerSupport: undefined;
     ScrapDealerManageAccount: undefined;
+    ScrapDealerPrivacy: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerProfile'>;
 
@@ -111,9 +112,16 @@ const ScrapDealerProfile: React.FC = () => {
                         </View>
                     </Pressable>
                     <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]}  onPress={() => navigation.navigate('ScrapDealerGetSupport')} >
+                    <Pressable style={[styles.menuItem]}  onPress={() => navigation.navigate('ScrapDealerSupport')} >
                         <View style={[styles.menuItemContainer]} >
                             <Text style={[styles.menuItemText]} >Support</Text>
+                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
+                        </View>
+                    </Pressable>
+                    <View style={[styles.Separator]}></View>
+                    <Pressable style={[styles.menuItem]}  onPress={() => navigation.navigate('ScrapDealerPrivacy')} >
+                        <View style={[styles.menuItemContainer]} >
+                            <Text style={[styles.menuItemText]} >Privacy</Text>
                             <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
                         </View>
                     </Pressable>
@@ -145,12 +153,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         maxWidth: "50%",
+        minWidth: "40%",
     },
     pastOrdersContainer: {
         justifyContent: "center",
         alignItems: "center",
-        width: "50%",
-
+        maxWidth: "50%",
+        minWidth: "40%",
     },
     OngoingOrder:{
         justifyContent: "center",
