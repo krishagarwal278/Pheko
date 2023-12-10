@@ -144,10 +144,13 @@ const styles = StyleSheet.create({
     ongoingOrdersContainer: {
         justifyContent: "center",
         alignItems: "center",
+        maxWidth: "50%",
     },
     pastOrdersContainer: {
         justifyContent: "center",
         alignItems: "center",
+        width: "50%",
+
     },
     OngoingOrder:{
         justifyContent: "center",

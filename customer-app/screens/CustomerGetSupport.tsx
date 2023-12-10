@@ -9,58 +9,55 @@ import {
     StyleSheet,
     Text,
     View,
-    Linking
-} from 'react-native';
-import { Border, Color, FontFamily, FontSize, Padding } from '../GlobalStyles';
-import BackButton from '../components/BackButton';
-import ContinueButton from '../components/ContinueButton';
-import PageHeader from '../components/PageHeader';
-import NavBar from '../components/NavBar';
-import { StackNavigationProp } from '@react-navigation/stack';
+    Linking,
+} from "react-native";
+import { Border, Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
+import BackButton from "../components/BackButton";
+import ContinueButton from "../components/ContinueButton";
+import PageHeader from "../components/PageHeader";
 import {ParamListBase, useIsFocused, useNavigation} from "@react-navigation/native";
 // import { db } from "../Firebase";
 // import { collection, getDoc, getDocs, onSnapshot, doc } from "firebase/firestore";
 // import { Order } from "../Types";
 // import { useOrder } from "../OrderContext";
+import {StackNavigationProp} from "@react-navigation/stack";
+import NavBar from "../components/NavBar";
 
 type RootStackParamList = {
-    SignUp: undefined;
+    CustomerSignUp: undefined;
     NextPage: undefined;  // Name of the next page/screen
-    ScrapDealerAvailableOrders: undefined;
-    ScrapDealerNumberVerification:undefined;
-    ScrapDealerDashboard: undefined;
-    ScrapDealerProfile: undefined;
-    ScrapDealerOngoingOrders: undefined;
-    ScrapDealerPastOrders: undefined;
-    ScrapDealerGetSupport: undefined;
-    ScrapDealerCommunity: undefined;
+    CustomerOngoingOrderDetails: undefined;
+    CustomerNumberVerification:undefined;
+    CustomerDashboard: undefined;
+    CustomerOngoingOrders: undefined;
+    // ScrapDealerCommunity: undefined;
+    CustomerGetSupport: undefined;
 };
-type NavigationProps = StackNavigationProp <RootStackParamList, 'ScrapDealerGetSupport'>;
-
+type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerGetSupport'>;
 type PageHeaderProps = {
     // ... other props ...
     subtitle: React.ReactNode;
 };
-
 const CustomerWelcome = () => {
     // Function to handle email link press
     const handleEmailPress = () => {
         Linking.openURL('mailto:phekohelp@gmail.com');
     };
+    
 
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
         <View style={styles.container}>
             <PageHeader
-                title={"Get Support \n \n"}
-                subtitle={"For more support and help, please email"}
-                />
-                <Text style={styles.subtext}>
-                <Text style={styles.emailLink} onPress={handleEmailPress}>
-                phekohelp@gmail.com
-            </Text>
-            {" and we'll get back to you right away!"}
-            </Text>
+                title={"Get Support"}
+                subtitle={"For more support and help, please email "} />
+                    <Text style={styles.subtext}>
+                        <Text style={styles.emailLink} onPress={handleEmailPress}>
+                            phekohelp@gmail.com
+                        </Text> <Text> </Text>
+                        and we'll get back to you right away!
+                    </Text>
+               
         </View>
         <NavBar/>
       </SafeAreaView>
@@ -100,13 +97,13 @@ const styles = StyleSheet.create({
     emailLink: {
         color: 'blue',
         textDecorationLine: 'underline',
-        fontFamily: FontFamily.montserratBold,
     },
-    subtext: {
+    subtext:{
         fontSize: FontSize.size_base,
         color: Color.color1,
         fontFamily: FontFamily.montserratRegular,
-    }
+        lineHeight: 1.5 *FontSize.size_base,
+    },
 });
 
 export default CustomerWelcome;

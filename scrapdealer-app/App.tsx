@@ -14,8 +14,9 @@ import ScrapDealerProfile from "./screens/ScrapDealerProfile"
 import ScrapDealerAcceptOrder from "./screens/ScrapDealerAcceptOrder";
 import ScrapDealerOngoingOrders from "./screens/ScrapDealerOngoingOrders";
 import ScrapDealerPastOrders from "./screens/ScrapDealerPastOrders";
-import ScrapDealerOngoingOrderDetails from "./screens/ScrapDealerOngoingOrderDetails";
+import ScrapDealerCommunity from "./screens/ScrapDealerCommunity";
 import ScrapDealerGetSupport from "./screens/ScrapDealerGetSupport";
+import ScrapDealerOngoingOrderDetails from "./screens/ScrapDealerOngoingOrderDetails";
 import ScrapDealerPastOrderDetails from "./screens/ScrapDealerPastOrderDetails";
 import ScrapDealerManageAccount from "./screens/ScrapDealerManageAccount";
 
@@ -31,8 +32,9 @@ type RootStackParamList = {
   ScrapDealerAcceptOrder: undefined;
   ScrapDealerOngoingOrders: undefined;
   ScrapDealerPastOrders: undefined;
-  ScrapDealerOngoingOrderDetails: undefined;
+  ScrapDealerCommunity: undefined;
   ScrapDealerGetSupport: undefined;
+  ScrapDealerOngoingOrderDetails: undefined;
   ScrapDealerPastOrderDetails: undefined;
   ScrapDealerManageAccount: undefined;
 };
@@ -70,6 +72,10 @@ const AppStack = () => (
       <Stack.Screen
           name="ScrapDealerProfile"
           component={ScrapDealerProfile}
+      />
+      <Stack.Screen
+          name="ScrapDealerCommunity"
+          component={ScrapDealerCommunity}
       />
       <Stack.Screen
           name="ScrapDealerAcceptOrder"
