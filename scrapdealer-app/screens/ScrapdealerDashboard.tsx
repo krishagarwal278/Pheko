@@ -44,7 +44,7 @@ const ScrapDealerDashboard: React.FC = () => {
                     id: doc.id,
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
-                const filteredDocs = documents.filter(doc => doc.ScrapDealerId === scrapDealer.id);    //Set to user Id from state
+                const filteredDocs = documents.filter(doc => doc.ScrapDealerId === scrapDealer.id && doc.Status === "COMPLETED");    //Set to user Id from state
                 const totalWeight = filteredDocs.reduce((sum, doc) => {
                     return sum + doc.Weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
                 }, 0);

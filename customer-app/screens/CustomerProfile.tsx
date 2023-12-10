@@ -21,10 +21,11 @@ type RootStackParamList = {
     CustomerProfile: undefined;
     CustomerOngoingOrders: undefined;
     CustomerPastOrders: undefined;
+    CustomerManageAccount: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerProfile'>;
 
-const ScrapDealerProfile: React.FC = () => {
+const CustomerProfile: React.FC = () => {
 
     const [loading, setLoading] = useState(true);
     const [ongoingOrders, setOngoingOrders] = useState(0);
@@ -46,13 +47,13 @@ const ScrapDealerProfile: React.FC = () => {
                     ...doc.data()
                 } as { id: string, [key: string]: any }));
                 const filteredDocs = documents.filter(doc => doc.UserId === user.id);    //Set to user Id from state
-                console.log(filteredDocs);
+             //   console.log(filteredDocs);
                 //Set past orders and ongoing orders
-                const ongoing_orders = filteredDocs.filter((doc) => doc.Status === "SCHEDULED");
-                console.log(ongoing_orders);
+                const ongoing_orders = filteredDocs.filter((doc) => doc.Status === "SCHEDULED" || doc.Status === "CREATED");
+               // console.log(ongoing_orders);
                 setOngoingOrders(ongoing_orders.length);
-                const past_orders = filteredDocs.filter((doc) => doc.Status === "COMPLETED");
-                console.log(past_orders);
+                const past_orders = filteredDocs.filter((doc) => doc.Status === "COMPLETED" || doc.Status === "CANCELLED");
+              //  console.log(past_orders);
                 setPastOrders(past_orders.length);
             } catch (error) {
                 console.log('Error fetching Firestore data:', error);
@@ -101,30 +102,9 @@ const ScrapDealerProfile: React.FC = () => {
                     </Pressable>
                 </View>
                 <View style={[styles.menuItems]}>
-                    <Pressable style={[styles.menuItem]} >
+                    <Pressable style={[styles.menuItem]} onPress={() => navigation.navigate("CustomerManageAccount")}>
                         <View style={[styles.menuItemContainer]} >
                             <Text style={[styles.menuItemText]} >Manage Account</Text>
-                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
-                        </View>
-                    </Pressable>
-                    <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
-                        <View style={[styles.menuItemContainer]} >
-                            <Text style={[styles.menuItemText]} >Address</Text>
-                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
-                        </View>
-                    </Pressable>
-                    <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
-                        <View style={[styles.menuItemContainer]} >
-                            <Text style={[styles.menuItemText]} >Privacy</Text>
-                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
-                        </View>
-                    </Pressable>
-                    <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
-                        <View style={[styles.menuItemContainer]} >
-                            <Text style={[styles.menuItemText]} >Notifications</Text>
                             <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
                         </View>
                     </Pressable>
@@ -141,7 +121,7 @@ const ScrapDealerProfile: React.FC = () => {
         </SafeAreaView>
     );
 }
-export default ScrapDealerProfile;
+export default CustomerProfile;
 
 const styles = StyleSheet.create({
     container: {
@@ -201,7 +181,7 @@ const styles = StyleSheet.create({
         width: "30%"
     },
     menuItem: {
-        height: "12%",
+        height: "20%",
         justifyContent: "center",
     },
     menuItemContainer: {

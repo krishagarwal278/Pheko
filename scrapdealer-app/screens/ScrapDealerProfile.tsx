@@ -22,6 +22,7 @@ type RootStackParamList = {
     ScrapDealerOngoingOrders: undefined;
     ScrapDealerPastOrders: undefined;
     ScrapDealerGetSupport: undefined;
+    ScrapDealerManageAccount: undefined;
 };
 type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerProfile'>;
 
@@ -103,35 +104,14 @@ const ScrapDealerProfile: React.FC = () => {
                         </Pressable>
                 </View>
                 <View style={[styles.menuItems]}>
-                    <Pressable style={[styles.menuItem]} >
+                    <Pressable style={[styles.menuItem]} onPress={() => navigation.navigate('ScrapDealerManageAccount')}>
                         <View style={[styles.menuItemContainer]} >
                             <Text style={[styles.menuItemText]} >Manage Account</Text>
                             <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
                         </View>
                     </Pressable>
                     <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
-                        <View style={[styles.menuItemContainer]} >
-                            <Text style={[styles.menuItemText]} >Address</Text>
-                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
-                        </View>
-                    </Pressable>
-                    <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
-                        <View style={[styles.menuItemContainer]} >
-                            <Text style={[styles.menuItemText]} >Privacy</Text>
-                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
-                        </View>
-                    </Pressable>
-                    <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} >
-                        <View style={[styles.menuItemContainer]} >
-                            <Text style={[styles.menuItemText]} >Notifications</Text>
-                            <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
-                        </View>
-                    </Pressable>
-                    <View style={[styles.Separator]}></View>
-                    <Pressable style={[styles.menuItem]} onPress={() => navigation.navigate('ScrapDealerGetSupport')}>
+                    <Pressable style={[styles.menuItem]}  onPress={() => navigation.navigate('ScrapDealerGetSupport')} >
                         <View style={[styles.menuItemContainer]} >
                             <Text style={[styles.menuItemText]} >Support</Text>
                             <Image style={[styles.menuItemImage]} source={require('../assets/vector-forward.png')} ></Image>
@@ -206,7 +186,7 @@ const styles = StyleSheet.create({
         width: "30%"
     },
     menuItem: {
-        height: "12%",
+        height: "20%",
         justifyContent: "center",
     },
     menuItemContainer: {

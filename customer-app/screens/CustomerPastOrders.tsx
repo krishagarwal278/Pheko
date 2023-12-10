@@ -71,7 +71,7 @@ const ScrapDealerPastOrders = () => {
                     notes: doc.data().Notes
                 }) as Order);
                 const filteredDocs = mappedDocs.filter(doc => doc.userId === user.id);
-                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "COMPLETED");
+                const ongoing_orders = filteredDocs.filter((doc) => doc.status === "COMPLETED" || doc.status === "CANCELLED");
                 setOrders(ongoing_orders);
                 fetchNames(ongoing_orders);
                 setLoading(false);
@@ -85,6 +85,9 @@ const ScrapDealerPastOrders = () => {
         const fetchNames = async (docs: Order[]) => {
             try {
                 const orderNamesPromises = docs.map(async (doc_i) => {
+                    if(doc_i.status === 'CREATED'){
+                        return { id: doc_i.id, name: ''} as orderName;
+                    }
                     const docRef = doc(db, "ScrapDealers", doc_i.scrapDealerId);
                     const docSnap = await getDoc(docRef);
                     if (docSnap.exists()) {
@@ -109,7 +112,7 @@ const ScrapDealerPastOrders = () => {
     const orderSelected = (order: Order) => {
 
         setOrder(order);
-        navigation.navigate("ScrapDealerOrderType");
+        navigation.navigate("CustomerPastOrderDetails");
 
     };
 

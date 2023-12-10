@@ -14,6 +14,7 @@ type RootStackParamList = {
   CustomerSignUp: undefined;
   CustomerDashboard: undefined;
   CustomerAddressScreen: undefined;
+  CustomerOngoingOrders: undefined;
 };
 
 interface ContinueButtonProps {

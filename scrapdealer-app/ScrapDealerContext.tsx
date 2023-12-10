@@ -30,8 +30,10 @@ export const ScrapDealerProvider: React.FC<ScrapDealerProviderProps> = ({ childr
         firstName: "",
         lastName: "",
         phone: "",
+        email: "",
         dateCreated: undefined,
-        dateLastUpdated: undefined
+        dateLastUpdated: undefined,  
+        pushToken: "",
     });
 
     return (

@@ -15,9 +15,12 @@ import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { getFirestore, doc, setDoc } from "firebase/firestore";
 import { Color, Border, FontSize, FontFamily } from "../GlobalStyles";
 import { auth } from "../Firebase";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { useScrapDealer } from "../ScrapDealerContext";
 import { ScrapDealer } from "../Types";
+import * as Notifications from "expo-notifications";
+import { Alert } from "react-native";
+import * as Device from 'expo-device';
 
 const { width, height } = Dimensions.get("window");
 
@@ -30,8 +33,31 @@ const ScrapDealerSignUp: FunctionComponent = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState<Date>(new Date());
-
+   const [pushToken, setPushToken] = useState("");
   const { scrapDealer, setScrapDealer } = useScrapDealer();
+
+  useEffect(() => {
+        registerForPushNotificationsAsync();
+    }, []);
+
+    async function registerForPushNotificationsAsync() {
+        if (Device.isDevice) {
+            const { status: existingStatus } = await Notifications.getPermissionsAsync();
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Notifications.requestPermissionsAsync();
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                Alert.alert('Failed to get push token for push notification!');
+                return;
+            }
+            const token = (await Notifications.getExpoPushTokenAsync()).data;
+            setPushToken(token);
+        } else {
+            Alert.alert('Must use a physical device for Push Notifications');
+        }
+    }
 
   const onChange = (event: any, selectedDate?: Date) => {
     if (selectedDate) {
@@ -51,9 +77,11 @@ const ScrapDealerSignUp: FunctionComponent = () => {
         dateOfBirth: date,
         firstName: firstName,
         lastName: lastName,
+        email: email,
         phone: currentUser.phoneNumber,
         dateCreated: new Date(),
-        dateLastUpdated: new Date
+        dateLastUpdated: new Date,
+        pushToken: pushToken,
       }
       setScrapDealer(userInfo)
       await setDoc(userDoc, userInfo);

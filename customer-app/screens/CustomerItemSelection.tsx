@@ -143,58 +143,15 @@ const CustomerItemSelection = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: Padding.p_11xl,
-  },
-  itemsContainer: {
-    flexGrow: 1,
-    marginBottom: 90,
-  },
-  itemRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-  itemButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    paddingLeft: 15,
-    borderRadius: Border.br_6xl,
-    borderWidth: 2,
-    borderColor: Color.color,
-    flex: 1, // Make buttons stretch to fill row
-    marginRight: 15, // Spacing between button and input
-  },
-  selectedItemStyle: {
-    backgroundColor: "rgba(0,0,0,0.1)",
-  },
-  itemIcon: {
-    width: 25,
-    height: 25,
-    marginRight: 15,
-  },
-  itemText: {
-    fontSize: FontSize.size_base,
-    color: Color.color1,
-    fontFamily: FontFamily.montserratMedium,
-  },
-  weightInput: {
-    borderWidth: 2,
-    borderColor: Color.color,
-    borderRadius: Border.br_6xl,
-    padding: 10,
-    width: 100, // Fixed width for consistency
-    textAlign: "center",
-  },
   bottomContainer: {
     flex: 1,
     justifyContent: "flex-end",
     marginBottom: 20,
   },
-
+  container: {
+    flex: 1,
+    padding: Padding.p_11xl,
+  },
   continueButton: {
     height: 86,
     borderRadius: Border.br_6xl,
@@ -209,22 +166,50 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontFamily: FontFamily.montserratMedium,
   },
+  itemButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingLeft: 15,
+    borderRadius: Border.br_6xl,
+    borderWidth: 2,
+    borderColor: Color.color,
+    flex: 1, // Make buttons stretch to fill row
+    marginRight: 15, // Spacing between button and input
+  },
+  itemIcon: {
+    width: 25,
+    height: 25,
+    marginRight: 15,
+  },
   itemRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
   },
+  itemText: {
+    fontSize: FontSize.size_base,
+    color: Color.color1,
+    fontFamily: FontFamily.montserratMedium,
+  },
+  itemsContainer: {
+    flexGrow: 1,
+    marginBottom: 90,
+  },
+
+  selectedItemStyle: {
+    backgroundColor: "rgba(0,0,0,0.1)",
+  },
   weightInput: {
     borderWidth: 2,
     borderColor: Color.color,
     borderRadius: Border.br_6xl,
     padding: 10,
-    width: 100,
+    width: 100, // Fixed width for consistency
     marginRight: 15,
     textAlign: "center",
   },
-  // Add or modify styles as needed
 });
 
 export default CustomerItemSelection;

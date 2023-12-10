@@ -1,4 +1,5 @@
-import * as React from 'react';
+import * as React from "react";
+import { useEffect, useState } from "react";
 import {
     ActivityIndicator,
     Image,
@@ -16,7 +17,11 @@ import ContinueButton from '../components/ContinueButton';
 import PageHeader from '../components/PageHeader';
 import NavBar from '../components/NavBar';
 import { StackNavigationProp } from '@react-navigation/stack';
-
+import {ParamListBase, useIsFocused, useNavigation} from "@react-navigation/native";
+// import { db } from "../Firebase";
+// import { collection, getDoc, getDocs, onSnapshot, doc } from "firebase/firestore";
+// import { Order } from "../Types";
+// import { useOrder } from "../OrderContext";
 
 type RootStackParamList = {
     SignUp: undefined;
@@ -28,15 +33,21 @@ type RootStackParamList = {
     ScrapDealerOngoingOrders: undefined;
     ScrapDealerPastOrders: undefined;
     ScrapDealerGetSupport: undefined;
+    ScrapDealerCommunity: undefined;
 };
 type NavigationProps = StackNavigationProp <RootStackParamList, 'ScrapDealerGetSupport'>;
+
+type PageHeaderProps = {
+    // ... other props ...
+    subtitle: React.ReactNode;
+};
 
 const CustomerWelcome = () => {
     // Function to handle email link press
     const handleEmailPress = () => {
         Linking.openURL('mailto:phekohelp@gmail.com');
     };
-   
+
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: Color.colorWhite }}>
         <View style={styles.container}>
@@ -50,8 +61,6 @@ const CustomerWelcome = () => {
             </Text>
             {" and we'll get back to you right away!"}
             </Text>
-
-            {/* Any other components or views you want to include */}
         </View>
         <NavBar/>
       </SafeAreaView>
@@ -95,8 +104,8 @@ const styles = StyleSheet.create({
     },
     subtext: {
         fontSize: FontSize.size_base,
-    color: Color.color1,
-    fontFamily: FontFamily.montserratRegular,
+        color: Color.color1,
+        fontFamily: FontFamily.montserratRegular,
     }
 });
 

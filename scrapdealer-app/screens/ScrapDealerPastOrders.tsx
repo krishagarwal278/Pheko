@@ -104,7 +104,7 @@ const ScrapDealerPastOrders = () => {
     const orderSelected = (order: Order) => {
 
         setOrder(order);
-        navigation.navigate("ScrapDealerOrderType");
+        navigation.navigate("ScrapDealerPastOrderDetails");
 
     };
 
@@ -122,6 +122,10 @@ const ScrapDealerPastOrders = () => {
 
         return `${dayName} ${monthName} ${day < 10 ? `0${day}` : day} ${year} ${hours}:${minutes}`;
     }
+
+    const sumWeights = (order: Order) => {
+        return order.weights.reduce((innerSum: number, weight: number) => innerSum + weight, 0);
+    };
 
 
     return (
@@ -150,7 +154,7 @@ const ScrapDealerPastOrders = () => {
                                         <View style={[styles.orderBottomContainer]}>
                                             <View style={[styles.orderInfoContainer]}>
                                                 <Text style={[styles.orderInfo]} > {formatDate(order.scheduledDateTime)}</Text>
-                                                <Text style={[styles.orderInfo]} > {order.weights[0].toString()} kg</Text>
+                                                <Text style={[styles.orderInfo]} > {sumWeights(order)} kg</Text>
                                                 <Text style={[styles.orderInfo]} > {order.address}</Text>
                                             </View>
                                         </View>
