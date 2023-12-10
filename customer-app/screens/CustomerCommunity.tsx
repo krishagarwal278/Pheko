@@ -21,28 +21,38 @@ import PageHeader from "../components/PageHeader";
 import NavBar from "../components/NavBar";
 import { collection, getDocs } from "firebase/firestore";
 import {db} from "../Firebase";
-import { useScrapDealer } from "../ScrapDealerContext";
 import axios from "axios";
 import { Linking } from 'react-native';
 
 type RootStackParamList = {
     SignUp: undefined;
     NextPage: undefined;  // Name of the next page/screen
-    ScrapDealerAvailableOrders: undefined;
-    ScrapDealerNumberVerification:undefined;
-    ScrapDealerDashboard: undefined;
-    ScrapDealerOngoingOrders: undefined;
-    ScrapDealerProfile: undefined;
-    ScrapDealerPastOrders: undefined;
-    ScrapDealerGetSupport: undefined;
-    ScrapDealerManageAccount: undefined;
-    ScrapDealerPrivacy: undefined;
-    ScrapDealerCommunity: undefined;
+    CustomerAvailableOrders: undefined;
+    CustomerNumberVerification:undefined;
+    CustomerDashboard: undefined;
+    CustomerProfile: undefined;
+    CustomerOngoingOrders: undefined;
+    CustomerPastOrders: undefined;
+    CustomerGetSupport: undefined;
+    CustomerManageAccount: undefined;
+    CustomerPrivacy: undefined;
+    CustomerCommunity: undefined;
 };
-type NavigationProps = StackNavigationProp<RootStackParamList, 'ScrapDealerCommunity'>;
+type NavigationProps = StackNavigationProp<RootStackParamList, 'CustomerCommunity'>;
+
+interface Article {
+    source: any,
+    author: string,
+    title: string,
+    description: string,
+    url: string,
+    urlToImage: string,
+    publishedAt: string,
+    content: string,
+}
 
 const NewsComponent = () => {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -94,3 +104,5 @@ const NewsComponent = () => {
 };
 
 export default NewsComponent;
+
+
