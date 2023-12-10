@@ -54,10 +54,6 @@ const CustomerOngoingOrderDetails = () => {
         }
     };
 
-    const handleRescheduleOrder = () => {
-        navigation.navigate("CustomerOrderReschedule");
-    }
-
     const formatDate = (date: Date | undefined) => {
         if (date){
             const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -101,9 +97,6 @@ const CustomerOngoingOrderDetails = () => {
                     <Text style={styles.addressText}>{order.address}</Text>
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Pressable style={styles.rescheduleOrder} onPress={() => handleRescheduleOrder()}>
-                        <Text style={styles.rescheduleOrderText}>Reschedule</Text>
-                    </Pressable>
                     <Pressable style={styles.returnHome} onPress={() => navigation.navigate("CustomerDashboard")}>
                         <Text style={styles.returnHomeText}>Return Home</Text>
                     </Pressable>
